@@ -5,8 +5,6 @@ from typing import Optional
 from discord import Embed, Member
 from core import checks
 from core.models import PermissionLevel
-import asyncio
-import psutil
 
 
 class autoreact(commands.Cog):
