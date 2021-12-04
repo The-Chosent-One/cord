@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'}
 
 
-class RawPlugin(commands.Cog):
+class extras(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
@@ -70,9 +70,6 @@ class RawPlugin(commands.Cog):
 	async def id(self, ctx):
 		"""Returns the Recipient's ID"""
 		await ctx.send(ctx.thread.id)
-    
-  
-
-
+		
 def setup(bot):
-	bot.add_cog(RawPlugin(bot))
+	bot.add_cog(extras(bot))
