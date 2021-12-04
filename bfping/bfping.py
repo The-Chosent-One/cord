@@ -66,6 +66,8 @@ class bfping(commands.Cog):
             await asyncio.sleep(300)
             await member.remove_roles(role)
             await ctx.send("The role has expired since 5 minutes are up")
+        else:
+            await ctx.send("The user already has the role!")
 
 def setup(bot):
     bot.add_cog(bfping(bot))
