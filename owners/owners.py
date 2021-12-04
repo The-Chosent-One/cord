@@ -15,8 +15,9 @@ class owners(commands.Cog):
     
     @commands.command()
     @commands.is_owner()
-    async def memory(self,ctx):
+    async def ussage(self,ctx):
         await ctx.send(f'RAM memory % used: {psutil.virtual_memory()[2]}')
+        await ctx.send(f'The CPU % usage is: {psutil.cpu_percent(4)}')
     
     @commands.command()
     @commands.is_owner()
