@@ -2,4 +2,4 @@ Not in project:
 
 NSFWDetector
 
-Dailypoll
+DailyPoll
