@@ -38,7 +38,6 @@ class extras(commands.Cog):
 		second = role2.members
 		firstlen = len(role1.members)
 		secondlen = len(role2.members)
-		print(first)
 		Unique = len(list(set(first + second)))
 		await ctx.send(embed=discord.Embed(title='Here is the requested information!', colour=discord.Colour.green(),
 										   description=f'**Users in {role1}**: {firstlen} \n**Users in {role2}**: {secondlen} \n **Unique in {role1} and {role2}**: {Unique}'))
