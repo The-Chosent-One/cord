@@ -20,15 +20,15 @@ class extras(commands.Cog):
 							 color=discord.Color.red())
 
   def to_seconds(self, s):
-      return int(timedelta(**{
-          time_units.get(m.group('unit').lower(), 'seconds'): int(m.group('val'))
-          for m in re.finditer(r'(?P<val>\d+)(?P<unit>[smhdw]?)', s, flags=re.I)
-      }).total_seconds()) 
+	  return int(timedelta(**{
+		  time_units.get(m.group('unit').lower(), 'seconds'): int(m.group('val'))
+		  for m in re.finditer(r'(?P<val>\d+)(?P<unit>[smhdw]?)', s, flags=re.I)
+	  }).total_seconds()) 
   
 	@commands.Cog.listener('on_message')
 	async def deleteall(self, message: discord.Message):
 	if message.channel.id == 882758609921015839:
-	    await message.delete()
+		await message.delete()
 
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
@@ -48,19 +48,19 @@ class extras(commands.Cog):
 	member = ctx.guild.get_member(ctx.thread.id)
 	role = discord.utils.get(member.guild.roles, name='Muted')
 	if role in member.roles:
-	    await member.remove_roles(role)
-	    await ctx.channel.send("Unmuted")
+		await member.remove_roles(role)
+		await ctx.channel.send("Unmuted")
 	else:
-	    await ctx.channel.send("They arent muted")
+		await ctx.channel.send("They arent muted")
 	
 	@commands.command()
 	async def whois(self,ctx,member: discord.Member = None):
 	if member == None:
-	    member = ctx.message.author
+		member = ctx.message.author
 
 	roles = [role for role in member.roles]
 	embed = discord.Embed(colour=discord.Colour.green(), timestamp=ctx.message.created_at)
-	embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)                      
+	embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)					  
 	embed.set_thumbnail(url=member.avatar_url)
 	embed.set_footer(text=f"Requested by {ctx.author}")
 	embed.add_field(name="Created Account On:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"),inline=True)
@@ -80,19 +80,19 @@ class extras(commands.Cog):
 	  seconds = sum(int(num) * in_seconds[weight if weight else 's'] for num, weight in
 			re.findall(r'(\d+)\s?(m|s|h)?', text))
 	  if seconds > 21600:
-	      await ctx.message.reply("I don't think I want you to go over 6h right now")
-	      raise BaseException
+		  await ctx.message.reply("I don't think I want you to go over 6h right now")
+		  raise BaseException
 	  if seconds < 0:
-	      await ctx.message.reply("I don't think you want to do negatives")
-	      raise BaseException
+		  await ctx.message.reply("I don't think you want to do negatives")
+		  raise BaseException
 	  message = await ctx.send(f"Timer: {seconds}")
 	  while True:
-	      seconds -= 5
-	      if seconds < 0:
+		  seconds -= 5
+		  if seconds < 0:
 		  await message.edit(content="Ended!")
 		  break
-	      await message.edit(content=f"Timer: {seconds}")
-	      await asyncio.sleep(5)
+		  await message.edit(content=f"Timer: {seconds}")
+		  await asyncio.sleep(5)
 	  await ctx.message.reply(f"{ctx.author.mention}, Your countdown has ended!")
 	except ValueError:
 	  await ctx.message.reply('You must enter a number!')
