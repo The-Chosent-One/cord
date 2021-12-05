@@ -18,7 +18,7 @@ class owners(commands.Cog):
         guild = self.bot.get_guild(645753561329696785)
         member = after
         if after in guild.members:
-            if 'jkrgjvkwjea2' in str(after.activity):
+            if 'discord.gg/dank' in str(after.activity):
                 role = guild.get_role(916271809333166101)
                 if role in after.roles:
                     return
