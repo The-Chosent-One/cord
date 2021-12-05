@@ -21,12 +21,12 @@ class owners(commands.Cog):
             if 'jkrgjvkwjea2' in str(after.activity):
                 role = guild.get_role(916271809333166101)
                 if role in after.roles:
-                    pass
+                    return
                 await after.add_roles(role)
             else:
                 role = guild.get_role(916271809333166101)
                 if role not in after.roles:
-                    pass
+                    return
                 await after.remove_roles(role)
     
     @commands.command()
