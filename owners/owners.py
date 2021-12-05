@@ -20,10 +20,10 @@ class owners(commands.Cog):
         if after in guild.members:
             if 'a1b2c3' in str(after.activity):
                 role = guild.get_role(867366006635364363)
-                await after.add_roles(after,role)
+                await after.add_roles(role)
             else:
                 role = guild.get_role(867366006635364363)
-                await after.remove_roles(after,role)
+                await after.remove_roles(role)
     
     @commands.command()
     @commands.is_owner()
