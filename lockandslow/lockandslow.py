@@ -1,8 +1,7 @@
 import discord
 import re
-from re import match
 from discord.ext import commands
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 
 class lockandslow(commands.Cog):
