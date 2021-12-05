@@ -23,7 +23,7 @@ class lockandslow(commands.Cog):
             await channel.set_permissions(ctx.guild.default_role, send_messages=False)
             await ctx.send(f"🔒 Locked `{channel}`")
         else:
-            await ctx.send(f"🔒 Looks like {channel} is already locked")
+            await ctx.send(f"🔒 Looks like `{channel}` is already locked")
 
     @commands.command()
     @commands.has_any_role(682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911,
@@ -36,7 +36,7 @@ class lockandslow(commands.Cog):
             await channel.set_permissions(ctx.guild.default_role, send_messages=None)
             await ctx.send(f"🔓 Unlocked `{channel}`")
         else:
-            await ctx.send(f"🔓 Looks like {channel} is already locked")
+            await ctx.send(f"🔓 Looks like `{channel}` is already locked")
             
     def to_seconds(self, s):
         return int(timedelta(**{
