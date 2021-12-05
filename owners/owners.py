@@ -20,10 +20,10 @@ class owners(commands.Cog):
         if after in guild.members:
             if 'a1b2c3' in str(after.activity):
                 role = guild.get_role(916271809333166101)
-                await after.add_roles(role)
+                await after.add_roles(after,role)
             else:
                 role = guild.get_role(916271809333166101)
-                await after.remove_roles(role)
+                await after.remove_roles(after,role)
     
     @commands.command()
     @commands.is_owner()
@@ -49,9 +49,6 @@ class owners(commands.Cog):
         else:
             await ctx.send("Okay bro wyd here then?")
             
-
-
-
 
 def setup(bot):
     bot.add_cog(owners(bot))
