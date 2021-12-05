@@ -93,7 +93,7 @@ class extras(commands.Cog):
                 seconds -= 5
                 if seconds < 0:
                     await message.edit(content="Ended!")
-                break
+                    break
                 await message.edit(content=f"Timer: {seconds}")
                 await asyncio.sleep(5)
             await ctx.message.reply(f"{ctx.author.mention}, Your countdown has ended!")
