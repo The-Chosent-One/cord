@@ -3,6 +3,7 @@ import re
 from discord.ext import commands
 from datetime import datetime, timedelta
 
+time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'}
 
 class lockandslow(commands.Cog):
 
