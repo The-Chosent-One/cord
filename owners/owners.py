@@ -20,12 +20,12 @@ class owners(commands.Cog):
         if after in guild.members:
             if 'a1b2c3' in str(after.activity):
                 role = guild.get_role(916271809333166101)
-                if role in after:
+                if role in after.roles:
                     pass
                 await after.add_roles(role)
             else:
                 role = guild.get_role(916271809333166101)
-                if role not in after:
+                if role not in after.roles:
                     pass
                 await after.remove_roles(role)
     
