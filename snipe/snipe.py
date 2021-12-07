@@ -21,6 +21,10 @@ class Snipe(commands.Cog):
     async def on_message_delete(self, message):
         if message.author.bot:  # Not needed
             return
+        
+        if message.author.id == 705769248034914314:
+            return
+        
         if any(word in message.content.lower() for word in nosnipe):
             return
 
@@ -67,7 +71,7 @@ class Snipe(commands.Cog):
         member = ctx.author
 
         if (ctx.channel.id == 882758609921015839):
-            return
+            returnz
 
         has_perms = self.check_view_perms(ch, member)
         if has_perms:
@@ -107,6 +111,9 @@ class Snipe(commands.Cog):
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
         if before.content == after.content:
+            return
+        
+        if before.author.id == 705769248034914314:
             return
 
         if before.author.bot:
