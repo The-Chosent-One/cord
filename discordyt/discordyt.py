@@ -6,8 +6,10 @@ class discordyt(commands.Cog):
 
     def __init__(self, client):
         self.client = client
-        self.togetherControl = DiscordTogether(client)
         
+    @commands.Cog.listener()
+    async def on_ready(self):
+        self.togetherControl = await DiscordTogether(client) 
     
     @commands.command()
     @commands.is_owner()
