@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from discordTogether import DiscordTogether
+from discord_together import DiscordTogether
 
 class discordyt(commands.Cog):
 
