@@ -83,6 +83,7 @@ class PremiumSupport(commands.Cog):
                 ),
                 reason="Premium support plugin.",
             )
+            await thread.channel.edit(sync_permissions=True)
 
     @checks.has_permissions(PermissionLevel.ADMIN)
     @commands.group(invoke_without_command=True, aliases=["pc"])
