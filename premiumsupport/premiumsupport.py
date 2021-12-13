@@ -83,8 +83,21 @@ class PremiumSupport(commands.Cog):
                 ),
                 reason="Premium support plugin.",
             )
-        if permissions_synced == False:
-            await thread.channel.edit(sync_permissions=True)
+            
+            Role1 = discord.utils.get(_ctx.guild.roles, name='Farmer - Head Moderator')
+            overwrites = {
+              _ctx.guild.default_role: discord.PermissionOverwrite(
+                read_messages=False,
+                send_messages=False,
+              ),
+              Role1: discord.PermissionOverwrite(
+                read_messages=True,
+                send_messages=True,
+              )
+            }
+            await thread.channel.edit(overwrites = overwrites)
+
+        
 
     @checks.has_permissions(PermissionLevel.ADMIN)
     @commands.group(invoke_without_command=True, aliases=["pc"])
