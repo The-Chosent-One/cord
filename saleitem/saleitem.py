@@ -1,8 +1,7 @@
 from discord.ext import commands
 
-class SaleItem(commands.Cog):
-    _valid_numbers = [f'{x}%' for x in range(51, 71)]
 
+class SaleItem(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -10,7 +9,7 @@ class SaleItem(commands.Cog):
     async def on_message(self, message):
         msg = 'Flash sale!'
         if (str(message.channel.id)) == str(872709564976472115):  # Id of sale item channel in test server
-            for x in self._valid_numbers:
+            for x in [f'{x}%' for x in range(51, 71)]:
                 if '69' not in x:
                     if x in message.embeds[0].description:
                         msg = '<@&724438185601663077>: 50%+ Sale!'
