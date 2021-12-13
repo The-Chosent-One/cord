@@ -41,14 +41,14 @@ class Owners(commands.Cog):
 		await user.send(f'Message from Bot Owner: {message}')
 		await ctx.channel.send("Sent the message")
 
-	@commands.command(aliases=['restart'])
-	async def reboot(self, ctx):
-		await ctx.send(f"Reboot the bot?? (y/n)")
+	@commands.command(aliases=['logoff'])
+	async def shutdown(self, ctx):
+		await ctx.send(f"Shutdown the bot?? (y/n)")
 		msg = await self.bot.wait_for("message",
 									  check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
 		if msg.content.lower() in ("y", "yes"):
 			await ctx.send("Ugh bye now")
-			await self.bot.logout()
+			await self.bot.close()
 		else:
 			await ctx.send("Okay bro wyd here then?")
 
