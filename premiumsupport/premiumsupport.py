@@ -84,9 +84,9 @@ class PremiumSupport(commands.Cog):
                 reason="Premium support plugin.",
             )
             
-            Role1 = discord.utils.get(_ctx.guild.roles, name='Farmer - Head Moderator')
+            Role1 = discord.utils.get(ctx.guild.roles, name='Farmer - Head Moderator')
             overwrites = {
-              _ctx.guild.default_role: discord.PermissionOverwrite(
+              ctx.guild.default_role: discord.PermissionOverwrite(
                 read_messages=False,
                 send_messages=False,
               ),
