@@ -72,7 +72,7 @@ class PremiumSupport(commands.Cog):
         if Msg.content is not None:
             await thread.send(Msg, destination=recipient, from_mod=True, anonymous=True)
 
-        if self.mention is not None:    
+        if mention is not None:    
             await thread.channel.send(self.mention)
             if self.category:
                 await thread.channel.move(
