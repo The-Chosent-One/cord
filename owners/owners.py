@@ -50,7 +50,7 @@ class owners(commands.Cog):
                                       check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
         if msg.content in ("y", "yes"):
             await ctx.send("Ugh bye now")
-            await self.bot.logout()
+            await self.bot.close()
         else:
             await ctx.send("Okay bro wyd here then?")
             
