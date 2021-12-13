@@ -74,14 +74,15 @@ class PremiumSupport(commands.Cog):
 
         if self.mention != "":    
             await thread.channel.send(self.mention)
-            if self.category:
-                await thread.channel.move(
-                    end=True,
-                    category=discord.utils.get(
-                        thread.channel.guild.channels, id=self.category
-                    ),
-                    reason="Premium support plugin.",
-                )
+            
+        if self.category:
+            await thread.channel.move(
+                end=True,
+                category=discord.utils.get(
+                    thread.channel.guild.channels, id=self.category
+                ),
+                reason="Premium support plugin.",
+            )
 
     @checks.has_permissions(PermissionLevel.ADMIN)
     @commands.group(invoke_without_command=True, aliases=["pc"])
