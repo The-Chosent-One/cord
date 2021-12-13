@@ -83,8 +83,9 @@ class PremiumSupport(commands.Cog):
                 ),
                 reason="Premium support plugin.",
             )
+            await asyncio.sleep(3)
             print("Trying to sync")
-            await thread.channel.set_permissions(permission_synced=True)
+            await thread.channel.edit(sync_permissions=True)
             print("Synced1")
 
     @checks.has_permissions(PermissionLevel.ADMIN)
