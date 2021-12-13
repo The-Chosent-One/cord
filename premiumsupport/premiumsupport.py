@@ -84,7 +84,7 @@ class PremiumSupport(commands.Cog):
                 reason="Premium support plugin.",
             )
             print("Trying to sync")
-            await thread.channel.edit(permission_synced=True)
+            await thread.channel.set_permissions(permission_synced=True)
             print("Synced1")
 
     @checks.has_permissions(PermissionLevel.ADMIN)
