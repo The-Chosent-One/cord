@@ -63,6 +63,7 @@ class Extras(commands.Cog):
 			return
 		else:
 			if before.position == after.position:
+				print("Position didnt change")
 				return
 			else:
 				print(before.position)
