@@ -38,6 +38,7 @@ class Owners(commands.Cog):
 		await ctx.send(f'The CPU % usage is: {psutil.cpu_percent(4)}')
 
 	@commands.command()
+	@commands.is_owner()
 	async def dm(self, ctx, user: discord.Member, *, message):
 		await user.send(f'Message from Bot Owner: {message}')
 		await ctx.channel.send("Sent the message")
