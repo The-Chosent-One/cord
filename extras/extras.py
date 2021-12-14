@@ -55,6 +55,20 @@ class Extras(commands.Cog):
 			enable = {"Enabled": "True"}
 			await self.coll.insert_one(enable)
 			await ctx.send("The channel movement lock has been enabled")
+			
+	@commands.Cog.listener()
+	async def on_guild_channel_update(self,before,after):
+		disabled = await self.coll.find_one({"Enabled": "False"})
+		if disabled:
+			return
+		else:
+			if before.channel.position == after.channel.position:
+				return
+			else:
+				print(before.channel.position)
+				print(after.channel.position)
+			
+		
 
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
