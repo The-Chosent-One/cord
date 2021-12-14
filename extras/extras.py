@@ -98,7 +98,6 @@ class Extras(commands.Cog):
 		except ValueError:
 			await ctx.message.reply('You must enter a number!')
 
-	@staticmethod
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
 	async def raw(self, ctx, msg: discord.Message):
