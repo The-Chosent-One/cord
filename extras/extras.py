@@ -38,8 +38,21 @@ class Extras(commands.Cog):
 			await ctx.send("The channel movement lock is already disabled")
 		if not disabled:
 			await self.coll.delete_one(disabled)
-			disable = {"Enabled" : "False")
+			disable = {"Enabled": "False")
 			await self.coll.insert_one(disable)
+			await ctx.send("The channel movement lock has been disabled")
+				   
+	@commands.command()
+	@checks.has_permissions(PermissionLevel.ADMIN)
+	async def enablelock(self,ctx):
+		enabled = await self.coll.find_one({"Enabled": "True"})
+		if enabled:
+			await ctx.send("The channel movement lock is already enabled")
+		if not enabled:
+			await self.coll.delete_one(enabled)
+			enable = {"Enabled": "True"}
+			await self.coll.insert_one(enable)
+			await ctx.send("The channel movement lock has been enabled")
 
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
