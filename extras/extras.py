@@ -67,6 +67,7 @@ class Extras(commands.Cog):
 			else:
 				print(before.position)
 				print(after.position)
+				await after.edit(position = before.position, reason = "Channel moved when lock was enabled")
 			
 		
 
