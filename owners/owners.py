@@ -32,6 +32,7 @@ class Owners(commands.Cog):
 				await after.remove_roles(role)
 
 	@commands.command()
+	@commands.is_owner()
 	async def usage(self, ctx):
 		await ctx.send(f'RAM memory % used: {psutil.virtual_memory()[2]}')
 		await ctx.send(f'The CPU % usage is: {psutil.cpu_percent(4)}')
@@ -42,6 +43,7 @@ class Owners(commands.Cog):
 		await ctx.channel.send("Sent the message")
 
 	@commands.command(aliases=['logoff'])
+	@commands.is_owner()
 	async def shutdown(self, ctx):
 		await ctx.send(f"Shutdown the bot?? (y/n)")
 		msg = await self.bot.wait_for("message", check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
@@ -50,10 +52,6 @@ class Owners(commands.Cog):
 			await self.bot.close()
 		else:
 			await ctx.send("Okay bro wyd here then?")
-
-	async def cog_check(self, ctx):
-		return ctx.channel.permission_for(ctx.author).manage_guild
-
 
 def setup(bot):
 	bot.add_cog(Owners(bot))
