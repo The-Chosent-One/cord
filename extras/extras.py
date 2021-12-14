@@ -38,7 +38,7 @@ class Extras(commands.Cog):
 			await ctx.send("The channel movement lock is already disabled")
 		if not disabled:
 			await self.coll.delete_one(disabled)
-			disable = {"Enabled": "False")
+			disable = {"Enabled": "False"}
 			await self.coll.insert_one(disable)
 			await ctx.send("The channel movement lock has been disabled")
 				   
