@@ -62,11 +62,11 @@ class Extras(commands.Cog):
 		if disabled:
 			return
 		else:
-			if before.channel.position == after.channel.position:
+			if before.position == after.position:
 				return
 			else:
-				print(before.channel.position)
-				print(after.channel.position)
+				print(before.position)
+				print(after.position)
 			
 		
 
