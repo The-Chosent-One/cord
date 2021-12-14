@@ -24,12 +24,13 @@ class BFping(commands.Cog):
             return
         
      for x in data:
-         for key, value in x.items():
-             if message.content.starswith("??" + key):
-                 msg = message.content[len("??" + key) + 1:] or '^_^'
+        
+        for key, value in x.items():
+            if message.content.starswith("??" + key):
+                msg = message.content[len("??" + key) + 1:] or '^_^'
 
-                 await message.channel.purge(limit=1)
-                 await message.channel.send(f'<@&{value}> {msg}')
+                await message.channel.purge(limit=1)
+                await message.channel.send(f'<@&{value}> {msg}')
 
     @commands.command()
     @commands.has_any_role(682698693472026749, 663162896158556212, 658770981816500234, 855877108055015465)
