@@ -12,6 +12,7 @@ time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'w
 class Extras(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
+		self.coll = bot.plugin_db.get_partition(self)
 
 	@staticmethod
 	def _error(msg):
@@ -28,6 +29,17 @@ class Extras(commands.Cog):
 	async def deleteall(self, message: discord.Message):
 		if message.channel.id == 882758609921015839:
 			await message.delete()
+			
+	@commands.command()
+	@checks.has_permissions(PermissionLevel.ADMIN)
+	async def disablelock(self,ctx):
+		disabled =  await self.coll.find_one({"Enabled": "False"})
+		if disabled:
+			await ctx.send("The channel movement lock is already disabled")
+		if not disabled:
+			await self.coll.delete_one(disabled)
+			disable = {"Enabled" : "False")
+			await self.coll.insert_one(disable)
 
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
