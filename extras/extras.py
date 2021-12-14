@@ -102,9 +102,7 @@ class Extras(commands.Cog):
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
 	async def raw(ctx, msg: discord.Message = None):
-		await ctx.send(
-			f"``` {msg.embeds[0].description} ```" if msg and msg.embeds else "Please provide a valid message link / "
-																			  "embedded message")
+		await ctx.send(f"``` {msg.embeds[0].description} ```" if msg and msg.embeds else "Please provide a valid message link / ID")
 
 	@commands.command()
 	@checks.thread_only()
