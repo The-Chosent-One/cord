@@ -60,6 +60,7 @@ class Extras(commands.Cog):
 	async def on_guild_channel_update(self,before,after):
 		disabled = await self.coll.find_one({"Enabled": "False"})
 		if disabled:
+			print ("Disabled")
 			return
 		else:
 			if before.position == after.position:
