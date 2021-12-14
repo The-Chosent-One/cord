@@ -4,13 +4,13 @@ from discord_together import DiscordTogether
 
 class DiscordYT(commands.Cog):
 
-	def __init__(self, client):
-		self.client = client
+	def __init__(self, bot):
+		self.bot = bot
 		self.discord_TC: DiscordTogether = None
-		
+
 	@commands.Cog.listener()
 	async def on_ready(self):
-		self.discord_TC = await DiscordTogether(self.client)
+		self.discord_TC = await DiscordTogether(self.bot)
 
 	@commands.command()
 	@commands.is_owner()
