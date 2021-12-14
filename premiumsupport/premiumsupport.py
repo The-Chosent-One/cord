@@ -79,13 +79,44 @@ class PremiumSupport(commands.Cog):
                     ),
                     reason="Premium support plugin.",
                 )
+                
+        if Msg.content is not None:
+            await thread.send(Msg, destination=recipient, from_mod=True, anonymous=True)
+
+        if self.mention != "":    
+            await thread.channel.send(self.mention)
+            
+        if self.category:
+            await thread.channel.move(
+                end=True,
+                category=discord.utils.get(
+                    thread.channel.guild.channels, id=self.category
+                ),
+                reason="Premium support plugin.",
+            )
+            guild = self.bot.get_guild(645753561329696785)
+            Role1 = discord.utils.get(guild.roles, name='Farmer - Head Moderator')
+            overwrites = {
+              guild.default_role: discord.PermissionOverwrite(
+                read_messages=False,
+                send_messages=False,
+              ),
+              Role1: discord.PermissionOverwrite(
+                read_messages=True,
+                send_messages=True,
+              )
+            }
+            await thread.channel.edit(overwrites = overwrites)
+
 
     @checks.has_permissions(PermissionLevel.ADMIN)
     @commands.group(invoke_without_command=True, aliases=["pc"])
     async def premiumconfig(self, ctx):
         """
         Config your premium support!
+        
         To view your settings, use [p]premiumconfig.
+
         To edit, use [p]premiumconfig <thingyouwanttoedit> <newvalue>
         """
         embed = discord.Embed(colour=self.bot.main_color)
