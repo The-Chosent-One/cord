@@ -45,8 +45,8 @@ class Owners(commands.Cog):
 
 	@commands.command(aliases=['logoff'])
 	@commands.is_owner()
-	async def shutdown(self, ctx):
-		await ctx.send(f"Shutdown the bot?? (y/n)")
+	async def reboot(self, ctx):
+		await ctx.send(f"Reboot the bot (Might crash)?? (y/n)")
 		msg = await self.bot.wait_for("message", check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
 		if msg.content.lower() in ("y", "yes"):
 			await ctx.send("Ugh bye now")
