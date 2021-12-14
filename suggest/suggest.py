@@ -32,7 +32,7 @@ class Suggest(commands.Cog):
         self.banlist = mod["banlist"]
 
     @commands.command()
-    @commands.cooldown(1, 20, commands.BucketType.member)
+    @commands.cooldown(1, 60, commands.BucketType.member)
     @commands.has_role('Level 10')
     async def suggest(self, ctx, *, suggestion):
         """
@@ -51,6 +51,7 @@ class Suggest(commands.Cog):
                     embed.set_author(name="Error.")
                     embed.set_footer(text="Task failed successfully.")
                     await ctx.send(embed=embed)
+					
                 else:
                     suggestion_channel = self.bot.get_channel(
                         int(config["suggestion-channel"]["channel"])
@@ -117,6 +118,7 @@ class Suggest(commands.Cog):
                 description="Try something else lol.",
             )
             return await ctx.send(embed=embed)
+		
         s_message = None
         for channel in ctx.guild.channels:
             if not isinstance(channel, discord.TextChannel):
@@ -136,6 +138,7 @@ class Suggest(commands.Cog):
         fields = len(embed.fields)
         embed.color = discord.Colour.green()
         embed.set_author(name=f"Suggestion #{suggestion_id}: Approved")
+		
         if fields > 2:
             embed.remove_field(2)
         if fields == 4:
@@ -145,6 +148,7 @@ class Suggest(commands.Cog):
                 value=message if message else "No response given.",
                 inline=False,
             )
+			
         else:
             embed.add_field(
                 name="Response",
@@ -156,6 +160,7 @@ class Suggest(commands.Cog):
             votes += f"{reaction.emoji}: {reaction.count - 1 if reaction.me else reaction.count}\n"
         if votes:
             embed.add_field(name="Votes", value=votes, inline=False)
+			
         await s_message.edit(embed=embed)
         await s_message.clear_reactions()
 
@@ -179,6 +184,7 @@ class Suggest(commands.Cog):
                 description="Try something else lol.",
             )
             return await ctx.send(embed=embed)
+		
         s_message = None
         for channel in ctx.guild.channels:
             if not isinstance(channel, discord.TextChannel):

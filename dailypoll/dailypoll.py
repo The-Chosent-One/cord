@@ -10,12 +10,13 @@ from datetime import datetime
 
 this_file_directory = Path(__file__).parent.resolve()
 other_file = this_file_directory / "daily_poll.txt"
+
 with open(other_file, "r+") as file:
 	daily_poll = [daily_poll.strip().lower() for daily_poll in file.readlines()]
 	daily_poll1 = other_file.read_text()
 
 
-class dailypoll(commands.Cog):
+class DailypPoll(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.poll.start()
@@ -33,10 +34,11 @@ class dailypoll(commands.Cog):
 				message = await channel.send(new_string)
 				await message.add_reaction("<:farm_1number1:889952572629200946>")
 				await message.add_reaction("<:farm_1number2:889952572620820480>")
-				daily_poll1.close()
+				file.close()
+				
 			else:
 				print("Cant find it wot?")
 
 
 def setup(bot):
-	bot.add_cog(dailypoll(bot))
+	bot.add_cog(DailypPoll(bot))
