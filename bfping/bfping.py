@@ -8,7 +8,6 @@ data = [
     {'heist': 684987530118299678},
     {'ev': 684552219344764934},
     {'friendly': 750908803704160268},
-    {'sale': 724438185601663077},
     {'lot': 732949595633614938},
     {'maf': 713898461606707273}
 ]
@@ -23,7 +22,7 @@ class BFping(commands.Cog):
         if message.author.bot or not message.channel.permissions_for(message.author).manage_messages:
             return
 
-        for x in data:
+        for x.lower() in data:
             for key , value in x.items():
                 if message.content.startswith("??"+ key):
                     msg = message.content[len("??"+ key)+ 1:] or '^_^'
