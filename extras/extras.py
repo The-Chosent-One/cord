@@ -33,33 +33,44 @@ class Extras(commands.Cog):
 			await message.delete()
 			
 	@commands.command()
-	@checks.has_permissions(PermissionLevel.ADMIN)
-	async def enablelock(self, ctx):
+	@checks.has_permissions(PermissionLevel.Admin)
+	async def enable(self, ctx):
 		if not self.enabled:
 			self.enabled = True
 			return await ctx.send('Enabled :thumbsup:')
+
 		return await ctx.send('It is already enabled smh stop wasting my time')
-	
+
 	@commands.command()
-	@checks.has_permissions(PermissionLevel.ADMIN)
-	async def disablelock(self, ctx):
+	@checks.has_permissions(PermissionLevel.Admin)
+	async def disable(self, ctx):
 		if self.enabled:
 			self.enabled = False
 			return await ctx.send('Disabled :thumbsup:')
+
 		return await ctx.send('It is already disabled smh stop wasting my time')
-	
+
 	@commands.Cog.listener()
 	async def on_guild_channel_update(self, before, after):
 		if before.position == after.position or before.id in self.ignored:  # Don't trigger unnecessarily
 			return
+		
+		dt = datetime.datetime.now()
+		
+		while self.last_time == dt.strftime("Date: %d/%m/%Y | Time: %H:%M:%S"):
+			await asyncio.sleep(3)
+		
 		self.ignored.append(before.id)
+
 		await after.edit(position=before.position, reason="Channel moved when lock was enabled")
-		print("Fixed the channel bitch")
 		await asyncio.sleep(15)
+
 		_ignored = []
+
 		for x in self.ignored:
 			if x != before.id:
 				_ignored.append(x)
+
 		self.ignored = _ignored
 
 	@commands.command()
