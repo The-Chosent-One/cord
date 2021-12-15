@@ -23,12 +23,13 @@ class BFping(commands.Cog):
         if message.author.bot or not message.channel.permissions_for(message.author).manage_messages:
             return
 
-         for x in data:
-                for key, value in x.items():
-                    if message.content.starswith("??" + key):
-                        msg = message.content[len("??" + key) + 1:] or '^_^'
-                        await message.channel.purge(limit=1)
-                        await message.channel.send(f'<@&{value}> {msg}')                     
+        for x in data:
+            for key , value in x.items():
+                if message.content.startswith("??"+ key):
+                    msg = message.content[len("??"+ key)+ 1:] or '^_^'
+                    await message.channel.purge(limit=1)
+                    await message.channel.send(f'<@&{value}> {msg}')
+
 
     @commands.command()
     @commands.has_any_role(682698693472026749, 663162896158556212, 658770981816500234, 855877108055015465)
@@ -41,7 +42,7 @@ class BFping(commands.Cog):
             await asyncio.sleep(300)
             await member.remove_roles(role)
 
-            await ctx.send(f"The <@&787572079573598220> role has has been removed from {ctx.author.mention}", 
+            await ctx.send(f"The <@&787572079573598220> role has has been removed from {ctx.author.mention}",
                            allowed_mentions=discord.AllowedMentions.none())
 
             # allowed_mentions=discord.AllowedMentions.none() will not pass mentions into the message
@@ -56,8 +57,6 @@ class BFping(commands.Cog):
             """
             await member.remove_roles(role)
             await ctx.send("The role has been removed from them!")
-            
-     
 
 
 def setup(bot):
