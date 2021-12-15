@@ -4,7 +4,8 @@ from core import checks
 from core.models import PermissionLevel
 import re
 import asyncio
-from datetime import datetime, timedelta
+import datetime
+from datetime import timedelta
 
 time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'}
 
@@ -65,6 +66,29 @@ class Extras(commands.Cog):
 		self.ignored.append(before.id)
 
 		await after.edit(position=before.position, reason="Channel moved when lock was enabled")
+		await asyncio.sleep(15)
+
+		_ignored = []
+
+		for x in self.ignored:
+			if x != before.id:
+				_ignored.append(x)
+
+		self.ignored = _ignored
+
+	@commands.Cog.listener('on_guild_channel_update')
+	async def on_guild_channel_update_category(self, before, after):
+		if before.category.id == after.category.id or before.id in self.ignored:  # Don't trigger unnecessarily
+			return
+		
+		dt = datetime.datetime.now()
+		
+		while self.last_time == dt.strftime("Date: %d/%m/%Y | Time: %H:%M:%S"):
+			await asyncio.sleep(3)
+		
+		self.ignored.append(before.id)
+
+		await after.edit(category=before.category, reason="Channel moved when lock was enabled")
 		await asyncio.sleep(15)
 
 		_ignored = []
