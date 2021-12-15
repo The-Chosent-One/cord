@@ -13,6 +13,8 @@ class Extras(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 		self.coll = bot.plugin_db.get_partition(self)
+		self.enabled = True
+		self.ignored = []
 
 	@staticmethod
 	def _error(msg):
@@ -31,51 +33,33 @@ class Extras(commands.Cog):
 			await message.delete()
 			
 	@commands.command()
-	@checks.has_permissions(PermissionLevel.ADMIN)
-	async def disablelock(self,ctx):
-		disabled =  await self.coll.find_one({"Enabled": "False"})
-		if disabled:
-			await ctx.send("The channel movement lock is already disabled")
-		if not disabled:
-			notdisabled = await self.coll.find_one({"Enabled": "True"})
-			await self.coll.delete_one(notdisabled)
-			disable = {"Enabled": "False"}
-			await self.coll.insert_one(disable)
-			await ctx.send("The channel movement lock has been disabled")
-				   
+	@checks.has_permissions(PermissionLevel.Admin)
+	async def enable(self, ctx):
+	if not self.enabled:
+	    self.enabled = True
+	    return await ctx.send('Enabled :thumbsup:')
+	return await ctx.send('It is already enabled smh stop wasting my time')
+
 	@commands.command()
-	@checks.has_permissions(PermissionLevel.ADMIN)
-	async def enablelock(self,ctx):
-		enabled = await self.coll.find_one({"Enabled": "True"})
-		if enabled:
-			await ctx.send("The channel movement lock is already enabled")
-		if not enabled:
-			notenabled = await self.coll.find_one({"Enabled": "False"})
-			await self.coll.delete_one(notenabled)
-			enable = {"Enabled": "True"}
-			await self.coll.insert_one(enable)
-			await ctx.send("The channel movement lock has been enabled")
-			
+	@checks.has_permissions(PermissionLevel.Admin)
+	async def disable(self, ctx):
+	if self.enabled:
+	    self.enabled = False
+	    return await ctx.send('Disabled :thumbsup:')
+	return await ctx.send('It is already disabled smh stop wasting my time')
+
 	@commands.Cog.listener()
-	async def on_guild_channel_update(self,before,after):
-		disabled = await self.coll.find_one({"Enabled": "False"})
-		check = await self.coll.find_one({"Moved": before.id})
-		if check:
-			await self.coll.delete_one(check)
-			print("Deleted because yes")
-			return
-		else:
-			if disabled:
-				print ("Disabled")
-				return
-			else:
-				if before.position == after.position:
-					print("Position didnt change")
-					return
-				else:
-					print(before.position,after.position)
-					await self.coll.insert_one({"Moved": after.id})
-					await after.edit(position = before.position, reason = "Channel moved when lock was enabled")
+	async def on_guild_channel_update(self, before, after):
+	if before.position != after.position or before.id in self.ignored:  # Don't trigger unnecessarily
+	    return
+	self.ignored.append(before.id)
+	await after.edit(position=before.position, reason="Channel moved when lock was enabled")
+	await asyncio.sleep(15)
+	_ignored = []
+	for x in self.ignored:
+	    if x != before.id:
+		_ignored.append(x)
+	self.ignored = _ignored
 			
 		
 
