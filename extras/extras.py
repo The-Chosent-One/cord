@@ -14,8 +14,10 @@ class Extras(commands.Cog):
 		self.bot = bot
 		self.coll = bot.plugin_db.get_partition(self)
 		self.enabled = True
+		dt = datetime.datetime.now()		
+		self.last_time = dt.strftime("Date: %d/%m/%Y | Time: %H:%M:%S")
 		self.ignored = []
-
+		
 	@staticmethod
 	def _error(msg):
 		return discord.Embed(description="** " + msg + " **", color=discord.Color.red())
