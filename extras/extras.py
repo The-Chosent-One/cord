@@ -59,7 +59,7 @@ class Extras(commands.Cog):
 	@commands.Cog.listener()
 	async def on_guild_channel_update(self,before,after):
 		disabled = await self.coll.find_one({"Enabled": "False"})
-		check = await self.coll.find({"Moved": before.id})
+		check = await self.coll.find_one({"Moved": before.id})
 		if check:
 			await self.coll.delete_one(check)
 			print("Deleted because yes")
