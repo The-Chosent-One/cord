@@ -50,10 +50,11 @@ class Extras(commands.Cog):
 	
 	@commands.Cog.listener()
 	async def on_guild_channel_update(self, before, after):
-		if before.position != after.position or before.id in self.ignored:  # Don't trigger unnecessarily
+		if before.position == after.position or before.id in self.ignored:  # Don't trigger unnecessarily
 			return
 		self.ignored.append(before.id)
 		await after.edit(position=before.position, reason="Channel moved when lock was enabled")
+		print("Fixed the channel bitch")
 		await asyncio.sleep(15)
 		_ignored = []
 		for x in self.ignored:
