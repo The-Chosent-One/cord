@@ -33,16 +33,16 @@ class Extras(commands.Cog):
 			await message.delete()
 			
 	@commands.command()
-	@checks.has_permissions(PermissionLevel.Admin)
-	async def enable(self, ctx):
+	@checks.has_permissions(PermissionLevel.ADMIN)
+	async def enablelock(self, ctx):
 		if not self.enabled:
 			self.enabled = True
 			return await ctx.send('Enabled :thumbsup:')
 		return await ctx.send('It is already enabled smh stop wasting my time')
 	
 	@commands.command()
-	@checks.has_permissions(PermissionLevel.Admin)
-	async def disable(self, ctx):
+	@checks.has_permissions(PermissionLevel.ADMIN)
+	async def disablelock(self, ctx):
 		if self.enabled:
 			self.enabled = False
 			return await ctx.send('Disabled :thumbsup:')
