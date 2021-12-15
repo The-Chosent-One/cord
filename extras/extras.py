@@ -59,17 +59,24 @@ class Extras(commands.Cog):
 	@commands.Cog.listener()
 	async def on_guild_channel_update(self,before,after):
 		disabled = await self.coll.find_one({"Enabled": "False"})
-		if disabled:
-			print ("Disabled")
+		check = await self.coll.find({"Moved": before.id})
+		if check:
+			await self.coll.delete_one(check)
+			print("Deleted because yes")
 			return
 		else:
-			if before.position == after.position:
-				print("Position didnt change")
+			if disabled:
+				print ("Disabled")
 				return
 			else:
-				print(before.position)
-				print(after.position)
-				await after.edit(position = before.position, reason = "Channel moved when lock was enabled")
+				if before.position == after.position:
+					print("Position didnt change")
+					return
+				else:
+					print(before.position)
+					print(after.position)
+					await self.coll.insert_one({"Moved": after.id)
+					await after.edit(position = before.position, reason = "Channel moved when lock was enabled")
 			
 		
 
