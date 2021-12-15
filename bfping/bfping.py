@@ -22,7 +22,7 @@ class BFping(commands.Cog):
         if message.author.bot or not message.channel.permissions_for(message.author).manage_messages:
             return
 
-        for x.lower() in data:
+        for x in data:
             for key , value in x.items():
                 if message.content.startswith("??"+ key):
                     msg = message.content[len("??"+ key)+ 1:] or '^_^'
