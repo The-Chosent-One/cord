@@ -75,7 +75,7 @@ class Extras(commands.Cog):
 				else:
 					print(before.position)
 					print(after.position)
-					await self.coll.insert_one({"Moved": after.id)
+					await self.coll.insert_one({"Moved": after.id})
 					await after.edit(position = before.position, reason = "Channel moved when lock was enabled")
 			
 		
