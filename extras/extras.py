@@ -49,12 +49,13 @@ class Extras(commands.Cog):
 					embed.set_footer(text="- The Farm")
 					await message.channel.send(embed=embed)
 		else:
-			for x in message.mentions:
-				if role in x.roles:
+			for member in message.mentions:
+				if role in member.roles:
 					if any(word in message.content.lower() for word in scammer):
-						embed=discord.Embed(title=f":warning: {x} is a scammer  :warning: ", description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution and/or use a middle man from <#756004818866405376> ", color=0xff0000)
+						s += f"{member} "
+						embed=discord.Embed(title=f":warning: {s} is a scammer  :warning: ", description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution and/or use a middle man from <#756004818866405376> ", color=0xff0000)
 						embed.set_footer(text="- The Farm")
-						await message.channel.send(embed=embed)	
+			await message.channel.send(embed=embed)	
 			
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
