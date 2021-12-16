@@ -1,8 +1,14 @@
 import asyncio
 import datetime
+import pathlib
+
+from pathlib import Path
 from core import checks
 from core.models import PermissionLevel
 from discord.ext import commands
+
+this_file_directory = Path(__file__).parent.resolve()
+other_file = this_file_directory / "logs.txt"
 
 first = True
 
@@ -31,7 +37,7 @@ def log(text):
 
 	file.close()
 
-class Cog(commands.Cog):
+class ChL(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.enabled = True
@@ -105,4 +111,4 @@ class Cog(commands.Cog):
 
 #setup bot
 def setup(bot):
-    bot.add_cog(Cog(bot))
+    bot.add_cog(ChL(bot))
