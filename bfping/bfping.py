@@ -25,7 +25,7 @@ class BFping(commands.Cog):
 
         for x in data:
             for key , value in x.items():
-                if key == eventsponsor:
+                if key == 'eventsponsor':
                     return
                 if message.content.startswith("??"+ key):
                     msg = message.content[len("??"+ key)+ 1:] or '^_^'
