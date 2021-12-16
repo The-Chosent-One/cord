@@ -25,8 +25,6 @@ class BFping(commands.Cog):
 
         for x in data:
             for key , value in x.items():
-                if key == 'eventsponsor':
-                    return
                 if message.content.startswith("??"+ key):
                     msg = message.content[len("??"+ key)+ 1:] or '^_^'
                     await message.channel.purge(limit=1)
@@ -35,7 +33,7 @@ class BFping(commands.Cog):
 
     @commands.command()
     @commands.has_any_role(682698693472026749, 663162896158556212, 658770981816500234, 855877108055015465)
-    async def eventsponsor(self, ctx, member: discord.Member):
+    async def esponsor(self, ctx, member: discord.Member):
         role = ctx.guild.get_role(787572079573598220)
 
         if role not in member.roles:
