@@ -39,7 +39,6 @@ class Extras(commands.Cog):
 			
 	@commands.Cog.listener('on_message')
 	async def scammeralert(self, message: discord.Message):
-		s = ""
 		role = message.guild.get_role(867366006635364363)
 		if message.author.bot:
 			return
@@ -51,8 +50,7 @@ class Extras(commands.Cog):
 					await message.channel.send(embed=embed)
 		else:
 			members = [m for m in message.mentions if role in m.roles]
-			print (members)
-
+			print (m)	
 			
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
