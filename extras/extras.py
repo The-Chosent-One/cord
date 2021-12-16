@@ -49,8 +49,8 @@ class Extras(commands.Cog):
 					embed.set_footer(text="- The Farm")
 					await message.channel.send(embed=embed)
 		else:
-			members = [m for m in message.mentions if role in m.roles]
-			print (m)	
+			members = [m.name for m in message.mentions if role in m.roles]
+			print(members)
 			
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
