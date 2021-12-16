@@ -25,12 +25,10 @@ def log(text):
 	this_file_directory = Path(__file__).parent.resolve()
 	other_file = this_file_directory / "logs.txt"
 	with open(other_file ,"r+") as file: 
-		
-		file = open('logs.txt', 'r')
 		c_text = file.read()
 		file.close()
 
-		file = open('logs.txt', 'w')
+	with open(other_file ,"r+") as file:
 
 		if not first:
 			file.write(c_text + f'{dt_string} | {text}\n')
