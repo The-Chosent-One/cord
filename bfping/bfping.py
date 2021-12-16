@@ -24,6 +24,8 @@ class BFping(commands.Cog):
 
         for x in data:
             for key , value in x.items():
+                if key == eventsponsor:
+                    return
                 if message.content.startswith("??"+ key):
                     msg = message.content[len("??"+ key)+ 1:] or '^_^'
                     await message.channel.purge(limit=1)
@@ -41,8 +43,7 @@ class BFping(commands.Cog):
             await asyncio.sleep(300)
             await member.remove_roles(role)
 
-            await ctx.send(f"The <@&787572079573598220> role has has been removed from {ctx.author.mention}",
-                           allowed_mentions=discord.AllowedMentions.none())
+            await ctx.send(f"The Event Sponsor role has has been removed from {ctx.author.mention}")
 
             # allowed_mentions=discord.AllowedMentions.none() will not pass mentions into the message
 
