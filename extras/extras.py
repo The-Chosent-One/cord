@@ -44,10 +44,10 @@ class Extras(commands.Cog):
 			return
 		if role in message.author.roles:
 			if any(word in message.content.lower() for word in scammer):
-				if x in message.mentions:	
+				if message.mentions:	
 					embed=discord.Embed(title=":warning: This user is a scammer  :warning: ", description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution and/or use a middle man from <#756004818866405376> ", color=0xff0000)
 					embed.set_footer(text="- The Farm")
-					await message.send(f"{x}",embed=embed)
+					await message.send(embed=embed)
 			
 			
 	@commands.command()
