@@ -3,7 +3,7 @@ import datetime
 from core import checks
 from core.models import PermissionLevel
 from discord.ext import commands
-from logger import log
+import logger
 
 
 class Cog(commands.Cog):
