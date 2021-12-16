@@ -1,6 +1,7 @@
 import asyncio
 import datetime
-
+from core import checks
+from core.models import PermissionLevel
 from discord.ext import commands
 from logger import log
 
@@ -12,7 +13,8 @@ class Cog(commands.Cog):
         self.ignored = []
 
     @commands.command()
-    async def enable(self, ctx):
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def enablelock(self, ctx):
         if not self.enabled:
             self.enabled = True
             return await ctx.send('Enabled :thumbsup:')
@@ -20,7 +22,8 @@ class Cog(commands.Cog):
         return await ctx.send('It is already enabled smh stop wasting my time')
 
     @commands.command()
-    async def disable(self, ctx):
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def disablelock(self, ctx):
         if self.enabled:
             self.enabled = False
             return await ctx.send('Disabled :thumbsup:')
