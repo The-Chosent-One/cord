@@ -4,7 +4,7 @@ from core import checks
 from core.models import PermissionLevel
 from discord.ext import commands
 from . import logger
-
+from logger import log
 
 class Cog(commands.Cog):
     def __init__(self, bot):
