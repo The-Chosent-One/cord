@@ -9,15 +9,15 @@ from datetime import timedelta
 
 time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'}
 
+this_file_directory = Path(__file__).parent.resolve()
+other_file = this_file_directory / "scammer.txt"
+
+with open(other_file, "r+") as file:
+	scammer = [scammer.strip().lower() for scammer in file.readlines()]
 
 class Extras(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
-		self.coll = bot.plugin_db.get_partition(self)
-		self.enabled = True
-		dt = datetime.datetime.now()		
-		self.last_time = dt.strftime("Date: %d/%m/%Y | Time: %H:%M:%S")
-		self.ignored = []
 		
 	@staticmethod
 	def _error(msg):
@@ -35,70 +35,19 @@ class Extras(commands.Cog):
 		if message.channel.id == 882758609921015839:
 			await message.delete()
 			
-	@commands.command()
-	@checks.has_permissions(PermissionLevel.ADMIN)
-	async def enablelock(self, ctx):
-		if not self.enabled:
-			self.enabled = True
-			return await ctx.send('Enabled :thumbsup:')
-
-		return await ctx.send('It is already enabled smh stop wasting my time')
-
-	@commands.command()
-	@checks.has_permissions(PermissionLevel.ADMIN)
-	async def disablelock(self, ctx):
-		if self.enabled:
-			self.enabled = False
-			return await ctx.send('Disabled :thumbsup:')
-
-		return await ctx.send('It is already disabled smh stop wasting my time')
-
-	@commands.Cog.listener()
-	async def on_guild_channel_update(self, before, after):
-		if before.position == after.position or before.id in self.ignored:  # Don't trigger unnecessarily
+	@commands.Cog.listener('on_message')
+	async def scammeralert(self, message: discord.Message):
+		role = message.guild.get_role(867366006635364363)
+		if message.author.bot:
 			return
-		
-		dt = datetime.datetime.now()
-		
-		while self.last_time == dt.strftime("Date: %d/%m/%Y | Time: %H:%M:%S"):
-			await asyncio.sleep(3)
-		
-		self.ignored.append(before.id)
-
-		await after.edit(position=before.position, reason="Channel moved when lock was enabled")
-		await asyncio.sleep(15)
-
-		_ignored = []
-
-		for x in self.ignored:
-			if x != before.id:
-				_ignored.append(x)
-
-		self.ignored = _ignored
-
-	@commands.Cog.listener('on_guild_channel_update')
-	async def on_guild_channel_update_category(self, before, after):
-		if before.category.id == after.category.id or before.id in self.ignored:  # Don't trigger unnecessarily
-			return
-		
-		dt = datetime.datetime.now()
-		
-		while self.last_time == dt.strftime("Date: %d/%m/%Y | Time: %H:%M:%S"):
-			await asyncio.sleep(3)
-		
-		self.ignored.append(before.id)
-
-		await after.edit(category=before.category, reason="Channel moved when lock was enabled")
-		await asyncio.sleep(15)
-
-		_ignored = []
-
-		for x in self.ignored:
-			if x != before.id:
-				_ignored.append(x)
-
-		self.ignored = _ignored
-
+		if role in message.author.roles:
+			if any(word in message.content.lower() for word in scammer):
+				if x in message.mentions:	
+					embed=discord.Embed(title=":warning: This user is a scammer  :warning: ", description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution and/or use a middle man from <#756004818866405376> ", color=0xff0000)
+					embed.set_footer(text="- The Farm")
+					await message.send(f"{x}",embed=embed)
+			
+			
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
 	async def inrole(self, ctx, role1: discord.Role, role2: discord.Role):
