@@ -7,15 +7,13 @@ from core import checks
 from core.models import PermissionLevel
 from discord.ext import commands
 
-this_file_directory = Path(__file__).parent.resolve()
-other_file = this_file_directory / "logs.txt"
-
 first = True
 
-
 def clear_logs():
-	file = open('logs.txt', 'w')
-	file.write('# logs.txt file\n# Used to log errors & dev messages\n\nCurrent Date     | Current Time   | Log message\n\n')
+	this_file_directory = Path(__file__).parent.resolve()
+	other_file = this_file_directory / "logs.txt"
+	with open(other_file ,"r+") as file: 
+		file.write('# logs.txt file\n# Used to log errors & dev messages\n\nCurrent Date     | Current Time   | Log message\n\n')
 
 
 def log(text):
@@ -23,19 +21,24 @@ def log(text):
 
 	dt = datetime.datetime.now()
 	dt_string = dt.strftime("Date: %d/%m/%Y | Time: %H:%M:%S")
-	file = open('logs.txt', 'r')
-	c_text = file.read()
-	file.close()
+	
+	this_file_directory = Path(__file__).parent.resolve()
+	other_file = this_file_directory / "logs.txt"
+	with open(other_file ,"r+") as file: 
+		
+		file = open('logs.txt', 'r')
+		c_text = file.read()
+		file.close()
 
-	file = open('logs.txt', 'w')
+		file = open('logs.txt', 'w')
 
-	if not first:
-		file.write(c_text + f'{dt_string} | {text}\n')
-	else:
-		clear_logs()
-		first = False
+		if not first:
+			file.write(c_text + f'{dt_string} | {text}\n')
+		else:
+			clear_logs()
+			first = False
 
-	file.close()
+		file.close()
 
 class ChL(commands.Cog):
     def __init__(self, bot):
