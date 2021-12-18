@@ -102,7 +102,7 @@ class Snipe(commands.Cog):
 
 	@commands.Cog.listener()
 	async def on_message_edit(self, before, after):
-		if any(word in before.content.lower() for word in nosnipe) or before.author.bot or before.content == after.content:
+		if any(word in before.content.lower() for word in nosnipe) or any(word in after.content.lower() for word in nosnipe) or before.author.bot or before.content == after.content:
 			return
 
 		em = discord.Embed(description=f'**Before: ** {before.content}\n**After: ** {after.content}')
