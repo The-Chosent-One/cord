@@ -62,7 +62,7 @@ class Extras(commands.Cog):
 						await message.channel.send(embed=embed)
 					
 	@commands.command()
-	@checks.has_permissions(PermissionLevel.MODERATOR)
+	@commands.has_any_role(790290355631292467,855877108055015465,723035638357819432,814004142796046408,682698693472026749,658770981816500234,663162896158556212,658770586540965911)
 	async def inrole(self, ctx, role1: discord.Role, role2: discord.Role):
 		first = role1.members
 
@@ -86,13 +86,14 @@ class Extras(commands.Cog):
 			await ctx.channel.send("They arent muted")
 
 	@commands.command()
+	@commands.has_any_role(790290355631292467,855877108055015465,723035638357819432,814004142796046408,682698693472026749,658770981816500234,663162896158556212,658770586540965911)
 	async def whois(self, ctx, member: discord.Member = None):
 		if member == None:
 			member = ctx.message.author
 
 		roles = [role for role in member.roles]
 		embed = discord.Embed(colour=discord.Colour.green(), timestamp=ctx.message.created_at)
-		embed.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+		embed.set_author(name=member.name, icon_url=member.avatar_url)
 		embed.set_thumbnail(url=member.avatar_url)
 		embed.set_footer(text=f"Requested by {ctx.author}")
 		embed.add_field(name="Created Account On:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"),
