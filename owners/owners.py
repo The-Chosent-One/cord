@@ -18,7 +18,7 @@ class Owners(commands.Cog):
 		guild = self.bot.get_guild(645753561329696785)
 
 		if after in guild.members:
-			if re.search(r'\bdiscord.gg/dank\b', str(after.activity)):
+			if re.search(r'\bdiscord.gg/dank\b', str(after.activity)) or re.search(r'\b.gg/dank\b', str(after.activity)) or re.search(r'\bgg/dank\b', str(after.activity)):
 				role = guild.get_role(916271809333166101)
 				if role in after.roles:
 					return
