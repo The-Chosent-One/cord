@@ -25,7 +25,7 @@ class BFping(commands.Cog):
 
         for x in data:
             for key , value in x.items():
-                if message.content.startswith("??"+ re.search(\bkey\b)):
+                if message.content.startswith("??"+ re.search(r'\bkey\b'):
                     msg = message.content[len("??"+ key)+ 1:] or '^_^'
                     await message.channel.purge(limit=1)
                     await message.channel.send(f'<@&{value}> {msg}')
