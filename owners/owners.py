@@ -14,17 +14,12 @@ class Owners(commands.Cog):
 				
 	@commands.Cog.listener()
 	async def on_thread_ready(self,thread,creator,category,initial_message):
-		print("on thread ready") 
 		msg = thread.genesis_message
-		print("the msg thingy")
-		if initial_message:
+		print ("till here")
+		if initial_message.content == "hi":
 			print("the initial msg thingy")
-			message = DummyMessage(copy.copy(initial_message))
-			print("just before if msg")
-			if message == "hi":
-				print("after if msg")
-				await thread.channel.send("someone said only hi :angry:")
-				print("i sent it?")
+			await thread.channel.send("someone said only hi :angry:")
+			print("i sent it?")
 
 	@commands.command()
 	@commands.is_owner()
