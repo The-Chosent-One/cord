@@ -9,23 +9,23 @@ class selfbutton(commands.Cog):
 		self.bot = bot
 		if not hasattr(self.bot, "inter_client"):
 			slash_commands.InteractionClient(self.bot)
-
 	@commands.command()
 	async def sos(self,ctx, mem1: discord.Member, mem2: discord.Member):
-		row_of_buttons = ActionRow(
+		SOS = ActionRow(
 			Button(style=ButtonStyle.green,label="Split",custom_id="split"),
 			Button(style=ButtonStyle.red,label="Steal",custom_id = "steal"),
 		)
-
-		embed = discord.Embed(Title="Split or Steal?",description="oollaa",color=Color.green())
-		msg = await ctx.send(embed=embed, components=[row_of_buttons])
-
+		
+		embed = discord.Embed(Title="Split or Steal?",description="",color=Color.green())
+		msg = await ctx.send(embed=embed, components=[SOS])
 		def check(inter):
 			return inter.author == ctx.author
+		try:
+			inter = await msg.wait_for_button_click(check=check)
 
 		except asyncio.exceptions.TimeoutError:
 			tembed= discord.Embed(Title="Timeout!",description="You didnt choose a color in time!",color=0x4ed0a4)
-			await msg.edit(embed=tembed,components=[row_of_buttons],disabled = True)
+			await msg.edit(embed=tembed,components=[SOS],disabled = True)
 			await asyncio.sleep(3)
 			await msg.delete
 			return
