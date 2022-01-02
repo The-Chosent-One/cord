@@ -12,6 +12,7 @@ class Owners(commands.Cog):
 				
 	@commands.Cog.listener()
 	async def on_thread_ready(self,thread,creator,category,initial_message):
+		msg = thread.genesis_message
 		if initial_message == "hi":
 			await thread.channel.send("someone said only hi :angry:")
 
