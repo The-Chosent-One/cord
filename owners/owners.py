@@ -1,5 +1,6 @@
 import re
 import discord
+import copy
 from discord.ext import commands
 from core import checks
 from core.models import PermissionLevel,DummyMessage
