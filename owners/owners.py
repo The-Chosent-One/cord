@@ -15,8 +15,12 @@ class Owners(commands.Cog):
 		print("on thread ready") 
 		msg = thread.genesis_message
 		print("the msg thingy")
-		if initial_message == "hi":
+		if initial_message:
 			print("the initial msg thingy")
+			message = DummyMessage(copy.copy(initial_message)
+			print("just before if msg")
+			if message == "hi":
+			print("after if mssgs")
 			await thread.channel.send("someone said only hi :angry:")
 			print("i sent it?")
 
