@@ -30,7 +30,7 @@ class selfbutton(commands.Cog):
 			await msg.delete
 			return
 		if inter.component.custom_id == "split":
-				await inter.respond(f"So you split?",ephemeral = True)
+			await inter.respond(f"So you split?",ephemeral = True)
 		else:
 			await inter.respond(f"So you steal?", ephemeral = True)
 		
