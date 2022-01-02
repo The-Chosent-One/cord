@@ -20,7 +20,7 @@ class Owners(commands.Cog):
 			message = DummyMessage(copy.copy(initial_message)
 			print("just before if msg")
 			if message == "hi":
-				print("after if mssgs")
+				print("after if msg")
 				await thread.channel.send("someone said only hi :angry:")
 				print("i sent it?")
 
