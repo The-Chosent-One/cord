@@ -17,8 +17,7 @@ class Owners(commands.Cog):
 		msg = thread.genesis_message
 		if initial_message.content in ("hi","hii","hey","heyy","hello",):
 			msg = "Hey! Instead of just saying hi, please state your issue."
-			msg.content = msg
-			await thread.channel.send(msg)
+			await thread.reply(msg)
 
 	@commands.command()
 	@commands.is_owner()
