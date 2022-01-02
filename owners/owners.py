@@ -1,9 +1,8 @@
 import re
 import discord
-import copy
 from discord.ext import commands
 from core import checks
-from core.models import PermissionLevel,DummyMessage
+from core.models import PermissionLevel
 
 import psutil
 
@@ -15,11 +14,8 @@ class Owners(commands.Cog):
 	@commands.Cog.listener()
 	async def on_thread_ready(self,thread,creator,category,initial_message):
 		msg = thread.genesis_message
-		print ("till here")
-		if initial_message.content == "hi":
-			print("the initial msg thingy")
-			await thread.channel.send("someone said only hi :angry:")
-			print("i sent it?")
+		if initial_message.content in ("hi","hii","hey","heyy","hello",):
+			await thread.send(f"Hey! Instead of just saying {initial_message.content}, please state your issue.")
 
 	@commands.command()
 	@commands.is_owner()
