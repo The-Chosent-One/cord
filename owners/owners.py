@@ -3,6 +3,7 @@ import discord
 from discord.ext import commands
 from core import checks
 from core.models import PermissionLevel
+from core.thread import Thread
 
 import psutil
 
@@ -15,7 +16,7 @@ class Owners(commands.Cog):
 	async def on_thread_ready(self,thread,creator,category,initial_message):
 		msg = thread.genesis_message
 		if initial_message.content in ("hi","hii","hey","heyy","hello",):
-			await thread.reply(f"Hey! Instead of just saying {initial_message.content}, please state your issue.",anonymous=anonymous)
+			await thread.reply(f"Hey! Instead of just saying {initial_message.content}, please state your issue.")
 
 	@commands.command()
 	@commands.is_owner()
