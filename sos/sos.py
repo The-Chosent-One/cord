@@ -30,7 +30,7 @@ class selfbutton(commands.Cog):
 
 		except asyncio.exceptions.TimeoutError:
 			tembed= discord.Embed(Title="Timeout!",description="You didnt choose a color in time!",color=0x4ed0a4)
-			await msg.edit(embed=tembed,components=[row_of_buttons1,row_of_buttons2,row_of_buttons3,row_of_buttons4,row_of_buttons5],disabled = True)
+			await msg.edit(embed=tembed,components=[SOS],disabled = True)
 			await asyncio.sleep(3)
 			await msg.delete
 			return
