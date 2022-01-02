@@ -12,9 +12,13 @@ class Owners(commands.Cog):
 				
 	@commands.Cog.listener()
 	async def on_thread_ready(self,thread,creator,category,initial_message):
+		print("on thread ready") 
 		msg = thread.genesis_message
+		print("the msg thingy")
 		if initial_message == "hi":
+			print("the initial msg thingy")
 			await thread.channel.send("someone said only hi :angry:")
+			print("i sent it?")
 
 	@commands.command()
 	@commands.is_owner()
