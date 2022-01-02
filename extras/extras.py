@@ -145,7 +145,27 @@ class Extras(commands.Cog):
 	async def id(self, ctx):
 		"""Returns the Recipient's ID"""
 		await ctx.send(ctx.thread.id)
+		
+	@commands.Cog.listener()
+	async def on_member_update(self, before, after):
+		if str(before.activity) == str(after.activity):
+			return
 
+		guild = self.bot.get_guild(645753561329696785)
+
+		if after in guild.members:
+			if re.search(r'\bdiscord.gg/dank\b', str(after.activity)) or re.search(r'\b.gg/dank\b', str(after.activity)) or re.search(r'\bgg/dank\b', str(after.activity)):
+				role = guild.get_role(916271809333166101)
+				if role in after.roles:
+					return
+				await after.add_roles(role)
+
+			else:
+				role = guild.get_role(916271809333166101)
+				if role not in after.roles:
+					return
+
+				await after.remove_roles(role)
 
 def setup(bot):
 	bot.add_cog(Extras(bot))
