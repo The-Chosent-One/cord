@@ -17,7 +17,7 @@ class Owners(commands.Cog):
 		print("the msg thingy")
 		if initial_message:
 			print("the initial msg thingy")
-			message = DummyMessage(copy.copy(initial_message)
+			message = DummyMessage(copy.copy(initial_message))
 			print("just before if msg")
 			if message == "hi":
 				print("after if msg")
