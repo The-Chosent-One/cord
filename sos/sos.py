@@ -16,7 +16,7 @@ class selfbutton(commands.Cog):
 			Button(style=ButtonStyle.red,label="Steal",custom_id = "steal"),
 		)
 		
-		embed = discord.Embed(Title="Split or Steal?",description="",color=Color.green())
+		embed = discord.Embed(Title="Split or Steal?",description="ollla la oolaalala",color=Color.green())
 		msg = await ctx.send(embed=embed, components=[SOS])
 		def check(inter):
 			return inter.author == ctx.author
