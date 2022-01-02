@@ -16,7 +16,7 @@ class Owners(commands.Cog):
 	async def on_thread_ready(self,thread,creator,category,initial_message):
 		msg = thread.genesis_message
 		if initial_message.content in ("hi","hii","hey","heyy","hello",):
-			await thread.reply(f"Hey! Instead of just saying {initial_message.content}, please state your issue.")
+			await thread.reply("Hey! Instead of just saying hi, please state your issue.")
 
 	@commands.command()
 	@commands.is_owner()
