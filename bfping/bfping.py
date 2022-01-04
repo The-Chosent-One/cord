@@ -63,9 +63,10 @@ class bfping(commands.Cog):
             await ctx.send("The role has been added")
             await asyncio.sleep(300)
             await member.remove_roles(role)
-            await ctx.send("The Event Sponsor role has has been removed from {member.mention}")
+            await ctx.send(f"The Event Sponsor role has has been removed from {member.mention}")
         else:
-            await ctx.send("The user already has the role!")
-
+            await member.remove_roles(role)
+            await ctx.send("The role has been removed from them!")
+            
 def setup(bot):
     bot.add_cog(bfping(bot))
