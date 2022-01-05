@@ -167,23 +167,6 @@ class Extras(commands.Cog):
 
 				await after.remove_roles(role)
 				
-	@commands.command()
-	@checks.has_permissions(PermissionLevel.MODERATOR)
-	async def stats(self,ctx, member: discord.Member = None):
-		if member == None:
-			member = ctx.message.author
-			
-		embed=discord.Embed(title=f"{ctx.bot.user.name} Statistics", color=0xa01df7,timestamp=ctx.message.created_at)
-		embed.set_author(name=member.name, icon_url=member.avatar_url)
-		embed.add_field(name="Logs closed (last 7 days)", value="{value}", inline=True)
-		embed.add_field(name="Logs closed (last 30 days)", value="{value}", inline=True)
-		embed.add_field(name="Logs closed (all time)", value="{value}", inline=True)
-		embed.add_field(name="​", value="​", inline=False)
-		embed.add_field(name="Logs replied (last 7 days)", value="{value}", inline=True)
-		embed.add_field(name="Logs replied (last 30 days)", value="{value}", inline=True)
-		embed.add_field(name="Logs replied (all time)", value="{value}", inline=True)
-		embed.set_footer(text=f"ID {member.id}")
-		await ctx.send(embed=embed)
 
 def setup(bot):
 	bot.add_cog(Extras(bot))
