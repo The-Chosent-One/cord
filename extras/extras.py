@@ -169,7 +169,7 @@ class Extras(commands.Cog):
 				
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
-	async def stats(self,ctx, member: discord.Member):
+	async def stats(self,ctx, member: discord.Member = None):
 		if member == None:
 			member = ctx.message.author
 			
