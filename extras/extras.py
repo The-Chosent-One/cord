@@ -168,7 +168,7 @@ class Extras(commands.Cog):
 				await after.remove_roles(role)
 				
 	@commands.command()
-	@checks.has_permission(PermissionLevel.MODERATOR)
+	@checks.has_permissions(PermissionLevel.MODERATOR)
 	async def stats(self,ctx, member: discord.Member):
 		if member == None:
 			member = ctx.message.author
