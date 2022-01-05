@@ -175,7 +175,6 @@ class Extras(commands.Cog):
 			
 		embed=discord.Embed(title=f"{ctx.bot.user.name} Statistics", color=0xa01df7,timestamp=ctx.message.created_at)
 		embed.set_author(name=member.name, icon_url=member.avatar_url)
-		embed.add_field(name="​", value="​", inline=False)
 		embed.add_field(name="Logs closed (last 7 days)", value="{value}", inline=True)
 		embed.add_field(name="Logs closed (last 30 days)", value="{value}", inline=True)
 		embed.add_field(name="Logs closed (all time)", value="{value}", inline=True)
