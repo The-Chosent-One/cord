@@ -62,8 +62,9 @@ class bfping(commands.Cog):
             await member.add_roles(role)
             await ctx.send("The role has been added")
             await asyncio.sleep(300)
-            await member.remove_roles(role)
-            await ctx.send(f"The Event Sponsor role has has been removed from {member.mention}")
+            if role in member.roles:
+                await member.remove_roles(role)
+                await ctx.send(f"The Event Sponsor role has has been removed from {member.mention}")
         else:
             await member.remove_roles(role)
             await ctx.send("The role has been removed from them!")
