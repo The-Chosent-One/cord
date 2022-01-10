@@ -362,12 +362,20 @@ class decancer(commands.Cog):
     async def freezenick(self, ctx, user: discord.Member, *, Nickname: str):
         if user.top_role.position >= ctx.author.top_role.position:
             return await ctx.send('<a:youtried:881184651232817232> lol')
-
+        
+        frozencheck = await self.coll.find_one({"user_id": str(user.id)})
+        if frozencheck:
+            await ctx.send("The user's nickname is not frozen")
+           
         frozenadd = {"user_id": str(user.id), "Nickname": Nickname}
-        await self.coll.insert_one(frozenadd)
         await ctx.send(f'Trying to freeze {user.nick} to {Nickname}')
-        await user.edit(nick=Nickname)
-        await ctx.send('Done!')
+        try:
+            await self.coll.insert_one(frozenadd)
+            await user.edit(nick=Nickname)
+            await ctx.send('Done!')
+        except:
+            await ctx.send("Something went wrong, please ping Cordila")
+        
 
     @commands.check_any(
         commands.has_permissions(manage_nicknames=True)
@@ -376,7 +384,7 @@ class decancer(commands.Cog):
     async def unfreezenick(self, ctx, user: discord.Member):
         frozencheck = await self.coll.find_one({"user_id": str(user.id)})
         if frozencheck is None:
-            return
+            await ctx.send("The user's nickname is not frozen")
         await self.coll.delete_one(frozencheck)
         await ctx.send(f'I unfreezed <@{user.id}>')
 
