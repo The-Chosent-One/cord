@@ -39,10 +39,10 @@ class Extras(commands.Cog):
 			
 	@commands.Cog.listener('on_message')
 	async def scammeralert(self, message: discord.Message):
+		if not message.guild:
+			return
 		role = message.guild.get_role(824549659988197386)
 		if message.author.bot:
-			return
-		if not message.guild:
 			return
 		if role in message.author.roles:
 			if any(word in message.content.lower() for word in scammer):
