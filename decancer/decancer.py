@@ -365,7 +365,7 @@ class decancer(commands.Cog):
         
         frozencheck = await self.coll.find_one({"user_id": str(user.id)})
         if frozencheck:
-            return await ctx.send("The user's nickname is not frozen")
+            return await ctx.send("The user's nickname is alr frozen")
            
         frozenadd = {"user_id": str(user.id), "Nickname": Nickname}
         await ctx.send(f'Trying to freeze {user.nick} to {Nickname}')
