@@ -384,7 +384,7 @@ class decancer(commands.Cog):
     async def unfreezenick(self, ctx, user: discord.Member):
         frozencheck = await self.coll.find_one({"user_id": str(user.id)})
         if frozencheck is None:
-            await ctx.send("The user's nickname is not frozen")
+            return await ctx.send("The user's nickname is not frozen")
         await self.coll.delete_one(frozencheck)
         await ctx.send(f'I unfreezed <@{user.id}>')
 
