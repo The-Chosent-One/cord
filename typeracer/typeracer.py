@@ -1,5 +1,7 @@
 import asyncio
 import textwrap
+import pathlib
+from pathlib import Path
 from difflib import SequenceMatcher
 from functools import partial
 from io import BytesIO
@@ -11,6 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 from discord.ext import commands
 
 
+this_file_directory = Path(__file__).parent.resolve()
 
 class TypeRacer(commands.Cog):
     """
@@ -46,7 +49,7 @@ class TypeRacer(commands.Cog):
     def font(self) -> ImageFont:
         if self._font is None:
             self._font = ImageFont.truetype(
-                f"{bundled_data_path(self)}/Menlo.ttf", self.FONT_SIZE, encoding="unic"
+                f"{this_file_directory(self)}/Menlo.ttf", self.FONT_SIZE, encoding="unic"
             )
         return self._font
 
