@@ -20,9 +20,7 @@ class TypeRacer(commands.Cog):
 
     FONT_SIZE = 30
 
-    __version__ = "1.0.4"
-
-    def __init__(self, bot: Red) -> None:
+    def __init__(self, bot) -> None:
         self.bot = bot
         self.session = aiohttp.ClientSession()
         self._font = None
