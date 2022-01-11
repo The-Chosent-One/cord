@@ -57,7 +57,7 @@ class TypeRacer(commands.Cog):
     def font(self) -> ImageFont:
         if self._font is None:
             self._font = ImageFont.truetype(
-                f"{bundled_data_path(self)}/Menlo.ttf"", self.FONT_SIZE, encoding="unic"
+                f"{bundled_data_path(self)}/Menlo.ttf", self.FONT_SIZE, encoding="unic"
             )
         return self._font
 
