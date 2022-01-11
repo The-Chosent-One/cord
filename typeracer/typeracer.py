@@ -14,6 +14,11 @@ from discord.ext import commands
 
 
 this_file_directory = Path(__file__).parent.resolve()
+other_file = this_file_directory / "Menlo.ttf"
+
+with open(other_file, "r+") as file:
+	Menlo = [Menlo.strip().lower() for Menlo in file.readlines()]
+	Menlo1 = other_file.read_text()
 
 class TypeRacer(commands.Cog):
     """
@@ -49,7 +54,7 @@ class TypeRacer(commands.Cog):
     def font(self) -> ImageFont:
         if self._font is None:
             self._font = ImageFont.truetype(
-                f"{this_file_directory(self)}/Menlo.ttf", self.FONT_SIZE, encoding="unic"
+                f"Menlo1", self.FONT_SIZE, encoding="unic"
             )
         return self._font
 
