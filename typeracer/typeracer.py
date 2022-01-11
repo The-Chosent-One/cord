@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 from discord.ext import commands
 
 
-bundled_path = Path(inspect.getfile(cog_instance.__class__)).parent / "data"
+bundled_path = Path(__file__).parent.resolve() / "data"
 
 class TypeRacer(commands.Cog):
     """
