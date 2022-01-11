@@ -22,7 +22,7 @@ class TypeRacer(commands.Cog):
 
     FONT_SIZE = 30
 	
-    def bundled_data_path(cog_instance: commands.Cog) -> Path:
+    async def bundled_data_path(cog_instance: commands.Cog) -> Path:
 
         bundled_path = Path(inspect.getfile(cog_instance.__class__)).parent / "data"
 
