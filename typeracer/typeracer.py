@@ -1,4 +1,5 @@
 import asyncio
+import inspect
 import textwrap
 from pathlib import Path
 from difflib import SequenceMatcher
