@@ -8,6 +8,7 @@ from typing import Optional, Tuple
 import aiohttp
 import discord
 from PIL import Image, ImageDraw, ImageFont
+from discord.ext import commands
 
 
 
