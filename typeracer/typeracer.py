@@ -12,7 +12,7 @@ from PIL import Image, ImageDraw, ImageFont
 from discord.ext import commands
 
 
-
+bundled_path = Path(inspect.getfile(cog_instance.__class__)).parent / "data"
 
 class TypeRacer(commands.Cog):
     """
@@ -21,15 +21,6 @@ class TypeRacer(commands.Cog):
     """
 
     FONT_SIZE = 30
-	
-    async def bundled_data_path(cog_instance: commands.Cog) -> Path:
-
-        bundled_path = Path(inspect.getfile(cog_instance.__class__)).parent / "data"
-
-        if not bundled_path.is_dir():
-            raise FileNotFoundError("No such directory {}".format(bundled_path))
-
-        return bundled_path
 
     def __init__(self, bot) -> None:
         self.bot = bot
@@ -57,7 +48,7 @@ class TypeRacer(commands.Cog):
     def font(self) -> ImageFont:
         if self._font is None:
             self._font = ImageFont.truetype(
-                f"{bundled_data_path(self)}/Menlo.ttf", self.FONT_SIZE, encoding="unic"
+                f"{bundled_path}/Menlo.ttf", self.FONT_SIZE, encoding="unic"
             )
         return self._font
 
