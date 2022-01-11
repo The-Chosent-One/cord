@@ -1,6 +1,5 @@
 import asyncio
 import textwrap
-import pathlib
 from pathlib import Path
 from difflib import SequenceMatcher
 from functools import partial
