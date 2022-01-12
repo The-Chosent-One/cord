@@ -126,7 +126,7 @@ class TypeRacer(commands.Cog):
             if m.channel != ctx.channel or m.author.bot or not m.content:
                 return False  # if satisfied, skip accuracy check and return
             if member != None:
-                if m.author != member or m.author != ctx.author:
+                if m.author != member and m.author != ctx.author:
                     return False
             content = " ".join(m.content.split())  # remove duplicate spaces
             accuracy = SequenceMatcher(None, quote, content).ratio()
