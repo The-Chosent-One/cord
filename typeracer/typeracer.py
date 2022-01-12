@@ -91,18 +91,18 @@ class TypeRacer(commands.Cog):
     async def typerace(self, ctx, member: discord.Member = None):
         if member != None:
             await ctx.send(f"{member.mention}, {ctx.author.mention} challenges you to a battle of speed typing, do you accept? (yes/no)")
-	    try:
+        try:
                 msg = await self.bot.wait_for("message", timeout=60.0, check=lambda m: m.author == ctx.member and m.channel.id == ctx.channel.id)
                 if msg.content.lower() in ("y", "yes"):
                     await ctx.send("this thingy start")
                 else:
                     await ctx.send("Looks like someone is scared huh?")
-	    except asyncio.TimeoutError:
+        except asyncio.TimeoutError:
                 embed = discord.Embed(
                     color=discord.Color.blurple(),
                     description=f"Looks like {member} is not here, try again later.",
                 )
-                return await ctx.send(embed=embed, reference=ref)	
+                return await ctx.send(embed=embed, reference=ref)    
         try:
             quote, author = await self.get_quote()
         except KeyError:
@@ -153,4 +153,4 @@ class TypeRacer(commands.Cog):
         await ctx.send(embed=embed, reference=winner_ref)
         
 def setup(bot):
-	bot.add_cog(TypeRacer(bot))
+    bot.add_cog(TypeRacer(bot))
