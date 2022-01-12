@@ -125,6 +125,9 @@ class TypeRacer(commands.Cog):
         def check(m: discord.Message) -> bool:
             if m.channel != ctx.channel or m.author.bot or not m.content:
                 return False  # if satisfied, skip accuracy check and return
+            if member != None:
+                if m.author != member:
+                    return
             content = " ".join(m.content.split())  # remove duplicate spaces
             accuracy = SequenceMatcher(None, quote, content).ratio()
 
