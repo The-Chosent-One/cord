@@ -92,7 +92,7 @@ class TypeRacer(commands.Cog):
         if member != None:
             await ctx.send(f"{member.mention}, {ctx.author.mention} challenges you to a battle of speed typing, do you accept? (yes/no)")
         try:
-                msg = await self.bot.wait_for("message", timeout=60.0, check=lambda m: m.author == ctx.member and m.channel.id == ctx.channel.id)
+                msg = await self.bot.wait_for("message", timeout=60.0, check=lambda m: m.author == member and m.channel.id == ctx.channel.id)
                 if msg.content.lower() in ("y", "yes"):
                     await ctx.send("this thingy start")
                 else:
