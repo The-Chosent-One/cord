@@ -96,7 +96,7 @@ class TypeRacer(commands.Cog):
             try:
                 msg = await self.bot.wait_for("message", timeout=60.0, check=lambda m: m.author == member and m.channel.id == ctx.channel.id)
                 if msg.content.lower() in ("y", "yes"):
-                    await ctx.send("this thingy start")
+                    await ctx.send(f"{member.mention} vs {ctx.author.mention}")
                 else:
                     return await ctx.send("Looks like someone is scared huh?")
             except asyncio.TimeoutError:
