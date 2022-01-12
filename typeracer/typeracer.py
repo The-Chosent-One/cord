@@ -88,11 +88,21 @@ class TypeRacer(commands.Cog):
     @commands.command(aliases=["tr"])
     @commands.cooldown(1, 10, commands.BucketType.guild)
     @commands.max_concurrency(1, commands.BucketType.channel)
-    async def typerace(self, ctx: commands.Context) -> None:
-        """
-        Begin a typing race!
-        Credits to Cats3153.
-        """
+    async def typerace(self, ctx, member: discord.Member = None):
+        if member not None:
+            await ctx.send(f"{member.mention}, {ctx.author.mention} challenges you to a battle of speed typing, do you accept? (yes/no)")
+	    try:
+                msg = await self.bot.wait_for("message", timeout=60.0, check=lambda m: m.author == ctx.member and m.channel.id == ctx.channel.id)
+                if msg.content.lower() in ("y", "yes"):
+                    await ctx.send("this thingy start")
+                else:
+                    await ctx.send("Looks like someone is scared huh?")
+	    except asyncio.TimeoutError:
+                embed = discord.Embed(
+                    color=discord.Color.blurple(),
+                    description=f"Looks like {member} is not here, try again later.",
+                )
+                return await ctx.send(embed=embed, reference=ref)	
         try:
             quote, author = await self.get_quote()
         except KeyError:
