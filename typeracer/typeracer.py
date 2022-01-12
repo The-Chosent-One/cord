@@ -89,6 +89,8 @@ class TypeRacer(commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.guild)
     @commands.max_concurrency(1, commands.BucketType.channel)
     async def typerace(self, ctx, member: discord.Member = None):
+        if member == ctx.author:
+            return await ctx.send("Imagine trying to challenege youself lmao") 
         if member != None:
             await ctx.send(f"{member.mention}, {ctx.author.mention} challenges you to a battle of speed typing, do you accept? (yes/no)")
         try:
