@@ -93,13 +93,13 @@ class TypeRacer(commands.Cog):
             return await ctx.send("Imagine trying to challenege youself lmao") 
         if member != None:
             await ctx.send(f"{member.mention}, {ctx.author.mention} challenges you to a battle of speed typing, do you accept? (yes/no)")
-        try:
+            try:
                 msg = await self.bot.wait_for("message", timeout=60.0, check=lambda m: m.author == member and m.channel.id == ctx.channel.id)
                 if msg.content.lower() in ("y", "yes"):
                     await ctx.send("this thingy start")
                 else:
                     return await ctx.send("Looks like someone is scared huh?")
-        except asyncio.TimeoutError:
+            except asyncio.TimeoutError:
                 embed = discord.Embed(
                     color=discord.Color.blurple(),
                     description=f"Looks like {member} is not here, try again later.",
