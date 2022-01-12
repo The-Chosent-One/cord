@@ -96,13 +96,13 @@ class TypeRacer(commands.Cog):
                 if msg.content.lower() in ("y", "yes"):
                     await ctx.send("this thingy start")
                 else:
-                    await ctx.send("Looks like someone is scared huh?")
+                    return await ctx.send("Looks like someone is scared huh?")
         except asyncio.TimeoutError:
                 embed = discord.Embed(
                     color=discord.Color.blurple(),
                     description=f"Looks like {member} is not here, try again later.",
                 )
-                return await ctx.send(embed=embed, reference=ref)    
+                return await ctx.send(embed=embed)    
         try:
             quote, author = await self.get_quote()
         except KeyError:
