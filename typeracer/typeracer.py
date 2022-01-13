@@ -91,7 +91,7 @@ class TypeRacer(commands.Cog):
     @commands.group(invoke_without_command=True)
     async def typeracer(self, ctx):
         if ctx.invoked_subcommand is None:
-            if (658770981816500234,663162896158556212,658770586540965911) in ctx.author.roles:
+            if ctx.author.roles in (658770981816500234,663162896158556212,658770586540965911):
                 await ctx.send("You are probably looking for `??typeracer config` or maybe `??typerace for a challenge?")
             else:
                 await ctx.send("You are probably looking for `??typerace`")
