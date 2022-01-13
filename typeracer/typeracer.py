@@ -11,6 +11,8 @@ import aiohttp
 import discord
 from PIL import Image, ImageDraw, ImageFont
 from discord.ext import commands
+from core import checks
+from core.models import PermissionLevel
 
 
 bundled_path = Path(__file__).parent.resolve() / "data"
@@ -27,6 +29,7 @@ class TypeRacer(commands.Cog):
         self.bot = bot
         self.session = aiohttp.ClientSession()
         self._font = None
+        self.coll = bot.plugin_db.get_partition(self)
 
     def cog_unload(self) -> None:
         asyncio.create_task(self.session.close())
@@ -84,7 +87,16 @@ class TypeRacer(commands.Cog):
             raise commands.UserFeedbackCheckFailure(
                 "An error occurred while generating this image. Try again later."
             )
-
+            
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def typerace_whitelist(self,ctx, channel: discord.Channel = None):
+        if channel == None:
+            channel = ctx.channel
+        whitelist = {"channel" : channel.id}
+        await self.coll.insert_one(whiteliste)
+        await ctx.send(f" Whitelisted <#{channel.id}> for typeracer")
+        
     @commands.command(aliases=["tr"])
     @commands.cooldown(1, 10, commands.BucketType.guild)
     @commands.max_concurrency(1, commands.BucketType.channel)
