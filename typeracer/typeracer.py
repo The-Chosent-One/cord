@@ -108,6 +108,8 @@ class TypeRacer(commands.Cog):
         if channel == None:
             channel = ctx.channel
         whitelist = {"channel" : channel.id}
+        if whitelist:
+            return await ctx.send("This channel is already whitelisted")
         await self.coll.insert_one(whitelist)
         await ctx.send(f" Whitelisted <#{channel.id}> for typeracer")
     
@@ -117,6 +119,8 @@ class TypeRacer(commands.Cog):
         if channel == None:
             channel = ctx.channel
         unwhitelist = {"channel" : channel.id}
+        if not unwhitelist:
+            return await ctx.send("This channel is not whitelisted")
         await self.coll.delete_one(unwhitelist)
         await ctx.send(f" Unwhitelisted <#{channel.id}> for typeracer")
         
