@@ -9,6 +9,8 @@ class bfping(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def gaw(self, ctx, *, messages="^_^"):
+        if messages.raw_role_mentions or '@everyone' in messages.content or '@here' in messages.content:
+            await ctx.send("Pretty sure you dont want to do that man")
         if ctx.channel == 658779198688722944:
             await ctx.channel.purge(limit=1)
             await ctx.send(f'<@&672889430171713538> {messages}')
