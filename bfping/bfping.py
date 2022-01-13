@@ -9,50 +9,65 @@ class bfping(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def gaw(self, ctx, *, messages="^_^"):
-        await ctx.channel.purge(limit=1)
-        await ctx.send(f'<@&672889430171713538> {messages}')
+        if ctx.channel == 658779198688722944:
+            await ctx.channel.purge(limit=1)
+            await ctx.send(f'<@&672889430171713538> {messages}')
+        else:
+            await ctx.send('You can only use this command in <#658779198688722944>')
         
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def partner(self, ctx, *, messages="^_^"):
-        await ctx.channel.purge(limit=1)
-        await ctx.send(f'<@&793454145897758742> {messages}')
+        if ctx.channel == 688431055489073180:
+            await ctx.channel.purge(limit=1)
+            await ctx.send(f'<@&793454145897758742> {messages}')
+        else:
+            await ctx.send('You can only use this command in <#688431055489073180>')
         
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def heist(self, ctx, *, messages="^_^"):
-        await ctx.channel.purge(limit=1)
-        await ctx.send(f'<@&684987530118299678> {messages}')
+        if ctx.channel == 688581086078304260:
+            await ctx.channel.purge(limit=1)
+            await ctx.send(f'<@&684987530118299678> {messages}')
+        else:
+            await ctx.send('You can only use this command in <#688581086078304260>')
         
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def ev(self, ctx, *, messages="^_^"):
-        await ctx.channel.purge(limit=1)
-        await ctx.send(f'<@&684552219344764934> {messages}')   
+        if ctx.channel == 709088851234258944:
+            await ctx.channel.purge(limit=1)
+            await ctx.send(f'<@&684552219344764934> {messages}')
+        else:
+            await ctx.send('You can only use this command in <#709088851234258944>')
         
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def friendly(self, ctx, *, messages="^_^"):
-        await ctx.channel.purge(limit=1)
-        await ctx.send(f'<@&750908803704160268> {messages}')
-        
-    @commands.command()
-    @commands.has_permissions(manage_messages=True)
-    async def sale(self, ctx, *, messages="^_^"):
-        await ctx.channel.purge(limit=1)
-        await ctx.send(f'<@&724438185601663077> {messages}')
-        
+        if ctx.channel == 709088851234258944:
+            await ctx.channel.purge(limit=1)
+            await ctx.send(f'<@&750908803704160268> {messages}')
+        else:
+            await ctx.send('You can only use this command in <#709088851234258944>')
+               
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def lot(self, ctx, *, message="^_^"):
-        await ctx.channel.purge(limit=1)
-        await ctx.send(f' <@&732949595633614938> {message}')
+        if ctx.channel == 732604674108030987:
+            await ctx.channel.purge(limit=1)
+            await ctx.send(f' <@&732949595633614938> {message}')
+        else:
+            await ctx.send('You can only use this command in <#732604674108030987>')
         
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def maf(self, ctx, *, messages="^_^"):
-        await ctx.channel.purge(limit=1)
-        await ctx.send(f'<@&713898461606707273> {messages}')
+        if ctx.channel == 756566417456889965:
+            await ctx.channel.purge(limit=1)
+            await ctx.send(f'<@&713898461606707273> {messages}')
+        else:
+            await ctx.send('You can only use this command in <#756566417456889965>')
         
     @commands.command()
     @commands.has_any_role(682698693472026749, 663162896158556212, 658770981816500234, 855877108055015465)
