@@ -11,7 +11,7 @@ class bfping(commands.Cog):
     async def gaw(self, ctx, *, messages="^_^"):
         if ctx.message.raw_role_mentions or '@everyone' in ctx.message.content or '@here' in ctx.message.content:
             await ctx.author.remove_roles(855877108055015465,723035638357819432,790290355631292467)
-            await ctx.send("Pretty sure you dont want to do that man")
+            return await ctx.send("Pretty sure you dont want to do that man")
         if ctx.channel.id == 658779198688722944:
             await ctx.channel.purge(limit=1)
             await ctx.send(f'<@&672889430171713538> {messages}')
