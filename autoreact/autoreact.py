@@ -11,26 +11,26 @@ class Autoreact(commands.Cog):
 
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.ADMIN)
-	async def addar(self, ctx, user_id: str, emoji: discord.Emoji):
+	async def addar(self, ctx, member: discord.Member, emoji: discord.Emoji):
 		emoji1 = str(emoji)
-		ar = {"user_id": user_id, "reaction": emoji1}
+		ar = {"user_id": member.id, "reaction": emoji1}
 		await self.coll.insert_one(ar)
 		await ctx.send(f"Added reaction {emoji} for {user_id}")
 
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.ADMIN)
-	async def removear(self, ctx, user_id: str):
-		ar = await self.coll.find_one({"user_id": str(user_id)})
+	async def removear(self, ctx, member: discord.Member):
+		ar = await self.coll.find_one({"user_id": member.id)
 		reaction1 = ar["reaction"]
 		await self.coll.delete_one(ar)
-		await ctx.send(f"Deleted reaction {reaction1} for {user_id}")
+		await ctx.send(f"Deleted reaction {reaction1} for {member.id}")
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
 		if message.author.bot:
 			return
 		for x in message.mentions:
-			uid = await self.coll.find_one({"user_id": str(x.id)})  # getting the user ID if in db then getting reaction
+			uid = await self.coll.find_one({"user_id": x.id})  # getting the user ID if in db then getting reaction
 			if not uid:
 				return
 			reaction1 = uid["reaction"]
@@ -43,7 +43,7 @@ class Autoreact(commands.Cog):
 		fetchall = self.coll.find({})
 		async for x in fetchall:
 			convert = x['user_id']
-			converted = self.bot.get_user(int(convert))
+			converted = self.bot.get_user(convert)
 			s += f"{converted} (`{convert}`) : {x['reaction']} \n"
 
 		await ctx.send(s)
