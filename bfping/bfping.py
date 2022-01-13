@@ -10,7 +10,8 @@ class bfping(commands.Cog):
     @commands.has_permissions(manage_messages=True)
     async def gaw(self, ctx, *, messages="^_^"):
         if ctx.message.raw_role_mentions or '@everyone' in ctx.message.content or '@here' in ctx.message.content:
-            await ctx.author.remove_roles(855877108055015465,723035638357819432,790290355631292467)
+            gwm = ctx.guild.get_role(855877108055015465)
+            await ctx.author.remove_roles(gwm)
             return await ctx.send("Pretty sure you dont want to do that man")
         if ctx.channel.id == 658779198688722944:
             await ctx.channel.purge(limit=1)
@@ -21,6 +22,10 @@ class bfping(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def partner(self, ctx, *, messages="^_^"):
+        if ctx.message.raw_role_mentions or '@everyone' in ctx.message.content or '@here' in ctx.message.content:
+            partner = ctx.guild.get_role(790290355631292467)
+            await ctx.author.remove_roles(partner)
+            return await ctx.send("Pretty sure you dont want to do that man")
         if ctx.channel.id == 688431055489073180:
             await ctx.channel.purge(limit=1)
             await ctx.send(f'<@&793454145897758742> {messages}')
@@ -30,6 +35,10 @@ class bfping(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def heist(self, ctx, *, messages="^_^"):
+        if ctx.message.raw_role_mentions or '@everyone' in ctx.message.content or '@here' in ctx.message.content:
+            heist = ctx.guild.get_role(723035638357819432)
+            await ctx.author.remove_roles(heist)
+            return await ctx.send("Pretty sure you dont want to do that man")
         if ctx.channel.id == 688581086078304260:
             await ctx.channel.purge(limit=1)
             await ctx.send(f'<@&684987530118299678> {messages}')
