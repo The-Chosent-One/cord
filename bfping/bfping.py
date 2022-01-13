@@ -48,6 +48,10 @@ class bfping(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def ev(self, ctx, *, messages="^_^"):
+        if ctx.message.raw_role_mentions or '@everyone' in ctx.message.content or '@here' in ctx.message.content:
+            gwm = ctx.guild.get_role(855877108055015465)
+            await ctx.author.remove_roles(gwm)
+            return await ctx.send("Pretty sure you dont want to do that man")
         if ctx.channel.id == 709088851234258944:
             await ctx.channel.purge(limit=1)
             await ctx.send(f'<@&684552219344764934> {messages}')
@@ -57,6 +61,10 @@ class bfping(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def friendly(self, ctx, *, messages="^_^"):
+        if ctx.message.raw_role_mentions or '@everyone' in ctx.message.content or '@here' in ctx.message.content:
+            gwm = ctx.guild.get_role(855877108055015465)
+            await ctx.author.remove_roles(gwm)
+            return await ctx.send("Pretty sure you dont want to do that man")
         if ctx.channel.id == 709088851234258944:
             await ctx.channel.purge(limit=1)
             await ctx.send(f'<@&750908803704160268> {messages}')
@@ -66,6 +74,10 @@ class bfping(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def lot(self, ctx, *, message="^_^"):
+        if ctx.message.raw_role_mentions or '@everyone' in ctx.message.content or '@here' in ctx.message.content:
+            gwm = ctx.guild.get_role(855877108055015465)
+            await ctx.author.remove_roles(gwm)
+            return await ctx.send("Pretty sure you dont want to do that man")
         if ctx.channel.id == 732604674108030987:
             await ctx.channel.purge(limit=1)
             await ctx.send(f' <@&732949595633614938> {message}')
@@ -75,6 +87,10 @@ class bfping(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def maf(self, ctx, *, messages="^_^"):
+        if ctx.message.raw_role_mentions or '@everyone' in ctx.message.content or '@here' in ctx.message.content:
+            gwm = ctx.guild.get_role(855877108055015465)
+            await ctx.author.remove_roles(gwm)
+            return await ctx.send("Pretty sure you dont want to do that man")
         if ctx.channel.id == 756566417456889965:
             await ctx.channel.purge(limit=1)
             await ctx.send(f'<@&713898461606707273> {messages}')
