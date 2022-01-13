@@ -87,15 +87,52 @@ class TypeRacer(commands.Cog):
             raise commands.UserFeedbackCheckFailure(
                 "An error occurred while generating this image. Try again later."
             )
+    
+    @commands.group(invoke_without_command=True)
+    async def typeracer(self, ctx):
+        if ctx.invoked_subcommand is None:
+            if (658770981816500234,663162896158556212,658770586540965911) in ctx.author.roles:
+                await ctx.send("You are probably looking for `??typeracer config` or maybe `??typerace for a challenge?")
+            else:
+                await ctx.send("You are probably looking for `??typerace`")
+    
+    @typeracer.group()
+    async def config(self,ctx):
+        if ctx.invoked_subcommand is None:
+            embed=discord.Embed(title="Config options", description="Whitelist / Unwhitelist - Allow the command to be used in certain channels \n Whitelisted - Show the currently whitelisted channels", color=0x42f587)
+            await ctx.send(embed=embed) 
             
-    @commands.command()
+    @config.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def typeracewhitelist(self,ctx, channel: discord.TextChannel = None):
+    async def whitelist(self,ctx, channel: discord.TextChannel = None):
         if channel == None:
             channel = ctx.channel
         whitelist = {"channel" : channel.id}
         await self.coll.insert_one(whitelist)
         await ctx.send(f" Whitelisted <#{channel.id}> for typeracer")
+    
+    @config.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def unwhitelist(self,ctx, channel: discord.TextChannel = None):
+        if channel == None:
+            channel = ctx.channel
+        unwhitelist = {"channel" : channel.id}
+        await self.coll.delete_one(unwhitelist)
+        await ctx.send(f" Unwhitelisted <#{channel.id}> for typeracer")
+        
+    @config.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def whitelisted(self,ctx):
+		s = ""
+		fetchall = self.coll.find({})
+		async for x in fetchall:
+			whitelist = x['channel']
+			whitelisted = self.bot.get_channel(int(whitelist))
+			s += f"{whitelisted} \n"
+
+		embed=discord.Embed(title="Whitelisted channels", description=s, color=0x42f587)
+        await ctx.send(embed=embed)    
+
         
     @commands.command(aliases=["tr"])
     @commands.cooldown(1, 10, commands.BucketType.guild)
