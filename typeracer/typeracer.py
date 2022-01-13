@@ -123,14 +123,14 @@ class TypeRacer(commands.Cog):
     @config.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def whitelisted(self,ctx):
-		s = ""
-		fetchall = self.coll.find({})
-		async for x in fetchall:
-			whitelist = x['channel']
-			whitelisted = self.bot.get_channel(int(whitelist))
-			s += f"{whitelisted} \n"
+        s = ""
+        fetchall = self.coll.find({})
+        async for x in fetchall:
+            whitelist = x['channel']
+            whitelisted = self.bot.get_channel(int(whitelist))
+            s += f"{whitelisted} \n"
 
-		embed=discord.Embed(title="Whitelisted channels", description=s, color=0x42f587)
+        embed=discord.Embed(title="Whitelisted channels", description=s, color=0x42f587)
         await ctx.send(embed=embed)    
 
         
