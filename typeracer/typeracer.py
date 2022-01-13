@@ -94,7 +94,7 @@ class TypeRacer(commands.Cog):
         if channel == None:
             channel = ctx.channel
         whitelist = {"channel" : channel.id}
-        await self.coll.insert_one(whiteliste)
+        await self.coll.insert_one(whitelist)
         await ctx.send(f" Whitelisted <#{channel.id}> for typeracer")
         
     @commands.command(aliases=["tr"])
