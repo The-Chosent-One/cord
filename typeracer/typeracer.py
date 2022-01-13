@@ -131,7 +131,7 @@ class TypeRacer(commands.Cog):
             content = " ".join(m.content.split())  # remove duplicate spaces
             accuracy = SequenceMatcher(None, quote, content).ratio()
 
-            if accuracy >= 0.95:
+            if accuracy >= 0.98:
                 nonlocal acc
                 acc = accuracy * 100
                 return True
