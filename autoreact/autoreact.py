@@ -12,6 +12,9 @@ class Autoreact(commands.Cog):
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.ADMIN)
 	async def addar(self, ctx, member: discord.Member, emoji: discord.Emoji):
+		check = await self.coll.find_one({"user_id": member.id})
+		if check:
+			return await ctx.send("The autoreact already exists for this user")
 		emoji1 = str(emoji)
 		ar = {"user_id": member.id, "reaction": emoji1}
 		await self.coll.insert_one(ar)
@@ -21,6 +24,8 @@ class Autoreact(commands.Cog):
 	@checks.has_permissions(PermissionLevel.ADMIN)
 	async def removear(self, ctx, member: discord.Member):
 		ar = await self.coll.find_one({"user_id": member.id})
+		if not ar:
+			return await ctx.send("This user doesnt have an autoreact anyways whatcha up to?")
 		reaction1 = ar["reaction"]
 		await self.coll.delete_one(ar)
 		await ctx.send(f"Deleted reaction {reaction1} for {member.id}")
