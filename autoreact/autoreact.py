@@ -15,7 +15,7 @@ class Autoreact(commands.Cog):
 		emoji1 = str(emoji)
 		ar = {"user_id": member.id, "reaction": emoji1}
 		await self.coll.insert_one(ar)
-		await ctx.send(f"Added reaction {emoji} for {user_id}")
+		await ctx.send(f"Added reaction {emoji} for {member.id}")
 
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.ADMIN)
