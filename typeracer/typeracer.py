@@ -90,7 +90,7 @@ class TypeRacer(commands.Cog):
             
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def typerace_whitelist(self,ctx, channel: discord.channel = None):
+    async def typeracewhitelist(self,ctx, channel: discord.TextChannel = None):
         if channel == None:
             channel = ctx.channel
         whitelist = {"channel" : channel.id}
