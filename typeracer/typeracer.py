@@ -94,7 +94,8 @@ class TypeRacer(commands.Cog):
             role1 = ctx.guild.get_role(658770981816500234)
             role2 = ctx.guild.get_role(663162896158556212)
             role3 = ctx.guild.get_role(658770586540965911)
-            if any(role1, role2, role3) in ctx.author.roles:
+            role4 = (role1 , role2 , role3)
+            if any(role in ctx.author.roles for role in role4):
                 await ctx.send("You are probably looking for `??typeracer config` or maybe `??typerace for a challenge?")
             else:
                 await ctx.send("You are probably looking for `??typerace`")
