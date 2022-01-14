@@ -23,21 +23,34 @@ class LockAndSlow(commands.Cog):
 	@commands.command()
 	@commands.has_any_role(682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911,
 						   814004142796046408, 855877108055015465)
-	async def lock(self, ctx, channel: discord.TextChannel = None):
+	async def locktest(self, ctx, channel: discord.TextChannel = None):
 		if not channel:
 			channel = ctx.channel
-
-		if channel.overwrites_for(ctx.guild.default_role).send_messages is None or channel.overwrites_for(
-			ctx.guild.default_role).send_messages is True:
-			await channel.set_permissions(ctx.guild.default_role, send_messages=False)
-			await ctx.send(f"🔒 Locked `{channel}`")
-		else:
-			await ctx.send(f"🔒 Looks like `{channel}` is already locked")
+			
+		role1 = ctx.guild.get_role(658770981816500234)
+		role2 = ctx.guild.get_role(663162896158556212)
+		role3 = ctx.guild.get_role(658770586540965911)
+		role4 = (role1 , role2 , role3)
+		
+		if any(role in ctx.author.roles for role in role4):
+			if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(ctx.guild.default_role).send_messages == True:
+				await channel.set_permissions(ctx.guild.default_role, send_messages=False)
+				await ctx.send(f"🔒 Locked `{channel}`")
+			else:
+				await ctx.send(f"🔒 Looks like `{channel}` is already locked")
+				
+		elif ctx.author.top_role == 855877108055015465:			
+			allowed_channels = [795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500, 747184622386806824]
+			if ctx.channel.id in allowed_channels:
+				if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(ctx.guild.default_role).send_messages == True:
+					await channel.set_permissions(ctx.guild.default_role, send_messages=False)
+			else:
+				await ctx.send(f"🔒 Looks like `{channel}` is already locked")
 
 	@commands.command()
 	@commands.has_any_role(682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911,
 						   814004142796046408, 855877108055015465)
-	async def unlock(self, ctx, channel: discord.TextChannel = None):
+	async def unlocktest(self, ctx, channel: discord.TextChannel = None):
 		if not channel:
 			channel = ctx.channel
 
