@@ -18,7 +18,7 @@ class Autoreact(commands.Cog):
 		emoji1 = str(emoji)
 		ar = {"user_id": member.id, "reaction": emoji1}
 		await self.coll.insert_one(ar)
-		await ctx.send(f"Added reaction {emoji} for {member.id}")
+		await ctx.send(f"Added reaction {emoji} for {member.mention}")
 
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.ADMIN)
@@ -28,7 +28,7 @@ class Autoreact(commands.Cog):
 			return await ctx.send("This user doesnt have an autoreact anyways whatcha up to?")
 		reaction1 = ar["reaction"]
 		await self.coll.delete_one(ar)
-		await ctx.send(f"Deleted reaction {reaction1} for {member.id}")
+		await ctx.send(f"Deleted reaction {reaction1} for {member.mention}")
 
 	@commands.Cog.listener()
 	async def on_message(self, message):
