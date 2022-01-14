@@ -27,7 +27,7 @@ class LockAndSlow(commands.Cog):
 		if not channel:
 			channel = ctx.channel
 
-		farmer = ctx.guild.get_role(705769248034914314)
+		farmer = ctx.guild.get_role(658770981816500234)
 		daughter = ctx.guild.get_role(682698693472026749)
 		owner = ctx.guild.get_role(658770586540965911)
 		admin = ctx.guild.get_role(663162896158556212)
