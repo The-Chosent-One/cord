@@ -33,19 +33,21 @@ class LockAndSlow(commands.Cog):
 		admin = ctx.guild.get_role(663162896158556212)
 		allowed_channels = [795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500,
 							747184622386806824]
-		if not any(role in ctx.author.roles for role in (admin, farmer, daughter, owner)):
-			if ctx.author.top_role.id == 855877108055015465:
-				if not ctx.channel.id in allowed_channels:
-					return await ctx.send(f"You are not allowed to lock {channel}")
-			else:
-				return
+		if ctx.author.top_role.id == 855877108055015465:
+			if ctx.channel.id in allowed_channels:
+				if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(ctx.guild.default_role).send_messages == True:
+					await channel.set_permissions(ctx.guild.default_role, send_messages=False)
+					await ctx.send(f"🔒 Locked `{channel}`")
+				else:
+					await ctx.send(f"🔒 Looks like `{channel}` is already locked")
 
-		if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(
-				ctx.guild.default_role).send_messages == True:
-			await channel.set_permissions(ctx.guild.default_role, send_messages=False)
-			await ctx.send(f"🔒 Locked `{channel}`")
-		else:
-			await ctx.send(f"🔒 Looks like `{channel}` is already locked")
+		elif any(role in ctx.author.roles for role in (admin, farmer, daughter, owner)):
+			if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(ctx.guild.default_role).send_messages == True:
+				await channel.set_permissions(ctx.guild.default_role, send_messages=False)
+				await ctx.send(f"🔒 Locked `{channel}`")
+			else:
+				await ctx.send(f"🔒 Looks like `{channel}` is already locked")
+					
 
 	@commands.command()
 	@commands.has_any_role(682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911,
