@@ -27,28 +27,23 @@ class LockAndSlow(commands.Cog):
 		if not channel:
 			channel = ctx.channel
 			
-		role1 = ctx.guild.get_role(658770981816500234)
-		role2 = ctx.guild.get_role(663162896158556212)
-		role3 = ctx.guild.get_role(658770586540965911)
-		role5 = ctx.guild.get_role(682698693472026749)
-		role4 = (role1 , role2 , role3, role5)
+		farmer = ctx.guild.get_role(705769248034914314)
+		daughter = ctx.guild.get_role(682698693472026749)
+		owner = ctx.guild.get_role(658770586540965911)
+		admin = ctx.guild.get_role(663162896158556212)
+		allowed_channels = [795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500, 747184622386806824]
+		if not any(role in ctx.author.roles for role in (admin, farmer, daughter, owner)):
+  			if ctx.author.top_role.id == 855877108055015465:
+    				if not ctx.channel.id in allowed_channels:
+      					return await ctx.send(f"You are not allowed to lock {channel}")
+  			else:
+				return
 
-		if any(role in ctx.author.roles for role in role4):
-			if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(ctx.guild.default_role).send_messages == True:
-				await channel.set_permissions(ctx.guild.default_role, send_messages=False)
-				await ctx.send(f"🔒 Locked `{channel}`")
-			else:
-				await ctx.send(f"🔒 Looks like `{channel}` is already locked")
-
-		if ctx.author.top_role.id == 855877108055015465:			
-			allowed_channels = (795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500, 747184622386806824)
-			if ctx.channel.id in allowed_channels:
-				if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(ctx.guild.default_role).send_messages == True:
-					await channel.set_permissions(ctx.guild.default_role, send_messages=False)
-				else:
-					await ctx.send(f"🔒 Looks like `{channel}` is already locked")
-			else:
-				await ctx.send(f"You are not allowed to lock {channel}")
+		if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(ctx.guild.default_role).send_messages == True:
+			await channel.set_permissions(ctx.guild.default_role, send_messages=False)
+			await ctx.send(f"🔒 Locked `{channel}`")
+		else:
+			await ctx.send(f"🔒 Looks like `{channel}` is already locked")
 
 	@commands.command()
 	@commands.has_any_role(682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911,
