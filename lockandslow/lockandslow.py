@@ -30,7 +30,8 @@ class LockAndSlow(commands.Cog):
 		role1 = ctx.guild.get_role(658770981816500234)
 		role2 = ctx.guild.get_role(663162896158556212)
 		role3 = ctx.guild.get_role(658770586540965911)
-		role4 = (role1 , role2 , role3)
+		role5 = ctx.guild.get_role(682698693472026749)
+		role4 = (role1 , role2 , role3, role5)
 
 		if any(role in ctx.author.roles for role in role4):
 			if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(ctx.guild.default_role).send_messages == True:
