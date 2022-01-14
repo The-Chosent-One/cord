@@ -150,7 +150,7 @@ class TypeRacer(commands.Cog):
     async def typerace(self, ctx, member: discord.Member = None):
         check = await self.coll.find_one({"channel": ctx.channel.id})
         if not check:
-            return await ctx.reply("You are not allowed to use that here", delete_after=6)
+            return await ctx.reply("You are not allowed to use that here", delete_after=4)
         if member == ctx.author:
             return await ctx.send("Imagine trying to challenege youself lmao") 
         if member != None:
