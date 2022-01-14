@@ -60,7 +60,7 @@ class Extras(commands.Cog):
 				
 	@commands.Cog.listener('on_reaction_add')
 	async def handled(self,reaction,user):
-		if reaction.message.channel.id == 931503735052591124:
+		if reaction.message.channel.id == 931503735052591124 and reaction.message.author.id != 855270214656065556:
 			await reaction.message.delete()
 				
 	@commands.Cog.listener('on_message')
