@@ -101,14 +101,14 @@ class TypeRacer(commands.Cog):
                 await ctx.send("You are probably looking for `??typerace`")
     
     @typeracer.group()
-    @checks.has_permissions(PermissionLevel.ADMIN)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def config(self,ctx):
         if ctx.invoked_subcommand is None:
             embed=discord.Embed(title="Config options", description="Whitelist / Unwhitelist - Allow the command to be used in certain channels \n Whitelisted - Show the currently whitelisted channels", color=0x42f587)
             await ctx.send(embed=embed) 
             
     @config.command()
-    @checks.has_permissions(PermissionLevel.ADMIN)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def whitelist(self,ctx, channel: discord.TextChannel = None):
         if channel == None:
             channel = ctx.channel
@@ -120,7 +120,7 @@ class TypeRacer(commands.Cog):
         await ctx.send(f" Whitelisted <#{channel.id}> for typeracer")
     
     @config.command()
-    @checks.has_permissions(PermissionLevel.ADMIN)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def unwhitelist(self,ctx, channel: discord.TextChannel = None):
         if channel == None:
             channel = ctx.channel
@@ -131,7 +131,7 @@ class TypeRacer(commands.Cog):
         await ctx.send(f" Unwhitelisted <#{channel.id}> for typeracer")
         
     @config.command()
-    @checks.has_permissions(PermissionLevel.ADMIN)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def whitelisted(self,ctx):
         s = ""
         fetchall = self.coll.find({})
