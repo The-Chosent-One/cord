@@ -41,16 +41,19 @@ class Extras(commands.Cog):
 	async def wrongchannel(self, message: discord.Message):
 		if message.channel.id == 759131412539768872:
 			if any(word in message.content.lower() for word in ('selling', 'sell' , 'loan')): 
-				alert = self.bot.get_channel(789809104738189342)
-				await alert.send("Something wrong ayo")
+				alert = self.bot.get_channel(931503735052591124)
+				embed=discord.Embed(title="**Selling/Loan ad in #trade-buyers**", description=f"Someone posted a selling ad in <#759131412539768872> \n **[Jump to the ad]({message.jump_url})**", color=0xf70202)
+				await alert.send(embed=embed)
 		if message.channel.id == 685572368919298291:
 			if any(word in message.content.lower() for word in ('buying', 'buy' , 'loan')): 
-				alert = self.bot.get_channel(789809104738189342)
-				await alert.send("Something wrong ayo")	
+				alert = self.bot.get_channel(931503735052591124)
+				embed=discord.Embed(title="**Buying/Loan ad in #trade-sellers**", description=f"Someone posted a buying ad in <#685572368919298291> \n **[Jump to the ad]({message.jump_url})**", color=0xf70202)
+				await alert.send(embed=embed)
 		if message.channel.id == 784080892905652224:
 			if any(word in message.content.lower() for word in ('selling', 'sell' , 'loan','buying', 'buy')): 
-				alert = self.bot.get_channel(789809104738189342)
-				await alert.send("Something wrong ayo")		
+				alert = self.bot.get_channel(931503735052591124)
+				embed=discord.Embed(title="**Buying/Selling/Loan ad in #fight-ads**", description=f"Someone posted a buying/selling/loan ad in <#784080892905652224> \n **[Jump to the ad]({message.jump_url})**", color=0xf70202)
+				await alert.send(embed=embed)		
 				
 	@commands.Cog.listener('on_message')
 	async def scammeralert(self, message: discord.Message):
