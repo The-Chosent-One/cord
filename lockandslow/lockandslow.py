@@ -34,8 +34,8 @@ class LockAndSlow(commands.Cog):
 		allowed_channels = [795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500, 747184622386806824]
 		if not any(role in ctx.author.roles for role in (admin, farmer, daughter, owner)):
   			if ctx.author.top_role.id == 855877108055015465:
-    				if not ctx.channel.id in allowed_channels:
-      					return await ctx.send(f"You are not allowed to lock {channel}")
+					if not ctx.channel.id in allowed_channels:
+	  					return await ctx.send(f"You are not allowed to lock {channel}")
   			else:
 				return
 
