@@ -62,7 +62,7 @@ class LockAndSlow(commands.Cog):
 
 	@commands.command(aliases=['slowmode', 'slow'])
 	@commands.has_permissions(manage_messages=True)
-	async def sm(self, ctx, delay):
+	async def smtest(self, ctx, delay):
 		slomo_embed = discord.Embed(
 			title=f" A slowmode of {delay} has been activated by a moderator.",
 			color=0x363940, timestamp=ctx.message.created_at)
@@ -72,7 +72,7 @@ class LockAndSlow(commands.Cog):
 		await ctx.send(content=None, embed=slomo_embed)
 
 	@commands.command()
-	async def slownow(self, ctx):
+	async def slownowtest(self, ctx):
 		await ctx.send(f' The current slow mode in the channel is {ctx.channel.slowmode_delay} seconds')
 
 
