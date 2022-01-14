@@ -58,6 +58,11 @@ class Extras(commands.Cog):
 				react = await alert.send(embed=embed)
 				await react.add_reaction("<:farm_1wrongchannel:749882327458644058>")
 				
+	@commands.Cog.listener('on_reaction_add')
+	async def handled(self,reaction,user):
+		if reaction.message.channel.id == 931503735052591124:
+			await reaction.message.delete()
+				
 	@commands.Cog.listener('on_message')
 	async def scammeralert(self, message: discord.Message):
 		if not message.guild:
@@ -88,7 +93,6 @@ class Extras(commands.Cog):
 	@commands.has_any_role(790290355631292467,855877108055015465,723035638357819432,814004142796046408,682698693472026749,658770981816500234,663162896158556212,658770586540965911)
 	async def inrole(self, ctx, role1: discord.Role, role2: discord.Role):
 		first = role1.members
-
 		second = role2.members
 		firstlen = len(role1.members)
 		secondlen = len(role2.members)
