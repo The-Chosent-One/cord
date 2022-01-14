@@ -62,8 +62,6 @@ class Extras(commands.Cog):
 	async def handled(self,reaction,user):
 		if reaction.message.channel.id == 931503735052591124 and reaction.message.author.id != 855270214656065556:
 			await reaction.message.delete()
-		else:
-			print('failed?')
 				
 	@commands.Cog.listener('on_message')
 	async def scammeralert(self, message: discord.Message):
