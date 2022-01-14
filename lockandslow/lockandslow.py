@@ -60,7 +60,7 @@ class LockAndSlow(commands.Cog):
 		else:
 			await ctx.send(f"🔓 Looks like `{channel}` is already unlocked")
 
-	@commands.command(aliases=['slowmode', 'slow'])
+	@commands.command(aliases=['slowmodetest', 'slowtest'])
 	@commands.has_permissions(manage_messages=True)
 	async def smtest(self, ctx, delay):
 		slomo_embed = discord.Embed(
