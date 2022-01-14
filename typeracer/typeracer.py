@@ -96,11 +96,12 @@ class TypeRacer(commands.Cog):
             role3 = ctx.guild.get_role(658770586540965911)
             role4 = (role1 , role2 , role3)
             if any(role in ctx.author.roles for role in role4):
-                await ctx.send("You are probably looking for `??typeracer config` or maybe `??typerace for a challenge?")
+                await ctx.send("You are probably looking for `??typeracer config` or maybe `??typerace` for a challenge?")
             else:
                 await ctx.send("You are probably looking for `??typerace`")
     
     @typeracer.group()
+    @checks.has_permissions(PermissionLevel.ADMIN)
     async def config(self,ctx):
         if ctx.invoked_subcommand is None:
             embed=discord.Embed(title="Config options", description="Whitelist / Unwhitelist - Allow the command to be used in certain channels \n Whitelisted - Show the currently whitelisted channels", color=0x42f587)
