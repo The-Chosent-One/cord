@@ -9,7 +9,7 @@ def to_seconds(s):
 		timedelta(**{
 			{
 				's': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'
-			}.get(m.group('unit').lower(), 'seconds'): int(m.group('val')) 
+			}.get(m.group('unit').lower(), 'seconds'): int(m.group('val'))
 			for m in re.finditer(r'(?P<val>\d+)(?P<unit>[smhdw]?)', s, flags=re.I)
 		}
 				  ).total_seconds())
@@ -26,20 +26,22 @@ class LockAndSlow(commands.Cog):
 	async def locktest(self, ctx, channel: discord.TextChannel = None):
 		if not channel:
 			channel = ctx.channel
-			
+
 		farmer = ctx.guild.get_role(705769248034914314)
 		daughter = ctx.guild.get_role(682698693472026749)
 		owner = ctx.guild.get_role(658770586540965911)
 		admin = ctx.guild.get_role(663162896158556212)
-		allowed_channels = [795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500, 747184622386806824]
+		allowed_channels = [795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500,
+							747184622386806824]
 		if not any(role in ctx.author.roles for role in (admin, farmer, daughter, owner)):
-  			if ctx.author.top_role.id == 855877108055015465:				
-				if not ctx.channel.id in allowed_channels:					
-	  				return await ctx.send(f"You are not allowed to lock {channel}")
-  			else:
+			if ctx.author.top_role.id == 855877108055015465:
+				if not ctx.channel.id in allowed_channels:
+					return await ctx.send(f"You are not allowed to lock {channel}")
+			else:
 				return
 
-		if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(ctx.guild.default_role).send_messages == True:
+		if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(
+				ctx.guild.default_role).send_messages == True:
 			await channel.set_permissions(ctx.guild.default_role, send_messages=False)
 			await ctx.send(f"🔒 Locked `{channel}`")
 		else:
