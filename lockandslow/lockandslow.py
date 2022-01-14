@@ -58,11 +58,28 @@ class LockAndSlow(commands.Cog):
 		if not channel:
 			channel = ctx.channel
 
-		if channel.overwrites_for(ctx.guild.default_role).send_messages is False:
-			await channel.set_permissions(ctx.guild.default_role, send_messages=None)
-			await ctx.send(f"🔓 Unlocked `{channel}`")
-		else:
-			await ctx.send(f"🔓 Looks like `{channel}` is already unlocked")
+		farmer = ctx.guild.get_role(658770981816500234)
+		daughter = ctx.guild.get_role(682698693472026749)
+		owner = ctx.guild.get_role(658770586540965911)
+		admin = ctx.guild.get_role(663162896158556212)
+		allowed_channels = [795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500,
+							747184622386806824]
+		if ctx.author.top_role.id == 855877108055015465:
+			if channel.id in allowed_channels:
+				if channel.overwrites_for(ctx.guild.default_role).send_messages == False:
+					await channel.set_permissions(ctx.guild.default_role, send_messages=True)
+					await ctx.send(f"🔒 Unlocked `{channel}`")
+				else:
+					await ctx.send(f"🔒 Looks like `{channel}` is already unlocked")
+			else:
+				await ctx.send(f"You are not allowed to unlock {channel}")
+
+		elif any(role in ctx.author.roles for role in (admin, farmer, daughter, owner)):
+			if channel.overwrites_for(ctx.guild.default_role).send_messages == False:
+				await channel.set_permissions(ctx.guild.default_role, send_messages=True)
+				await ctx.send(f"🔒 Unlocked `{channel}`")
+			else:
+				await ctx.send(f"🔒 Looks like `{channel}` is already unlocked")
 
 	@commands.command(aliases=['slowmodetest', 'slowtest'])
 	@commands.has_permissions(manage_messages=True)
