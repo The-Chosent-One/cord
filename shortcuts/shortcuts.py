@@ -20,7 +20,7 @@ class Shortcuts(commands.Cog):
 
 	@commands.command()
 	@checks.has_permissions(PermissionLevel.MODERATOR)
-	async def scammer(self, ctx, user: discord.User, user2: discord.User, quantity, what, proof, proof2=None):
+	async def scamban(self, ctx, scammer: discord.User, victim: discord.User, quantity, what, proof, proof2=None):
 		if proof2 is None:
 			await ctx.send(
 				f'```.ban {user.id} Scammed {quantity} {what} from `{user2.id}` and left the server to evade punishment [here]({proof}) Appeal this ban at https://discord.gg/appeal```')
