@@ -36,7 +36,22 @@ class Extras(commands.Cog):
 	async def deleteall(self, message: discord.Message):
 		if message.channel.id == 882758609921015839:
 			await message.delete()
-							
+			
+	@commands.Cog.listener('on_message')
+	async def wrongchannel(self, message: discord.Message):
+		if message.channel.id == 759131412539768872:
+			if any(word in message.content.lower() for word in ('selling', 'sell' , 'loan')): 
+				alert = self.bot.get_channel(789809104738189342)
+				await alert.send("Something wrong ayo")
+		if message.channel.id == 685572368919298291:
+			if any(word in message.content.lower() for word in ('buying', 'buy' , 'loan')): 
+				alert = self.bot.get_channel(789809104738189342)
+				await alert.send("Something wrong ayo")	
+		if message.channel.id == 784080892905652224:
+			if any(word in message.content.lower() for word in ('selling', 'sell' , 'loan','buying', 'buy')): 
+				alert = self.bot.get_channel(789809104738189342)
+				await alert.send("Something wrong ayo")		
+				
 	@commands.Cog.listener('on_message')
 	async def scammeralert(self, message: discord.Message):
 		if not message.guild:
