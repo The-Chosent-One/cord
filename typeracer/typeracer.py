@@ -53,7 +53,7 @@ class TypeRacer(commands.Cog):
         # return data["q"], data["a"]
 
 
-    async def get_completion_embed(self, msg: discord.Message, completions: list) -> discord.Embed:
+    async def get_completion_embed(self, msg: discord.Message, completions: List[Tuple[discord.Member, float]]) -> discord.Embed:
         """Returns the embed to send after the time has ended"""
         if len(completions) == 0:
             embed = discord.Embed(
