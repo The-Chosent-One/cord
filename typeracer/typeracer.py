@@ -5,7 +5,8 @@ from pathlib import Path
 from difflib import SequenceMatcher
 from functools import partial
 from io import BytesIO
-from typing import Optional, Tuple
+from typing import List, Optional, Tuple
+from datetime import datetime as dt, timedelta
 
 import aiohttp
 import discord
@@ -31,13 +32,16 @@ class TypeRacer(commands.Cog):
         self._font = None
         self.coll = bot.plugin_db.get_partition(self)
 
+
     def cog_unload(self) -> None:
         asyncio.create_task(self.session.close())
+
 
     def format_help_for_context(self, ctx: commands.Context) -> str:
         pre_processed = super().format_help_for_context(ctx)
         n = "\n" if "\n\n" not in pre_processed else ""
         return f"{pre_processed}{n}\nCog Version: {self.__version__}"
+
 
     async def get_quote(self) -> Tuple[str, str]:
         async with self.session.get("https://api.quotable.io/random") as resp:
@@ -48,6 +52,41 @@ class TypeRacer(commands.Cog):
         #    data = await resp.json(content_type=None)[0]
         # return data["q"], data["a"]
 
+
+    async def get_completion_embed(self, msg: discord.Message, completions: list) -> discord.Embed:
+        """Returns the embed to send after the time has ended"""
+        if len(completions) == 0:
+            embed = discord.Embed(
+                color=discord.Color.blurple(),
+                description=f"No one typed the [sentence]({msg.jump_url}) in time.",
+            )
+        else: 
+            embed = discord.Embed(
+                color = discord.Color.blurple(),
+                title = "Typerace ended!",
+                description = f"{len(completions)} people finished the [sentence]({msg.jump_url}) in time.",)
+
+            completions = sorted(completions, key=lambda x: x[1], reverse=True)
+            # Only show top 10, could make it paginated in the future
+            value = ""
+            for i, (user, wpm) in enumerate(completions[:10], start=1):
+                value += f"{self.get_lb_prefix(i)} {user.mention} ({user.display_name}): {wpm:.2f} WPM\n"
+            embed.add_field(name="Leaderboard", value=value)
+        return embed
+
+
+    def get_lb_prefix(self, i: int) -> str:
+        """Returns the character to prefix user names with in the leaderboard"""
+        if i == 1:
+            return ":first_place:" 
+        elif i == 2:
+            return ":second_place:" 
+        elif i == 3:
+            return ":third_place:" 
+        else:
+            return str(i) + "."
+
+
     @property
     def font(self) -> ImageFont:
         if self._font is None:
@@ -55,6 +94,7 @@ class TypeRacer(commands.Cog):
                 f"{bundled_path}/Menlo.ttf", self.FONT_SIZE, encoding="unic"
             )
         return self._font
+
 
     def generate_image(self, text: str, color: discord.Color) -> discord.File:
         margin = 40
@@ -75,8 +115,8 @@ class TypeRacer(commands.Cog):
             buffer = BytesIO()
             im.save(buffer, "PNG")
             buffer.seek(0)
-
         return buffer
+
 
     async def render_typerace(self, text: str, color: discord.Color) -> discord.File:
         func = partial(self.generate_image, text, color)
@@ -88,6 +128,7 @@ class TypeRacer(commands.Cog):
                 "An error occurred while generating this image. Try again later."
             )
     
+
     @commands.group(invoke_without_command=True)
     async def typeracer(self, ctx):
         if ctx.invoked_subcommand is None:
@@ -183,6 +224,7 @@ class TypeRacer(commands.Cog):
             embed.set_footer(text=f"~ {author}")
 
         msg = await ctx.send(file=discord.File(img, "typerace.png"), embed=embed)
+        self.bot.loop.create_task(ctx.invoke(self.bot.get_command("timer"), seconds='60s'))
         acc: Optional[float] = None
 
         def check(m: discord.Message) -> bool:
@@ -200,25 +242,38 @@ class TypeRacer(commands.Cog):
                 return True
             return False
 
+        end_time = msg.created_at + timedelta(minutes=1)
+        completions = []
         ref = msg.to_reference(fail_if_not_exists=False)
-        try:
-            winner = await ctx.bot.wait_for("message", check=check, timeout=60)
-        except asyncio.TimeoutError:
-            embed = discord.Embed(
-                color=discord.Color.blurple(),
-                description=f"No one typed the [sentence]({msg.jump_url}) in time.",
-            )
-            return await ctx.send(embed=embed, reference=ref)
+        while True:
 
-        seconds = (winner.created_at - msg.created_at).total_seconds()
-        winner_ref = winner.to_reference(fail_if_not_exists=False)
-        wpm = (len(quote) / 5) / (seconds / 60) * (acc / 100)
-        description = (
-            f"{winner.author.mention} typed the [sentence]({msg.jump_url}) in `{seconds:.2f}s` "
-            f"with **{acc:.2f}%** accuracy. (**{wpm:.1f} WPM**)"
-        )
-        embed = discord.Embed(color=winner.author.color, description=description)
-        await ctx.send(embed=embed, reference=winner_ref)
+            if dt.utcnow() > end_time:
+                embed = await self.get_completion_embed(msg, completions)
+                await ctx.send(embed=embed, reference=ref)
+                break
+            try:
+                winner = await ctx.bot.wait_for("message", check=check, timeout=(end_time - dt.utcnow()).total_seconds())
+            except asyncio.TimeoutError:
+                embed = await self.get_completion_embed(msg, completions)
+                await ctx.send(embed=embed, reference=ref)
+                break
+
+
+            if winner.author in (x[0] for x in completions):
+                # dont count the same user twice
+                continue
+            seconds = (winner.created_at - msg.created_at).total_seconds()
+            winner_ref = winner.to_reference(fail_if_not_exists=False)
+            wpm = (len(quote) / 5) / (seconds / 60) * (acc / 100)
+            description = (
+                f"{winner.author.mention} typed the [sentence]({msg.jump_url}) in `{seconds:.2f}s` "
+                f"with **{acc:.2f}%** accuracy. (**{wpm:.1f} WPM**)"
+            )
+            embed = discord.Embed(color=winner.author.color, description=description)
+            await ctx.send(embed=embed, reference=winner_ref)
+            completions.append((winner.author, wpm))
+
         
+
 def setup(bot):
     bot.add_cog(TypeRacer(bot))
