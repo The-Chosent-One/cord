@@ -68,21 +68,10 @@ class SplitOrSteal(commands.Cog):
                 # kills the manager
                 on_click.kill()
 
-                if choices[player1] == split:
-                    if choices[player2] == split:
-                        final = f"Since both {player1.mention} and {player2.mention} chose split, both get half!"
-                    elif choices[player2] == steal:
-                        final = f"Since {player1.mention} chose split BUT {player2.mention} chose split, so {player2.mention} takes everything!"
-
-                elif choices[player1] == steal:
-                    if choices[player2] == split:
-                        final = f"Since {player2.mention} chose split BUT {player1.mention} chose steal, so {player1.mention} takes everything!"
-                    elif choices[player2] == steal:
-                        final = f"Since both {player1.mention} and {player2.mention} chose steal, no one gets anything"
-
                 result_embed = discord.Embed(
                     title="Split or Steal?",
-                    description=f"{player1.mention} chose **{choices[player1]}** \n {player2.mention} chose **{choices[player2]}** \n {final}",
+                    description=f"{player1.mention} chose **{choices[player1]}** \n"
+                                f"{player2.mention} chose **{choices[player2]}**",
                     colour=0x90EE90
                 )
                 return await message.edit(embed=result_embed, components=[])
