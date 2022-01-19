@@ -215,11 +215,11 @@ class TypeRacer(commands.Cog):
     @commands.cooldown(1, 10, commands.BucketType.guild)
     @commands.max_concurrency(1, commands.BucketType.channel)
     async def typerace(self, ctx, member: discord.Member = None):
-        # check = await self.coll.find_one({"channel": ctx.channel.id})
-        # if not check:
-        #     return await ctx.reply(
-        #         "You are not allowed to use that here", delete_after=4
-        #     )
+        check = await self.coll.find_one({"channel": ctx.channel.id})
+        if not check:
+            return await ctx.reply(
+                "You are not allowed to use that here", delete_after=4
+            )
         if member == ctx.author:
             return await ctx.send("Imagine trying to challenege youself lmao")
         if member != None:
