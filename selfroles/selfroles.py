@@ -80,7 +80,7 @@ class SelfRoles(commands.Cog):
         for role_names in zip_longest(*([iter(available_roles)] * 5)):
             components.append(ActionRow(
                 *[Button(style = ButtonStyle.blurple, label = role_name, custom_id = f"change_self_role:{available_roles[role_name]}")
-                for role_name in role_names]
+                for role_name in role_names if role_name is not None]
             ))
 
         await inter.create_response("Which roles do you want to add/remove?", components = components, ephemeral = True)
