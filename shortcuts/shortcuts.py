@@ -26,7 +26,7 @@ class Shortcuts(commands.Cog):
                 f'```.ban {scammer.id} Scammed {quantity} {what} from `{victim.id}` and left the server to evade punishment [here]({proof}). Appeal this ban at https://discord.gg/appeal```')
         else:
             await ctx.send(
-                f'```.ban {scammer.id} Scammed {quantity} {what} from `{victim.id}` and left the server to evade punishment. Proof: [1]({proof}), [2]([{proof2}). Appeal this ban at https://discord.gg/appeal ```')
+                f'```.ban {scammer.id} Scammed {quantity} {what} from `{victim.id}` and left the server to evade punishment. Proof: [1]({proof}), [2]({proof2}). Appeal this ban at https://discord.gg/appeal ```')
 
 
 def setup(bot):
