@@ -10,7 +10,7 @@ class SelfRoles(commands.Cog):
         self.bot = bot
 
         self.regular_colour_roles = {
-            "Cat": 669807217444126731,
+            "<:Studio_Project:933564853740798012> Cat": 669807217444126731,
             "Dog": 659498316991692832,
             "Chicken": 658771095167565834,
             "Pig": 658771078075908136,
