@@ -33,7 +33,7 @@ class LockAndSlow(commands.Cog):
 		admin = ctx.guild.get_role(663162896158556212)
 		allowed_channels = [795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500,
 							747184622386806824]
-		if ctx.author.top_role.id == 855877108055015465:
+		if ctx.author.top_role.id in (855877108055015465,814004142796046408):
 			if channel.id in allowed_channels:
 				if channel.overwrites_for(ctx.guild.default_role).send_messages == None or channel.overwrites_for(ctx.guild.default_role).send_messages == True:
 					await channel.set_permissions(ctx.guild.default_role, send_messages=False)
