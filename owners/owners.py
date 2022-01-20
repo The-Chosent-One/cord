@@ -45,7 +45,7 @@ class Owners(commands.Cog):
 	@commands.command(aliases=['ed'])
 	@checks.has_permissions(PermissionLevel.ADMIN)
 	async def enabledisable(self, ctx):
-		embed=discord.Embed(title="Enables/Disables", description="`??disableautoban | ??enableautoban` \n `??disabledecancer | ??enabledecancer` \n `??disableextras | ??enableextras` \n `??disablelock | ??enablelock` \n `??disableping | ??enableping` \n `??disableshortcut | ??enableshortcut` \n `??disablesnipe | ??enablesnipe` \n `??disablesuggest | ??enablesuggest` \n `??disabletyperacer | ??enabletyperacer` ")
+		embed=discord.Embed(title="Enables/Disables", description="`??disableautoban | ??enableautoban` \n \n `??disabledecancer | ??enabledecancer` \n \n `??disableextras | ??enableextras` \n \n `??disablelock | ??enablelock` \n \n `??disableping | ??enableping` \n \n `??disableshortcut | ??enableshortcut` \n \n `??disablesnipe | ??enablesnipe` \n \n `??disablesuggest | ??enablesuggest` \n \n `??disabletyperacer | ??enabletyperacer` ")
 		await ctx.send(embed=embed)
 
 def setup(bot):
