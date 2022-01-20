@@ -41,6 +41,13 @@ class Owners(commands.Cog):
 			await self.bot.close()
 		else:
 			await ctx.send("Okay bro wyd here then?")
+	
+	@commands.command(aliases=['ed'])
+	@checks.has_permissions(PermissionLevel.ADMIN)
+	async def enabledisable(self, ctx):
+		embed=discord.Embed(title="Enables/Disables", description="`??disableautoban | ??enableautoban` \n `??disabledecancer | ??enabledecancer` \n `??disableextras | ??enableextras` \n `??disablelock | ??enablelock` \n `??disableping | ??enableping` \n `??disableshortcut | ??enableshortcut` \n `??disablesnipe | ??enablesnipe` \n `??disablesuggest | ??enablesuggest` \n `??disabletyperacer | ??enabletyperacer` ")
+		embed.add_field(name="", value="", inline=False)
+		await ctx.send(embed=embed)
 
 def setup(bot):
 	bot.add_cog(Owners(bot))
