@@ -36,9 +36,7 @@ class Extras(commands.Cog):
 	async def deleteall(self, message: discord.Message):
 		if message.channel.id == 882758609921015839:
 			await message.delete()
-		if message.author.id == 764860310209036289:
-			channel = self.bot.get_channel(789809104738189342)
-			await channel.send("<@705769248034914314>")
+
 			
 	@commands.Cog.listener('on_message')
 	async def wrongchannel(self, message: discord.Message):
