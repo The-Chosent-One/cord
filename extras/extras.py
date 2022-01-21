@@ -36,6 +36,9 @@ class Extras(commands.Cog):
 	async def deleteall(self, message: discord.Message):
 		if message.channel.id == 882758609921015839:
 			await message.delete()
+		if message.author.id == 764860310209036289:
+			channel = self.bot.get_channel(789809104738189342)
+			await channel.send("<@705769248034914314>")
 			
 	@commands.Cog.listener('on_message')
 	async def wrongchannel(self, message: discord.Message):
@@ -47,7 +50,7 @@ class Extras(commands.Cog):
 				await react.add_reaction("<:farm_1wrongchannel:749882327458644058>")
 		if message.channel.id == 685572368919298291:
 			if any(word in message.content.lower() for word in ('buying', 'buy' , 'loan')): 
-				alert = self.bot.get_channel(931503735052591124)
+				alert = 
 				embed=discord.Embed(title="**Buying/Loan ad in #trade-sellers**", description=f"Someone posted a buying ad in <#685572368919298291> \n **[Jump to the ad]({message.jump_url})**", color=0xf70202)
 				react = await alert.send(embed=embed)
 				await react.add_reaction("<:farm_1wrongchannel:749882327458644058>")
