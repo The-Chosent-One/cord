@@ -53,7 +53,11 @@ class Carl(commands.Cog):
             if find:
                 description = find["description"]
                 title = find["title"]
+                channel = find["channel"]
                 embed = discord.Embed(title=title, description=description, color=0x00ff00)
+                for chamention in channel:
+                    chamen = self.bot.get_channel(chamention)
+                await ctx.send(f"Channels this is allowed in {chamen})
                 await ctx.send(embed=embed)
             else:
                 await ctx.send("Trigger does not exist, try `??trigger` to see available triggers")
