@@ -47,13 +47,15 @@ class Carl(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def trigger(self, ctx, trigger: str = None):
-        s = ""
+        c = ""
+        r = ""
+        t = ""
         if trigger is None:
             fetchall = self.coll.find({})
             async for x in fetchall:
                 trigger = x["trigger"]
-                s += f"{trigger} \n"
-                embed = discord.Embed(title="All triggers", description=s, color=0x00ff00)
+                t += f"{trigger} \n"
+                embed = discord.Embed(title="All triggers", description=t, color=0x00ff00)
                 await ctx.send(embed=embed)
         else:
             find = await self.coll.find_one({"trigger": trigger})
@@ -62,14 +64,20 @@ class Carl(commands.Cog):
                 title = find["title"]
                 channel = find["channel"]
                 embed = discord.Embed(title=title, description=description)
-                if channel == 'None':
-                    await ctx.send(f"This trigger is allowed everywhere.")
-                    await ctx.send(embed=embed)
-                else:
-                    for chamention in channel:
-                        chamen = self.bot.get_channel(chamention)
-                        s += f"{chamen.mention} "
-                await ctx.send(f"Channels this is allowed in {s}", embed=embed)
+                for chamention in channel:
+                    chamen = self.bot.get_channel(chamention)
+                    c += f"{chamen.mention} "
+                for roleid in allowed_roles:
+                    rolename = ctx.guild.get_role(roleid)
+                    r += f"{rolename.name} "
+                if channel == 'None' and allowed_roles == 'None':
+                    await ctx.send("This trigger is allowed everywhere.",embed=embed)
+                if channel == 'None' and allowed_roles != 'None':
+                    await ctx.send(f"This trigger is allowed in all channels but only for these roles: \n {r}.",embed=embed)
+                if channel != 'None' and allowed_roles == 'None':
+                    await ctx.send(f"This trigger is allowed in the channels: \n {c} for everyone.", embed=embed)
+                if channel != 'None' and allowed_roles != 'None':
+                    await ctx.send(f"This is only allowed in the channels \n {c} \ for who have one of the roles: \n {r}", embed=embed")
             else:
                 await ctx.send("Trigger does not exist, try `??trigger` to see available triggers")
 
