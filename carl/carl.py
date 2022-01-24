@@ -11,7 +11,7 @@ class Carl(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def addtrigger(self, ctx, trigger: str, title: str, description: str, color: discord.Color = None,
+    async def addtrigger(self, ctx, trigger: str, title: str, description: str, color: discord.Color.value = None,
                          allowed_roles: commands.Greedy[discord.Role] = None,
                          channels: commands.Greedy[discord.TextChannel] = None):
         if color is None:
