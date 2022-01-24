@@ -12,7 +12,7 @@ class Carl(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def addtrigger(self, ctx, trigger: str, title: str, description: str,
-                         channels: commands.greedy[discord.TextChannel] = None):
+                         channels: commands.Greedy[discord.TextChannel] = None):
         check = await self.coll.find_one({"trigger": trigger})
         if check:
             await ctx.send("Trigger already exists")
