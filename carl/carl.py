@@ -25,7 +25,6 @@ class Carl(commands.Cog):
                 chaid = [c.id for c in channels]
                 await self.coll.insert_one(
                     {"trigger": trigger.lower(), "title": title, "description": description, "channel": chaid})
-                await ctx.send("Added trigger")
 
     @commands.command(alias=["deltrigger"])
     @checks.has_permissions(PermissionLevel.ADMIN)
@@ -66,16 +65,20 @@ class Carl(commands.Cog):
                 return
             check = await self.coll.find_one({"trigger": message.content.lower()})
             if not check:
+                print("Something went wrong in check")
                 return
             else:
                 channel = check["channel"]
+                print("Came here")
                 if channel == 'None':
                     title = check["title"]
                     description = check["description"]
                     embed = discord.Embed(title=title, description=description)
                     await message.channel.send(embed=embed)
                 else:
+                    print("ola ola")
                     if any(channel in message.chanel.id for channel in channel):
+                        print("reached here")
                         title = check["title"]
                         description = check["description"]
                         embed = discord.Embed(title=title, description=description)
