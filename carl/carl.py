@@ -40,8 +40,8 @@ class Carl(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def trigger(self, ctx, trigger: str = None):
+        s = ""
         if trigger is None:
-            s = ""
             fetchall = self.coll.find({})
             async for x in fetchall:
                 trigger = x["trigger"]
@@ -55,8 +55,15 @@ class Carl(commands.Cog):
                 title = find["title"]
                 channel = find["channel"]
                 embed = discord.Embed(title=title, description=description)
-                chamen = [c.mention for c in channel]
-                await ctx.send(f"Channels this is allowed in {chamen}")
+                if channel == 'None':
+                    await ctx.send(f"This trigger is allowed everywhere.")
+                    await ctx.send(embed=embed)
+                else:                    
+                    for chamention in channel:
+                        chamen = self.bot.get_channel(chamention)
+                        s += f"{chamen.mention} "
+                chamen = self.bot.get_channel(chamention)   
+                await ctx.send(f"Channels this is allowed in {s}")
                 await ctx.send(embed=embed)
             else:
                 await ctx.send("Trigger does not exist, try `??trigger` to see available triggers")
