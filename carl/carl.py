@@ -57,33 +57,33 @@ class Carl(commands.Cog):
             else:
                 await ctx.send("Trigger does not exist, try `??trigger` to see available triggers")
 
-        @commands.Cog.listener()
-        async def on_message(self, message: discord.Message):
-            print("Triggered??")
-            if message.author.bot:
-                return
-            if message.content.startswith('??'):
-                return
-            check = await self.coll.find_one({"trigger": message.content.lower()})
-            if not check:
-                print("Something went wrong in check")
-                return
+    @commands.Cog.listener()
+    async def on_message(self, message: discord.Message):
+        print("Triggered??")
+        if message.author.bot:
+            return
+        if message.content.startswith('??'):
+            return
+        check = await self.coll.find_one({"trigger": message.content.lower()})
+        if not check:
+            print("Something went wrong in check")
+            return
+        else:
+            channel = check["channel"]
+            print("Came here")
+            if channel == 'None':
+                title = check["title"]
+                description = check["description"]
+                embed = discord.Embed(title=title, description=description)
+                await message.channel.send(embed=embed)
             else:
-                channel = check["channel"]
-                print("Came here")
-                if channel == 'None':
+                print("ola ola")
+                if any(channel in message.chanel.id for channel in channel):
+                    print("reached here")
                     title = check["title"]
                     description = check["description"]
                     embed = discord.Embed(title=title, description=description)
                     await message.channel.send(embed=embed)
-                else:
-                    print("ola ola")
-                    if any(channel in message.chanel.id for channel in channel):
-                        print("reached here")
-                        title = check["title"]
-                        description = check["description"]
-                        embed = discord.Embed(title=title, description=description)
-                        await message.channel.send(embed=embed)
 
 
 def setup(bot):
