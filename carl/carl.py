@@ -57,8 +57,8 @@ class Carl(commands.Cog):
             else:
                 await ctx.send("Trigger does not exist, try `??trigger` to see available triggers")
 
-        @commands.Cog.listener('on_message')
-        async def triggered(self, message: discord.Message):
+        @commands.Cog.listener()
+        async def on_message(self, message: discord.Message):
             print("Triggered??")
             if message.author.bot:
                 return
