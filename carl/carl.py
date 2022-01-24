@@ -100,7 +100,9 @@ class Carl(commands.Cog):
                     embed = discord.Embed(title=title, description=description, color=color)
                     return message.channel.send(embed=embed)
             if channel != 'None' and allowed_roles != 'None':
+                print("yes")
                 if any(r.id in allowed_roles for r in message.author.roles) and message.channel.id in channel:
+                    print("yes2")
                     embed = discord.Embed(title=title, description=description, color=color)
                     return message.channel.send(embed=embed)
 
