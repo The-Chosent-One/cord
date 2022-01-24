@@ -76,7 +76,7 @@ class Carl(commands.Cog):
                 await message.channel.send(embed=embed)
             else:
                 print("ola ola")
-                if any(message.channel.id in channel for channel on channel):
+                if message.channel.id in channel:
                     print("reached here")
                     title = check["title"]
                     description = check["description"]
