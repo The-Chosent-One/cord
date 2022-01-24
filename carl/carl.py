@@ -39,7 +39,7 @@ class Carl(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def trigger(self, ctx, trigger: str):
+    async def trigger(self, ctx, trigger: str = None):
         if trigger is None:
             s = ""
             fetchall = self.coll.find({})
