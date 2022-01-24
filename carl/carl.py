@@ -59,6 +59,7 @@ class Carl(commands.Cog):
 
         @commands.Cog.listener('on_message')
         async def triggered(self, message):
+            print("Triggered??")
             if message.author.bot:
                 return
             if message.content.startswith('??'):
