@@ -59,14 +59,12 @@ class Carl(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        print("Triggered??")
         if message.author.bot:
             return
         if message.content.startswith('??'):
             return
         check = await self.coll.find_one({"trigger": message.content.lower()})
         if not check:
-            print("Something went wrong in check")
             return
         else:
             channel = check["channel"]
