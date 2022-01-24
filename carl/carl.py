@@ -11,7 +11,7 @@ class Carl(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def addtrigger(self, ctx, trigger: str, title: str, description: str, color: discord.Color.value = None,
+    async def addtrigger(self, ctx, trigger: str, title: str, description: str, color: discord.Color = None,
                          allowed_roles: commands.Greedy[discord.Role] = None,
                          channels: commands.Greedy[discord.TextChannel] = None):
         if color is None:
@@ -30,7 +30,7 @@ class Carl(commands.Cog):
         if check:
             await ctx.send("Trigger already exists")
         else:
-            await self.coll.insert_one({"trigger": trigger, "title": title, "description": description, "color": color,
+            await self.coll.insert_one({"trigger": trigger, "title": title, "description": description, "color": color.value,
                                         "allowed_roles": allowed_roles, "channel": channels})
             await ctx.send("Added trigger")
 
