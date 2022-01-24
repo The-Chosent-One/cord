@@ -30,8 +30,9 @@ class Carl(commands.Cog):
         if check:
             await ctx.send("Trigger already exists")
         else:
-            await self.coll.insert_one({"trigger": trigger, "title": title, "description": description, "color": color.value,
-                                        "allowed_roles": allowed_roles, "channel": channels})
+            await self.coll.insert_one(
+                {"trigger": trigger, "title": title, "description": description, "color": color.value,
+                 "allowed_roles": allowed_roles, "channel": channels})
             await ctx.send("Added trigger")
 
     @commands.command(alias=["deltrigger"])
@@ -71,13 +72,16 @@ class Carl(commands.Cog):
                     rolename = ctx.guild.get_role(roleid)
                     r += f"{rolename.name} "
                 if channel == 'None' and allowed_roles == 'None':
-                    await ctx.send("This trigger is allowed everywhere.",embed=embed)
+                    await ctx.send("This trigger is allowed everywhere.", embed=embed)
                 if channel == 'None' and allowed_roles != 'None':
-                    await ctx.send(f"This trigger is allowed in all channels but only for these roles: \n {r}.",embed=embed)
+                    await ctx.send(f"This trigger is allowed in all channels but only for these roles: \n {r}.",
+                                   embed=embed)
                 if channel != 'None' and allowed_roles == 'None':
                     await ctx.send(f"This trigger is allowed in the channels: \n {c} for everyone.", embed=embed)
                 if channel != 'None' and allowed_roles != 'None':
-                    await ctx.send(f"This is only allowed in the channels \n {c} \ for who have one of the roles: \n {r}", embed=embed")
+                    await ctx.send(
+                        f"This is only allowed in the channels \n {c} \n for who have one of the roles: \n {r}",
+                        embed=embed)
             else:
                 await ctx.send("Trigger does not exist, try `??trigger` to see available triggers")
 
