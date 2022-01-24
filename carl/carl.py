@@ -69,7 +69,7 @@ class Carl(commands.Cog):
                     for chamention in channel:
                         chamen = self.bot.get_channel(chamention)
                         s += f"{chamen.mention} "
-                await ctx.send(f"Channels this is allowed in {s}",embed=embed)
+                await ctx.send(f"Channels this is allowed in {s}", embed=embed)
             else:
                 await ctx.send("Trigger does not exist, try `??trigger` to see available triggers")
 
