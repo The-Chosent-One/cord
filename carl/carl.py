@@ -24,7 +24,7 @@ class Carl(commands.Cog):
             else:
                 chaid = [c.id for c in channels]
                 await self.coll.insert_one(
-                        {"trigger": trigger.lower(), "title": title, "description": description, "channel": chaid})
+                    {"trigger": trigger.lower(), "title": title, "description": description, "channel": chaid})
 
     @commands.command(alias=["deltrigger"])
     @checks.has_permissions(PermissionLevel.ADMIN)
@@ -79,3 +79,7 @@ class Carl(commands.Cog):
                         description = check["description"]
                         embed = discord.Embed(title=title, description=description)
                         await message.channel.send(embed=embed)
+
+
+def setup(bot):
+    bot.add_cog(Carl(bot))
