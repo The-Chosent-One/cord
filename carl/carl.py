@@ -17,7 +17,7 @@ class Carl(commands.Cog):
         if check:
             await ctx.send("Trigger already exists")
         else:
-            if channel is None:
+            if channels is None:
                 await self.coll.insert_one(
                     {"trigger": trigger.lower(), "title": title, "description": description, "channel": "None"})
                 await ctx.send("Added trigger")
