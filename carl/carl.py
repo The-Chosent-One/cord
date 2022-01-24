@@ -64,6 +64,7 @@ class Carl(commands.Cog):
                 description = find["description"]
                 title = find["title"]
                 channel = find["channel"]
+                allowed_roles = find["allowed_roles"]
                 embed = discord.Embed(title=title, description=description)
                 for chamention in channel:
                     chamen = self.bot.get_channel(chamention)
