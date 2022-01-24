@@ -54,7 +54,7 @@ class Carl(commands.Cog):
                 description = find["description"]
                 title = find["title"]
                 channel = find["channel"]
-                embed = discord.Embed(title=title, description=description, color=0x00ff00)
+                embed = discord.Embed(title=title, description=description)
                 chamen = [c.mention for c in channel]
                 await ctx.send(f"Channels this is allowed in {chamen}")
                 await ctx.send(embed=embed)
