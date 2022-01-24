@@ -68,10 +68,10 @@ class Carl(commands.Cog):
                 embed = discord.Embed(title=title, description=description)
                 for chamention in channel:
                     chamen = self.bot.get_channel(chamention)
-                    c += f"{chamen.mention} "
+                    c += f"{chamen.mention}, "
                 for roleid in allowed_roles:
                     rolename = ctx.guild.get_role(roleid)
-                    r += f"{rolename.name} "
+                    r += f"{rolename.name}, "
                 if channel == 'None' and allowed_roles == 'None':
                     await ctx.send("This trigger is allowed everywhere.", embed=embed)
                 if channel == 'None' and allowed_roles != 'None':
