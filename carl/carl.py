@@ -94,17 +94,15 @@ class Carl(commands.Cog):
             if channel == 'None' and allowed_roles != 'None':
                 if any(r.id in allowed_roles for r in message.author.roles):
                     embed = discord.Embed(title=title, description=description, color=color)
-                    return message.channel.send(embed=embed)
+                    return await message.channel.send(embed=embed)
             if channel != 'None' and allowed_roles == 'None':
                 if message.channel.id in channel:
                     embed = discord.Embed(title=title, description=description, color=color)
-                    return message.channel.send(embed=embed)
+                    return await message.channel.send(embed=embed)
             if channel != 'None' and allowed_roles != 'None':
-                print("yes")
                 if any(r.id in allowed_roles for r in message.author.roles) and message.channel.id in channel:
-                    print("yes2")
                     embed = discord.Embed(title=title, description=description, color=color)
-                    return message.channel.send(embed=embed)
+                    return await message.channel.send(embed=embed)
 
 
 def setup(bot):
