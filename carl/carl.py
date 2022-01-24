@@ -25,6 +25,7 @@ class Carl(commands.Cog):
                 chaid = [c.id for c in channels]
                 await self.coll.insert_one(
                     {"trigger": trigger.lower(), "title": title, "description": description, "channel": chaid})
+                await ctx.send("Added trigger")
 
     @commands.command(alias=["deltrigger"])
     @checks.has_permissions(PermissionLevel.ADMIN)
