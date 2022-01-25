@@ -56,8 +56,8 @@ class Carl(commands.Cog):
             async for x in fetchall:
                 trigger = x["trigger"]
                 t += f"{trigger} \n"
-                embed = discord.Embed(title="All triggers", description=t, color=0x00ff00)
-                await ctx.send(embed=embed)
+            embed = discord.Embed(title="All triggers", description=t, color=0x00ff00)
+            await ctx.send(embed=embed)
         else:
             find = await self.coll.find_one({"trigger": trigger})
             if find:
