@@ -129,7 +129,8 @@ class Carl(commands.Cog):
             else:
                 # hacky way to split by ',' and exclude command invocation
                 args = message.content.split(',')[1:]
-
+                
+                print (len(args))
                 if len(args) < 4:
                     return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
                                           "use:`??donate <message>,<amount>,<time>,<winners>`\n"
