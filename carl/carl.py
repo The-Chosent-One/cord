@@ -131,7 +131,7 @@ class Carl(commands.Cog):
                 args = message.content.replace('.donate', '').split(',')
     
                 print(len(args))
-                if len(args) < 4:
+                if len(args) < 4 or len(args) >= 5:
                     return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
                                                       "use:`??donate <message>,<amount>,<time>,<winners>`\n"
                                                       "Eg:`??donate Hi this is fire,500k,10m,0`\n"
@@ -154,9 +154,9 @@ class Carl(commands.Cog):
                 return await message.reply("You can only use this command in <#756004818866405376>")
             else:
                 # hacky way to split by ',' and exclude command invocation
-                args = message.content.split(',')[1:]
+                args = message.content.replace('.donate', '').split(',')
     
-                if len(args) < 4:
+                if len(args) < 4 or len(args) >= 5:
                     return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
                                                       "use:`??mm <item/money you are giving>,<item/money you are receiving>,<what channel>,<who you are fighting/trading>`\n"
                                                       "Eg:`??mm 850k,pepec,#👊🏻┃fight-here-1,@fire`\n"
