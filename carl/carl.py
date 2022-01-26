@@ -118,5 +118,60 @@ class Carl(commands.Cog):
                     return await message.channel.send(embed=embed)
 
 
+    @commands.Cog.listener('on_message')
+    async def donatemm(self, message: discord.Message):
+        if message.author.bot:
+            return
+
+        if message.content.startswith('.donate'):
+            if ctx.channel.id != 747853054329487500:
+                return await ctx.reply("You can only use this command in <#747853054329487500>")
+            else:
+                # hacky way to split by ',' and exclude command invocation
+                args = message.content.split(',')[1:]
+
+                if len(args) < 4 or len(args) > 4:
+                    return await ctx.send(f"Incorrect arguments {ctx.author.mention}\n"
+                                          "use:`??donate <message>,<amount>,<time>,<winners>`\n"
+                                          "Eg:`??donate Hi this is fire,500k,10m,0`\n"
+                                          "NOTE: COMMAS AND EACH PART ARE REQUIRED")
+
+                donate_embed = discord.Embed(
+                    title=f"{ctx.author} wants to sponsor a giveaway!",
+                    description=f"**Sponsor**: {ctx.author.mention}\n"
+                                f"**Message**: {args[0]}\n"
+                                f"**Amount**: {args[1]}\n"
+                                f"**Time**: {args[2]}\n"
+                                f"**Winners**: {args[3]}\n",
+                    timestamp=datetime.now()
+                )
+                donate_embed.set_footer(text="Tag made by Firecracker#3077")
+                await ctx.send(embed=donate_embed)
+
+        if message.content.startswith('.mm'):
+            if ctx.channel.id != 756004818866405376:
+                return await ctx.reply("You can only use this command in <#756004818866405376>")
+            else:
+                # hacky way to split by ',' and exclude command invocation
+                args = message.content.split(',')[1:]
+
+                if len(args) < 4:
+                    return await ctx.send(f"Incorrect arguments {ctx.author.mention}\n"
+                                          "use:`??mm <item/money you are giving>,<item/money you are receiving>,<what channel>,<who you are fighting/trading>`\n"
+                                          "Eg:`??mm 850k,pepec,#👊🏻┃fight-here-1,@fire`\n"
+                                          "NOTE: COMMAS AND EACH PART ARE REQUIRED")
+
+                mm_embed = discord.Embed(
+                    title=f"{ctx.author} needs a middleman!",
+                    description=f"**Giving**: {args[0]}\n"
+                                f"**Receiving**: {args[1]}\n"
+                                f"**Channel**: {args[2]}\n"
+                                f"**Who I'm fighting/trading**: {args[3]}\n",
+                    timestamp=datetime.now()
+                )
+                mm_embed.set_footer(text="Tag made by Firecracker#3077")
+                await ctx.send(embed=mm_embed)
+
+
 def setup(bot):
     bot.add_cog(Carl(bot))
