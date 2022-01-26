@@ -133,7 +133,7 @@ class Carl(commands.Cog):
                 if len(args) < 4 or len(args) >= 5:
                     return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
                                                       "use:`.donate <message>,<amount>,<time>,<winners>`\n"
-                                                      "Eg:`.donate Hi this is fire,500k,10m,0`\n"
+                                                      "Eg:`.donate Hi this is fire,1m,10m,1`\n"
                                                       "NOTE: COMMAS AND EACH PART ARE REQUIRED")
     
                 donate_embed = discord.Embed(
