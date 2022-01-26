@@ -117,8 +117,6 @@ class Carl(commands.Cog):
                     embed = discord.Embed(title=title, description=description, color=color)
                     return await message.channel.send(embed=embed)
 
-
-
     @commands.Cog.listener('on_message')
     async def donatemm(self, message: discord.Message):
         if message.author.bot:
@@ -132,7 +130,7 @@ class Carl(commands.Cog):
                 args = message.content.split(',')[1:]
 
                 if len(args) < 4 or len(args) > 4:
-                    return await message.send(f"Incorrect arguments {message.author.mention}\n"
+                    return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
                                           "use:`??donate <message>,<amount>,<time>,<winners>`\n"
                                           "Eg:`??donate Hi this is fire,500k,10m,0`\n"
                                           "NOTE: COMMAS AND EACH PART ARE REQUIRED")
@@ -147,7 +145,7 @@ class Carl(commands.Cog):
                     timestamp=datetime.now()
                 )
                 donate_embed.set_footer(text="Tag made by Firecracker#3077")
-                await message.send(embed=donate_embed)
+                await message.channel.send(embed=donate_embed)
 
         if message.content.startswith('.mm'):
             if message.channel.id != 756004818866405376:
@@ -157,7 +155,7 @@ class Carl(commands.Cog):
                 args = message.content.split(',')[1:]
 
                 if len(args) < 4:
-                    return await message.send(f"Incorrect arguments {message.author.mention}\n"
+                    return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
                                           "use:`??mm <item/money you are giving>,<item/money you are receiving>,<what channel>,<who you are fighting/trading>`\n"
                                           "Eg:`??mm 850k,pepec,#👊🏻┃fight-here-1,@fire`\n"
                                           "NOTE: COMMAS AND EACH PART ARE REQUIRED")
@@ -171,8 +169,7 @@ class Carl(commands.Cog):
                     timestamp=datetime.now()
                 )
                 mm_embed.set_footer(text="Tag made by Firecracker#3077")
-                await message.send(embed=mm_embed)
-
+                await message.channel.send(embed=mm_embed)
 
 def setup(bot):
     bot.add_cog(Carl(bot))
