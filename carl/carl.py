@@ -155,7 +155,7 @@ class Carl(commands.Cog):
                 return await message.reply("You can only use this command in <#756004818866405376>")
             else:
                 # hacky way to split by ',' and exclude command invocation
-                args = message.content.replace('.donate', '').split(',')
+                args = message.content.replace('.mm', '').split(',')
     
                 if len(args) < 4 or len(args) >= 5:
                     await message.delete()
