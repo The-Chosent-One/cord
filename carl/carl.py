@@ -176,5 +176,11 @@ class Carl(commands.Cog):
                 await message.channel.send(embed=mm_embed)
                 await message.delete()
 
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def embed(self,ctx, channel: discord.TextChannel, color: discord.Color, title, description):
+        embed = discord.Embed(title=title, description=description, color=color)
+        await channel.send(embed=embed)
+
 def setup(bot):
     bot.add_cog(Carl(bot))
