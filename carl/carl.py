@@ -131,6 +131,7 @@ class Carl(commands.Cog):
                 args = message.content.replace('.donate', '').split(',')
     
                 if len(args) < 4 or len(args) >= 5:
+                    await message.delete()
                     return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
                                                       "use:`.donate <message>,<amount>,<time>,<winners>`\n"
                                                       "Eg:`.donate Hi this is fire,1m,10m,1`\n"
@@ -147,6 +148,7 @@ class Carl(commands.Cog):
                 )
                 donate_embed.set_footer(text="Tag made by Firecracker#3077")
                 await message.channel.send(embed=donate_embed)
+                await message.delete()
     
         if message.content.startswith('.mm'):
             if message.channel.id != 756004818866405376:
@@ -156,6 +158,7 @@ class Carl(commands.Cog):
                 args = message.content.replace('.donate', '').split(',')
     
                 if len(args) < 4 or len(args) >= 5:
+                    await message.delete()
                     return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
                                                       "use:`.mm <item/money you are giving>,<item/money you are receiving>,<what channel>,<who you are fighting/trading>`\n"
                                                       "Eg:`.mm 850k,pepec,#👊🏻┃fight-here-1,@fire`\n"
@@ -171,6 +174,7 @@ class Carl(commands.Cog):
                 )
                 mm_embed.set_footer(text="Tag made by Firecracker#3077")
                 await message.channel.send(embed=mm_embed)
+                await message.delete()
 
 def setup(bot):
     bot.add_cog(Carl(bot))
