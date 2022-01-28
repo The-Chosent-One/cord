@@ -92,7 +92,7 @@ class TypeRacer(commands.Cog):
         return embed
 
     def get_lb_prefix(self, i: int) -> str:
-        """Returns the character to prefix user names with in the leaderboard"""
+        """Returns the character to prefix usernames with in the leaderboard"""
         if i == 1:
             return ":first_place:"
         elif i == 2:
@@ -176,7 +176,7 @@ class TypeRacer(commands.Cog):
     @config.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def whitelist(self, ctx, channel: discord.TextChannel = None):
-        if channel == None:
+        if channel is None:
             channel = ctx.channel
         check = await self.coll.find_one({"channel": channel.id})
         if check:
@@ -188,7 +188,7 @@ class TypeRacer(commands.Cog):
     @config.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def unwhitelist(self, ctx, channel: discord.TextChannel = None):
-        if channel == None:
+        if channel is None:
             channel = ctx.channel
         unwhitelist = await self.coll.find_one({"channel": channel.id})
         if not unwhitelist:
@@ -221,8 +221,8 @@ class TypeRacer(commands.Cog):
                 "You are not allowed to use that here", delete_after=4
             )
         if member == ctx.author:
-            return await ctx.send("Imagine trying to challenege youself lmao")
-        if member != None:
+            return await ctx.send("Imagine trying to challenge yourself lmao")
+        if member is not None:
             await ctx.send(
                 f"{member.mention}, {ctx.author.mention} challenges you to a battle of speed typing, do you accept? (yes/no)"
             )
@@ -266,7 +266,7 @@ class TypeRacer(commands.Cog):
         def check(m: discord.Message) -> bool:
             if m.channel != ctx.channel or m.author.bot or not m.content:
                 return False  # if satisfied, skip accuracy check and return
-            if member != None:
+            if member is not None:
                 if m.author != member and m.author != ctx.author:
                     return False
             content = " ".join(m.content.split())  # remove duplicate spaces
@@ -299,7 +299,7 @@ class TypeRacer(commands.Cog):
                 break
 
             if winner.author in (x[0] for x in completions):
-                # dont count the same user twice
+                # don't count the same user twice
                 continue
             seconds = (winner.created_at - msg.created_at).total_seconds()
             winner_ref = winner.to_reference(fail_if_not_exists=False)
