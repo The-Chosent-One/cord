@@ -11,6 +11,7 @@ class SplitOrSteal(commands.Cog):
             slash_commands.InteractionClient(self.bot)
 
     @commands.command()
+    @commands.has_any_role(682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911, 855877108055015465)
     async def sos(self, ctx: commands.Context, player1: discord.Member, player2: discord.Member):
         actions = ActionRow(
             Button(style=ButtonStyle.green, label="Split", custom_id="split"),
