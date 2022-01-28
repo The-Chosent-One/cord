@@ -57,7 +57,6 @@ class PremiumSupport(commands.Cog):
             if role.id in self.roles:
                 premium = True
         if premium:
-
             class Author:
                 roles = []
 
@@ -68,13 +67,13 @@ class PremiumSupport(commands.Cog):
                 id = initial_message.id
                 attachments = []
                 stickers = []
-                
+
         if Msg.content is not None:
             await thread.send(Msg, destination=recipient, from_mod=True, anonymous=True)
 
-        if self.mention != "":    
+        if self.mention != "":
             await thread.channel.send(self.mention)
-            
+
         if self.category:
             await thread.channel.move(
                 end=True,
@@ -84,20 +83,18 @@ class PremiumSupport(commands.Cog):
                 reason="Premium support plugin.",
             )
             guild = self.bot.get_guild(645753561329696785)
-            Role1 = discord.utils.get(guild.roles, name='Farmer - Head Moderator')
+            role1 = discord.utils.get(guild.roles, name='Farmer - Head Moderator')
             overwrites = {
-              guild.default_role: discord.PermissionOverwrite(
-                read_messages=False,
-                send_messages=False,
-              ),
-              Role1: discord.PermissionOverwrite(
-                read_messages=True,
-                send_messages=True,
-              )
+                guild.default_role: discord.PermissionOverwrite(
+                    read_messages=False,
+                    send_messages=False,
+                ),
+                role1: discord.PermissionOverwrite(
+                    read_messages=True,
+                    send_messages=True,
+                )
             }
-            await thread.channel.edit(overwrites = overwrites)
-
-        
+            await thread.channel.edit(overwrites=overwrites)
 
     @checks.has_permissions(PermissionLevel.ADMIN)
     @commands.group(invoke_without_command=True, aliases=["pc"])
