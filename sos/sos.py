@@ -80,9 +80,7 @@ class SplitOrSteal(commands.Cog):
 
                 result_embed = discord.Embed(
                     title="Split or Steal?",
-                    description=f"{final} \n"
-                                f"{player1.mention} chose **{choices[player1]}** \n"
-                                f"{player2.mention} chose **{choices[player2]}**",
+                    description=f"{final}",
                     colour=0x90EE90
                 )
                 return await message.edit(embed=result_embed, components=[])
