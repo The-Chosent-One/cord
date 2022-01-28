@@ -68,9 +68,19 @@ class SplitOrSteal(commands.Cog):
                 # kills the manager
                 on_click.kill()
 
+                if choices[player1] == "split" and choices[player2] == "split":
+                    final = f"{player1.mention} and {player2.mention} both split!, therefore the prize is divided equally between them!"
+                if choices[player1] == "steal" and choices[player2] == "steal":
+                    final = f"{player1.mention} and {player2.mention} both stole!, therefore neither of them get anything!"
+                if choices[player1] == "split" and choices[player2] == "steal":
+                    final = f"{player1.mention} split and {player2.mention} stole, therefore {player2.mention} gets the prize!"
+                if choices[player1] == "steal" and choices[player2] == "split":
+                    final = f"{player1.mention} stole and {player2.mention} split, therefore {player1.mention} gets the prize!"
+
                 result_embed = discord.Embed(
                     title="Split or Steal?",
-                    description=f"{player1.mention} chose **{choices[player1]}** \n"
+                    description=f"{final} \n",
+                                f"{player1.mention} chose **{choices[player1]}** \n",
                                 f"{player2.mention} chose **{choices[player2]}**",
                     colour=0x90EE90
                 )
