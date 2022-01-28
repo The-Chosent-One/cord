@@ -51,7 +51,7 @@ class Suggest(commands.Cog):
                     embed.set_author(name="Error.")
                     embed.set_footer(text="Task failed successfully.")
                     await ctx.send(embed=embed)
-					
+
                 else:
                     suggestion_channel = self.bot.get_channel(
                         int(config["suggestion-channel"]["channel"])
@@ -102,7 +102,7 @@ class Suggest(commands.Cog):
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def approve(self, ctx, suggestion_id: int, *, message=None):
         """
-        Approve an suggestion.
+        Approve a suggestion.
 
         **Usage**:
         [p]approve 5 That's a good idea and will be implemented soon (trademarked).
@@ -118,7 +118,7 @@ class Suggest(commands.Cog):
                 description="Try something else lol.",
             )
             return await ctx.send(embed=embed)
-		
+
         s_message = None
         for channel in ctx.guild.channels:
             if not isinstance(channel, discord.TextChannel):
@@ -138,7 +138,7 @@ class Suggest(commands.Cog):
         fields = len(embed.fields)
         embed.color = discord.Colour.green()
         embed.set_author(name=f"Suggestion #{suggestion_id}: Approved")
-		
+
         if fields > 2:
             embed.remove_field(2)
         if fields == 4:
@@ -148,7 +148,7 @@ class Suggest(commands.Cog):
                 value=message if message else "No response given.",
                 inline=False,
             )
-			
+
         else:
             embed.add_field(
                 name="Response",
@@ -160,7 +160,7 @@ class Suggest(commands.Cog):
             votes += f"{reaction.emoji}: {reaction.count - 1 if reaction.me else reaction.count}\n"
         if votes:
             embed.add_field(name="Votes", value=votes, inline=False)
-			
+
         await s_message.edit(embed=embed)
         await s_message.clear_reactions()
 
@@ -168,7 +168,7 @@ class Suggest(commands.Cog):
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def deny(self, ctx, suggestion_id: int, *, message=None):
         """
-        Deny an suggestion.
+        Deny a suggestion.
 
         **Usage**:
         [p]deny 27 That wouldn't work due to the way the thing in the works in contrast with the other thing.
@@ -184,7 +184,7 @@ class Suggest(commands.Cog):
                 description="Try something else lol.",
             )
             return await ctx.send(embed=embed)
-		
+
         s_message = None
         for channel in ctx.guild.channels:
             if not isinstance(channel, discord.TextChannel):
@@ -288,7 +288,7 @@ class Suggest(commands.Cog):
     @checks.has_permissions(PermissionLevel.MOD)
     @commands.group(invoke_without_command=True)
     async def suggestmod(self, ctx: commands.Context):
-        """Let's you block and unblock people from using the suggest command."""
+        """Lets you block and unblock people from using the suggest command."""
         await ctx.send_help(ctx.command)
 
     @suggestmod.command(aliases=["ban"])
