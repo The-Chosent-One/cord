@@ -49,6 +49,26 @@ class Owners(commands.Cog):
                               description = "`??disableautoban | ??enableautoban` \n \n `??disabledecancer | ??enabledecancer` \n \n `??disableextras | ??enableextras` \n \n `??disablelock | ??enablelock` \n \n `??disableping | ??enableping` \n \n `??disableshortcut | ??enableshortcut` \n \n `??disablesnipe | ??enablesnipe` \n \n `??disablesuggest | ??enablesuggest` \n \n `??disabletyperacer | ??enabletyperacer` \n \n `??disablear | ??enablear` \n \n `??disablecarl | ??enablecarl`")
         await ctx.send(embed=embed)
 
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def offline(self, ctx):
+        """
+        get all offline bots in a server
+        """
+        guild = ctx.guild
+        offline_bots = []
+        for member in guild.members:
+            if not member.bot:
+                continue
+            if not member.status == discord.Status.offline:
+                continue
+            offline_bots.append(member)
+        if not offline_bots:
+            await ctx.send("No offline bots found")
+            return
+        await ctx.send(f"Found {len(offline_bots)} offline bots")
+        for bot in offline_bots:
+            await ctx.send(f"{bot.name}#{bot.discriminator}")
 
 def setup(bot):
     bot.add_cog(Owners(bot))
