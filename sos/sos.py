@@ -80,8 +80,8 @@ class SplitOrSteal(commands.Cog):
 
                 result_embed = discord.Embed(
                     title="Split or Steal?",
-                    description=f"{final} \n",
-                                f"{player1.mention} chose **{choices[player1]}** \n",
+                    description=f"{final} \n"
+                                f"{player1.mention} chose **{choices[player1]}** \n"
                                 f"{player2.mention} chose **{choices[player2]}**",
                     colour=0x90EE90
                 )
