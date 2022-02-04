@@ -87,7 +87,7 @@ class SelfRoles(commands.Cog):
 
         available_roles = self.regular_colour_roles.copy()
 
-        if bool( set(inter.author._roles) & {658770981816500234} ): # Farmer
+        if bool( set(inter.author._roles) & {867366006635364363} ): # Farmer
             available_roles.update(self.premium_colour_roles)
         
         components = []
