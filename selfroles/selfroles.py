@@ -179,7 +179,7 @@ class SelfRoles(commands.Cog):
         if inter.component.custom_id == "colour_roles":
             available_roles = self.regular_colour_roles.copy()
 
-            if bool(set(inter.author._roles) & {790290355631292467, 723035638357819432, 855877108055015465, 682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911, 794301389769015316, 732497481358770186}):  # Farmer
+            if bool(set(inter.author._roles) & {719012715204444181, 790290355631292467, 723035638357819432, 855877108055015465, 682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911, 794301389769015316, 732497481358770186}):  # Farmer
                 available_roles.update(self.premium_colour_roles)
         
         if inter.component.custom_id == "access_roles":
