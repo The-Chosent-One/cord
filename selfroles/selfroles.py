@@ -7,6 +7,7 @@ import sys
 from core import checks
 from core.models import PermissionLevel
 
+
 class SelfRoles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -45,24 +46,24 @@ class SelfRoles(commands.Cog):
 
         self.access_roles: dict[int, str] = {
             "├── Dank Access──┤": (680115778967699517, "<:dankmemeraccess:939734546147078144>"),
-            "├──Pokémon Access─┤": (680115782645973003,"<:pokemonaccess:939738001083347005>"),
+            "├──Pokémon Access─┤": (680115782645973003, "<:pokemonaccess:939738001083347005>"),
             "├── Anime Access──┤": (791439539854901248, "<:animeaccess:939738555364827156>"),
         }
 
         self.ping_roles: dict[int, str] = {
-            "● Nitro Giveaway ●": (800660323203022868,"<a:giveaway_blob:939746793225343068>")
-            "● • Giveawayss • ●": (672889430171713538,"<a:giveaway_blob:830768052156104705>")
-            "● • Livestreams • ●": (864637855245795330,"<:status_streaming:939746824187682826>")
-            "● • Event Time! • ●":  (684552219344764934,"<:hypesquad_events:939746866294313002>")
-            "● • Mafia Time! • ●": (713898461606707273,"<:mafia:939746925400457307>")
-            "● • Song Contest • ●": (710184003684270231,"<a:2musicvibe:939746897671880794>")
-            "● • Partnership • ●": (793454145897758742,"<a:PartnerShine:939746957918875660>")
-            "● • Farm Medic • ●": (722634660068327474,"<:DeadChat:939746982866608208>")
-            "● • • Lottery • • ●": (732949595633614938,"<:winninglotteryticket:939747030560047104>")
-            "● Friendly Heist ●": (750908803704160268,"💰")
-            "● Daily Question ●": (872546624461738035,"❓")
-            "● Heist Hipphoes ●": (684987530118299678,"<a:fh_pepeheist:939747192451772486>")
-            "● Hype My Stream! ●": (865796857887981579,"<:streaming:939747138030669834>")
+            "● Nitro Giveaway ●": (800660323203022868, "<a:Nitro:916141338800586772>"),
+            "● • Giveawayss • ●": (672889430171713538, "<a:giveaway_blob:830768052156104705>"),
+            "● • Livestreams • ●": (864637855245795330, "<:status_streaming:939746824187682826>"),
+            "● • Event Time! • ●": (684552219344764934, "<:hypesquad_events:939746866294313002>"),
+            "● • Mafia Time! • ●": (713898461606707273, "<:mafia:939746925400457307>"),
+            "● • Song Contest • ●": (710184003684270231, "<a:2musicvibe:939746897671880794>"),
+            "● • Partnership • ●": (793454145897758742, "<a:PartnerShine:939746957918875660>"),
+            "● • Farm Medic • ●": (722634660068327474, "<:DeadChat:939746982866608208>"),
+            "● • • Lottery • • ●": (732949595633614938, "<:winninglotteryticket:939747030560047104>"),
+            "● Friendly Heist ●": (750908803704160268, "💰"),
+            "● Daily Question ●": (872546624461738035, "❓"),
+            "● Heist Hipphoes ●": (684987530118299678, "<a:fh_pepeheist:939747192451772486>"),
+            "● Hype My Stream! ●": (865796857887981579, "<:streaming:939747138030669834>"),
         }
 
         if not hasattr(self.bot, "inter_client"):
@@ -96,7 +97,8 @@ class SelfRoles(commands.Cog):
             )
         )
 
-        colour_embed = discord.Embed(title="Get your colour roles here!", description="Click the button below to choose colour roles", color=0x90ee90)
+        colour_embed = discord.Embed(title="Get your colour roles here!",
+                                     description="Click the button below to choose colour roles", color=0x90ee90)
 
         await ctx.send(embed=colour_embed, components=[row])
 
@@ -111,7 +113,8 @@ class SelfRoles(commands.Cog):
             )
         )
 
-        colour_embed = discord.Embed(title="Get your access roles here!", description="Click the button below to choose access roles", color=0x90ee90)
+        colour_embed = discord.Embed(title="Get your access roles here!",
+                                     description="Click the button below to choose access roles", color=0x90ee90)
 
         await ctx.send(embed=colour_embed, components=[row])
 
@@ -126,7 +129,8 @@ class SelfRoles(commands.Cog):
             )
         )
 
-        colour_embed = discord.Embed(title="Get your ping roles here!", description="Click the button below to choose ping roles", color=0x90ee90)
+        colour_embed = discord.Embed(title="Get your ping roles here!",
+                                     description="Click the button below to choose ping roles", color=0x90ee90)
 
         await ctx.send(embed=colour_embed, components=[row])
 
@@ -206,36 +210,37 @@ class SelfRoles(commands.Cog):
     async def change_roles(self, inter: MessageInteraction):
         if inter.component.custom_id.startswith("change_colour_role"):
             role_id = int(inter.component.custom_id[19:])
-    
+
             if inter.author._roles.has(role_id):
                 await inter.author.remove_roles(discord.Object(role_id))
                 return await inter.create_response(f"Removed <@&{role_id}>!", ephemeral=True)
-    
+
             # does not have the role
             await inter.author.add_roles(discord.Object(role_id))
             await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
-        
+
         if inter.component.custom_id.startswith("change_access_role"):
             role_id = int(inter.component.custom_id[19:])
-            
+
             if inter.author._roles.has(role_id):
                 await inter.author.remove_roles(discord.Object(role_id))
                 return await inter.create_response(f"Removed <@&{role_id}>!", ephemeral=True)
-            
+
             # does not have the role
             await inter.author.add_roles(discord.Object(role_id))
             await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
-            
+
         if inter.component.custom_id.startswith("change_ping_role"):
             role_id = int(inter.component.custom_id[19:])
-            
+
             if inter.author._roles.has(role_id):
                 await inter.author.remove_roles(discord.Object(role_id))
                 return await inter.create_response(f"Removed <@&{role_id}>!", ephemeral=True)
-            
+
             # does not have the role
             await inter.author.add_roles(discord.Object(role_id))
             await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
-            
+
+
 def setup(bot):
     bot.add_cog(SelfRoles(bot))
