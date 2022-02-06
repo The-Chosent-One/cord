@@ -193,7 +193,7 @@ class SelfRoles(commands.Cog):
 
             components = []
 
-            for role_names in zip_longest(*([iter(available_roles)] * 5)):
+            for role_names in zip_longest(*([iter(available_roles)] * 4)):
                 components.append(ActionRow(
                     *[Button(
                         style=ButtonStyle.blurple,
