@@ -220,7 +220,7 @@ class SelfRoles(commands.Cog):
             await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
 
         if inter.component.custom_id.startswith("change_access_role"):
-            role_id = int(inter.component.custom_id[19:])
+            role_id = int(inter.component.custom_id[18:])
 
             if inter.author._roles.has(role_id):
                 await inter.author.remove_roles(discord.Object(role_id))
@@ -231,7 +231,7 @@ class SelfRoles(commands.Cog):
             await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
 
         if inter.component.custom_id.startswith("change_ping_role"):
-            role_id = int(inter.component.custom_id[19:])
+            role_id = int(inter.component.custom_id[21:])
 
             if inter.author._roles.has(role_id):
                 await inter.author.remove_roles(discord.Object(role_id))
