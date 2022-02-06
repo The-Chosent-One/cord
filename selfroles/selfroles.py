@@ -16,7 +16,8 @@ class SelfRoles(commands.Cog):
                        "m": 11, "n": 7, "o": 7, "p": 7, "q": 7, "r": 4, "s": 5, "t": 4, "u": 7, "v": 6, "w": 9, "x": 6,
                        "y": 6, "z": 5, "A": 9, "B": 7, "C": 8, "D": 9, "E": 7, "F": 6, "G": 9, "H": 9, "I": 3, "J": 5,
                        "K": 8, "L": 6, "M": 12, "N": 9, "O": 9, "P": 7, "Q": 9, "R": 7, "S": 7, "T": 7, "U": 9, "V": 9,
-                       "W": 13, "X": 8, "Y": 8, "Z": 7, " ": 3, "é": 6, "●": 7, "•": 5, "├": 9, "┤": 9, "─": 9, "!": 3, }
+                       "W": 13, "X": 8, "Y": 8, "Z": 7, " ": 3, "é": 6, "●": 7, "•": 5, "├": 9, "┤": 9, "─": 9,
+                       "!": 3, }
 
         # Name: id, emoji
         self.regular_colour_roles: dict[str, tuple[int, str]] = {
@@ -80,7 +81,7 @@ class SelfRoles(commands.Cog):
         max_width = max(sum(self.offset[c] for c in role_name) for role_name in roles)
 
         return max_width
-    
+
     def pad_string(self, string: str, max_padding: int) -> str:
         width = sum(self.offset[c] for c in string)
         return string + "\u200a" * (max_padding - width)
@@ -88,7 +89,7 @@ class SelfRoles(commands.Cog):
     def get_components(self, roles: dict[str, tuple[int, str]], max_items_per_row: int) -> list[ActionRow]:
         components = []
         # splits the roles into lists of length max_items_per_row each
-        split_roles = [islice(roles, x, x+max_items_per_row) for x in range(0, len(roles), max_items_per_row)]
+        split_roles = [islice(roles, x, x + max_items_per_row) for x in range(0, len(roles), max_items_per_row)]
 
         # calculate the maximum width that the roles would have
         padding = self.calculate_max_padding(roles)
@@ -101,13 +102,13 @@ class SelfRoles(commands.Cog):
 
                 row.add_button(
                     style=ButtonStyle.blurple,
-                    label= self.pad_string(role_name, padding),
+                    label=self.pad_string(role_name, padding),
                     custom_id=f"update_self_role:{role_id}",
                     emoji=emoji
                 )
-            
+
             components.append(row)
-        
+
         return components
 
     @commands.command()
@@ -122,9 +123,9 @@ class SelfRoles(commands.Cog):
         )
 
         colour_embed = discord.Embed(
-            title = "Get your colour roles here!",
-            description = "Click the button below to choose colour roles",
-            color = 0x90ee90
+            title="Get your colour roles here!",
+            description="Click the button below to choose colour roles",
+            color=0x90ee90
         )
 
         await ctx.message.delete()
@@ -142,9 +143,9 @@ class SelfRoles(commands.Cog):
         )
 
         access_embed = discord.Embed(
-            title = "Get your colour roles here!",
-            description = "Click the button below to choose access roles",
-            color = 0x90ee90
+            title="Get your colour roles here!",
+            description="Click the button below to choose access roles",
+            color=0x90ee90
         )
 
         await ctx.message.delete()
@@ -162,26 +163,28 @@ class SelfRoles(commands.Cog):
         )
 
         ping_embed = discord.Embed(
-            title = "Get your colour roles here!",
-            description = "Click the button below to choose ping roles",
-            color = 0x90ee90
+            title="Get your colour roles here!",
+            description="Click the button below to choose ping roles",
+            color=0x90ee90
         )
 
         await ctx.message.delete()
         await ctx.send(embed=ping_embed, components=[row])
 
-
     @commands.Cog.listener("on_button_click")
     async def get_roles(self, inter: MessageInteraction):
-        # the default is 5, but can be changed 
+        # the default is 5, but can be changed
         max_items_per_row = 5
 
         if inter.component.custom_id == "colour_roles":
             available_roles = self.regular_colour_roles.copy()
 
-            if bool(set(inter.author._roles) & {719012715204444181, 790290355631292467, 723035638357819432, 855877108055015465, 682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911, 794301389769015316, 732497481358770186}):  # Farmer
+            if bool(set(inter.author._roles) & {719012715204444181, 790290355631292467, 723035638357819432,
+                                                855877108055015465, 682698693472026749, 658770981816500234,
+                                                663162896158556212, 658770586540965911, 794301389769015316,
+                                                732497481358770186}):  # Farmer
                 available_roles.update(self.premium_colour_roles)
-        
+
         if inter.component.custom_id == "access_roles":
             available_roles = self.access_roles.copy()
 
@@ -194,13 +197,12 @@ class SelfRoles(commands.Cog):
 
         await inter.create_response("Which roles do you want to add/remove?", components=components, ephemeral=True)
 
-        
     # responsible for adding/removing roles
     @commands.Cog.listener("on_button_click")
     async def update_roles(self, inter: MessageInteraction):
         if not inter.component.custom_id.startswith("update_self_role"):
             return
-        
+
         _, role_id = inter.component.custom_id.split(":")
         role_id = int(role_id)
 
@@ -208,10 +210,22 @@ class SelfRoles(commands.Cog):
             await inter.author.remove_roles(discord.Object(role_id))
             return await inter.create_response(f"Removed <@&{role_id}>!", ephemeral=True)
 
-        # does not have the role
+        if inter.author._roles.has(719260653541654608):
+            circus = inter.author.guild.get_role(role_id)
+            if circus.id == 672889430171713538 or circus.id == 684552219344764934:
+                return await inter.create_response("Circus Animals are not allowed this role, DM <@855270214656065556> to appeal", ephemeral=True)
+        if inter.author._roles.has(761251579381678081):
+            heists = inter.author.guild.get_role(role_id)
+            if heists.id == 684987530118299678:
+                return await inter.create_response("Poor Animals are not allowed this role, DM <@855270214656065556> to appeal", ephemeral=True)
+        if inter.author._roles.has(906203595999944794):
+            hype = inter.author.guild.get_role(role_id)
+            if hype.id == 865796857887981579:
+                return await inter.create_response("You have the No Hype role so you are not allowed this role, DM <@855270214656065556> to appeal", ephemeral=True)
+            
         await inter.author.add_roles(discord.Object(role_id))
         await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
 
+
 def setup(bot):
     bot.add_cog(SelfRoles(bot))
-    
