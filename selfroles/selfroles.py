@@ -51,7 +51,7 @@ class SelfRoles(commands.Cog):
         }
 
         self.ping_roles: dict[int, str] = {
-            "● Nitro Giveaway ●": (800660323203022868, "<a:Nitro:916141338800586772>"),
+            "● Nitro Giveaway ●": (800660323203022868, "<a:giveaway_blob:939746793225343068>"),
             "● • Giveawayss • ●": (672889430171713538, "<a:giveaway_blob:830768052156104705>"),
             "● • Livestreams • ●": (864637855245795330, "<:status_streaming:939746824187682826>"),
             "● • Event Time! • ●": (684552219344764934, "<:hypesquad_events:939746866294313002>"),
@@ -77,7 +77,7 @@ class SelfRoles(commands.Cog):
                   "m": 11, "n": 7, "o": 7, "p": 7, "q": 7, "r": 4, "s": 5, "t": 4, "u": 7, "v": 6, "w": 9, "x": 6,
                   "y": 6, "z": 5, "A": 9, "B": 7, "C": 8, "D": 9, "E": 7, "F": 6, "G": 9, "H": 9, "I": 3, "J": 5,
                   "K": 8, "L": 6, "M": 12, "N": 9, "O": 9, "P": 7, "Q": 9, "R": 7, "S": 7, "T": 7, "U": 9, "V": 9,
-                  "W": 13, "X": 8, "Y": 8, "Z": 7, " ": 3, "é": 3, "●": 3, "•": 3, "├": 3, "┤": 3, "─": 3, "!": 3, }
+                  "W": 13, "X": 8, "Y": 8, "Z": 7, " ": 3, "é": 6, "●": 7, "•": 5, "├": 9, "┤": 9, "─": 9, "!": 3, }
 
         hair_spaces = sum(offset[c] for c in string)
 
@@ -232,7 +232,6 @@ class SelfRoles(commands.Cog):
 
         if inter.component.custom_id.startswith("change_ping_role"):
             role_id = int(inter.component.custom_id[19:])
-            await inter.create_response(f"{role_id}")
 
             if inter.author._roles.has(role_id):
                 await inter.author.remove_roles(discord.Object(role_id))
