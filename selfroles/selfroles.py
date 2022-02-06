@@ -51,7 +51,7 @@ class SelfRoles(commands.Cog):
         }
 
         self.ping_roles: dict[int, str] = {
-            "● Nitro Giveaway ●": (800660323203022868, "<a:giveaway_blob:939746793225343068>"),
+            "● Nitro Giveaway ●": (800660323203022868, "<a:Nitro:916141338800586772>"),
             "● • Giveawayss • ●": (672889430171713538, "<a:giveaway_blob:830768052156104705>"),
             "● • Livestreams • ●": (864637855245795330, "<:status_streaming:939746824187682826>"),
             "● • Event Time! • ●": (684552219344764934, "<:hypesquad_events:939746866294313002>"),
