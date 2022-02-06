@@ -1,9 +1,7 @@
 import discord
 from discord.ext import commands
 from dislash import slash_commands, ActionRow, Button, ButtonStyle, MessageInteraction
-from itertools import zip_longest
-import traceback
-import sys
+from itertools import islice
 from core import checks
 from core.models import PermissionLevel
 
@@ -12,8 +10,16 @@ class SelfRoles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+        # The number of hair spaces each character is (approximately)
+        # used for calculating paddings for strings within buttons
+        self.offset = {"a": 6, "b": 7, "c": 6, "d": 7, "e": 6, "f": 3, "g": 6, "h": 7, "i": 3, "j": 3, "k": 6, "l": 3,
+                       "m": 11, "n": 7, "o": 7, "p": 7, "q": 7, "r": 4, "s": 5, "t": 4, "u": 7, "v": 6, "w": 9, "x": 6,
+                       "y": 6, "z": 5, "A": 9, "B": 7, "C": 8, "D": 9, "E": 7, "F": 6, "G": 9, "H": 9, "I": 3, "J": 5,
+                       "K": 8, "L": 6, "M": 12, "N": 9, "O": 9, "P": 7, "Q": 9, "R": 7, "S": 7, "T": 7, "U": 9, "V": 9,
+                       "W": 13, "X": 8, "Y": 8, "Z": 7, " ": 3, "é": 6, "●": 7, "•": 5, "├": 9, "┤": 9, "─": 9, "!": 3, }
+
         # Name: id, emoji
-        self.regular_colour_roles: dict[int, str] = {
+        self.regular_colour_roles: dict[str, tuple[int, str]] = {
             "Cat": (669807217444126731, "<:Cat:938660093124292618>"),
             "Dog": (659498316991692832, "<:Dog:938660094042857502>"),
             "Chicken": (658771095167565834, "<:Chicken:938660093619236914>"),
@@ -22,7 +28,7 @@ class SelfRoles(commands.Cog):
             "Random": (766382104539693066, "<a:Random:938826714820255765>"),
         }
 
-        self.premium_colour_roles: dict[int, str] = {
+        self.premium_colour_roles: dict[str, tuple[int, str]] = {
             "Duck": (658787907091300381, "<:Duck:938660094856544256>"),
             "Goose": (671225083020312587, "<:Goose:938660094541967391>"),
             "Bee": (670306986742644798, "<:Bee:938660094340657152>"),
@@ -44,13 +50,13 @@ class SelfRoles(commands.Cog):
             "Moose": (820406719209144332, "<:Moose:938660095271780382>"),
         }
 
-        self.access_roles: dict[int, str] = {
+        self.access_roles: dict[str, tuple[int, str]] = {
             "├── Dank Access──┤": (680115778967699517, "<:dankmemeraccess:939734546147078144>"),
             "├──Pokémon Access─┤": (680115782645973003, "<:pokemonaccess:939738001083347005>"),
             "├── Anime Access──┤": (791439539854901248, "<:animeaccess:939738555364827156>"),
         }
 
-        self.ping_roles: dict[int, str] = {
+        self.ping_roles: dict[str, tuple[int, str]] = {
             "● Nitro Giveaway ●": (800660323203022868, "<a:giveaway_blob:939746793225343068>"),
             "● • Giveawayss • ●": (672889430171713538, "<a:giveaway_blob:830768052156104705>"),
             "● • Livestreams • ●": (864637855245795330, "<:status_streaming:939746824187682826>"),
@@ -69,22 +75,40 @@ class SelfRoles(commands.Cog):
         if not hasattr(self.bot, "inter_client"):
             slash_commands.InteractionClient(self.bot)
 
-    def padding(self, string: str) -> str:
-        # pads a string to the right with hair spaces
+    def calculate_max_padding(self, roles: dict[str, tuple[int, str]]) -> int:
+        # calculates the padding length with hair spaces
+        max_width = max(sum(self.offset[c] for c in role_name) for role_name in roles)
 
-        # The number of hair spaces each character is (approximately)
-        offset = {"a": 6, "b": 7, "c": 6, "d": 7, "e": 6, "f": 3, "g": 6, "h": 7, "i": 3, "j": 3, "k": 6, "l": 3,
-                  "m": 11, "n": 7, "o": 7, "p": 7, "q": 7, "r": 4, "s": 5, "t": 4, "u": 7, "v": 6, "w": 9, "x": 6,
-                  "y": 6, "z": 5, "A": 9, "B": 7, "C": 8, "D": 9, "E": 7, "F": 6, "G": 9, "H": 9, "I": 3, "J": 5,
-                  "K": 8, "L": 6, "M": 12, "N": 9, "O": 9, "P": 7, "Q": 9, "R": 7, "S": 7, "T": 7, "U": 9, "V": 9,
-                  "W": 13, "X": 8, "Y": 8, "Z": 7, " ": 3, "é": 6, "●": 7, "•": 5, "├": 9, "┤": 9, "─": 9, "!": 3, }
+        return max_width
+    
+    def pad_string(self, string: str, max_padding: int) -> str:
+        width = sum(self.offset[c] for c in string)
+        return string + "\u200a" * (max_padding - width)
 
-        hair_spaces = sum(offset[c] for c in string)
+    def get_components(self, roles: dict[str, tuple[int, str]], max_items_per_row: int) -> list[ActionRow]:
+        components = []
+        # splits the roles into lists of length max_items_per_row each
+        split_roles = [islice(roles, x, x+max_items_per_row) for x in range(0, len(roles), max_items_per_row)]
 
-        # 51 is the widest role name (Opossum)
-        # yes, this is bad if additional roles are added, but that's another problem for future me
-        padding = "\u200a" * (51 - hair_spaces)
-        return string + padding
+        # calculate the maximum width that the roles would have
+        padding = self.calculate_max_padding(roles)
+
+        for r in split_roles:
+            row = ActionRow()
+
+            for role_name in r:
+                role_id, emoji = roles[role_name]
+
+                row.add_button(
+                    style=ButtonStyle.blurple,
+                    label= self.pad_string(role_name, padding),
+                    custom_id=f"update_self_role:{role_id}",
+                    emoji=emoji
+                )
+            
+            components.append(row)
+        
+        return components
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
@@ -97,9 +121,13 @@ class SelfRoles(commands.Cog):
             )
         )
 
-        colour_embed = discord.Embed(title="Get your colour roles here!",
-                                     description="Click the button below to choose colour roles", color=0x90ee90)
+        colour_embed = discord.Embed(
+            title = "Get your colour roles here!",
+            description = "Click the button below to choose colour roles",
+            color = 0x90ee90
+        )
 
+        await ctx.message.delete()
         await ctx.send(embed=colour_embed, components=[row])
 
     @commands.command()
@@ -113,14 +141,18 @@ class SelfRoles(commands.Cog):
             )
         )
 
-        colour_embed = discord.Embed(title="Get your access roles here!",
-                                     description="Click the button below to choose access roles", color=0x90ee90)
+        access_embed = discord.Embed(
+            title = "Get your colour roles here!",
+            description = "Click the button below to choose access roles",
+            color = 0x90ee90
+        )
 
-        await ctx.send(embed=colour_embed, components=[row])
+        await ctx.message.delete()
+        await ctx.send(embed=access_embed, components=[row])
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def send_pingroles_embed(self, ctx: commands.Context):
+    async def send_ping_embed(self, ctx: commands.Context):
         row = ActionRow(
             Button(
                 style=ButtonStyle.green,
@@ -129,118 +161,57 @@ class SelfRoles(commands.Cog):
             )
         )
 
-        colour_embed = discord.Embed(title="Get your ping roles here!",
-                                     description="Click the button below to choose ping roles", color=0x90ee90)
+        ping_embed = discord.Embed(
+            title = "Get your colour roles here!",
+            description = "Click the button below to choose ping roles",
+            color = 0x90ee90
+        )
 
-        await ctx.send(embed=colour_embed, components=[row])
+        await ctx.message.delete()
+        await ctx.send(embed=ping_embed, components=[row])
 
-    @send_colour_embed.error
-    async def not_allowed(self, ctx: commands.Context, error):
-        if isinstance(error, commands.MissingRole):
-            return await ctx.send("Wait, that's illegal >:(")
-
-        print('Ignoring exception in command {}:'.format(ctx.command), file=sys.stderr)
-        traceback.print_exception(type(error), error, error.__traceback__, file=sys.stderr)
 
     @commands.Cog.listener("on_button_click")
     async def get_roles(self, inter: MessageInteraction):
-        if inter.component.custom_id == "colour_roles":
+        # the default is 5, but can be changed 
+        max_items_per_row = 5
 
+        if inter.component.custom_id == "colour_roles":
             available_roles = self.regular_colour_roles.copy()
 
             if bool(set(inter.author._roles) & {867366006635364363}):  # Farmer
                 available_roles.update(self.premium_colour_roles)
-
-            components = []
-
-            # splits it into at most 5 items long
-            for role_names in zip_longest(*([iter(available_roles)] * 5)):
-                # we append one row at a time
-                components.append(ActionRow(
-                    *[Button(
-                        style=ButtonStyle.blurple,
-                        label=self.padding(role_name),
-                        custom_id=f"change_colour_role:{available_roles[role_name][0]}",
-                        emoji=available_roles[role_name][1]
-                    )
-                        for role_name in role_names if role_name is not None]
-                ))
-
-            await inter.create_response("Which roles do you want to add/remove?", components=components, ephemeral=True)
-
-        elif inter.component.custom_id == "access_roles":
-
+        
+        if inter.component.custom_id == "access_roles":
             available_roles = self.access_roles.copy()
 
-            components = []
-
-            for role_names in zip_longest(*([iter(available_roles)] * 5)):
-                components.append(ActionRow(
-                    *[Button(
-                        style=ButtonStyle.blurple,
-                        label=self.padding(role_name),
-                        custom_id=f"change_access_role:{available_roles[role_name][0]}",
-                        emoji=available_roles[role_name][1]
-                    )
-                        for role_name in role_names if role_name is not None]
-                ))
-
-            await inter.create_response("Which roles do you want to add/remove?", components=components, ephemeral=True)
-
-        elif inter.component.custom_id == "ping_roles":
-
+        if inter.component.custom_id == "ping_roles":
             available_roles = self.ping_roles.copy()
+            max_items_per_row = 4
 
-            components = []
+        # we get the components we need based on the roles and items per row
+        components = self.get_components(available_roles, max_items_per_row)
 
-            for role_names in zip_longest(*([iter(available_roles)] * 4)):
-                components.append(ActionRow(
-                    *[Button(
-                        style=ButtonStyle.blurple,
-                        label=self.padding(role_name),
-                        custom_id=f"change_ping_role:{available_roles[role_name][0]}",
-                        emoji=available_roles[role_name][1]
-                    )
-                        for role_name in role_names if role_name is not None]
-                ))
+        await inter.create_response("Which roles do you want to add/remove?", components=components, ephemeral=True)
 
-            await inter.create_response("Which roles do you want to add/remove?", components=components, ephemeral=True)
-
+        
+    # responsible for adding/removing roles
     @commands.Cog.listener("on_button_click")
-    async def change_roles(self, inter: MessageInteraction):
-        if inter.component.custom_id.startswith("change_colour_role"):
-            role_id = int(inter.component.custom_id[19:])
+    async def update_roles(self, inter: MessageInteraction):
+        if not inter.component.custom_id.startswith("update_self_role"):
+            return
+        
+        _, role_id = inter.component.custom_id.split(":")
+        role_id = int(role_id)
 
-            if inter.author._roles.has(role_id):
-                await inter.author.remove_roles(discord.Object(role_id))
-                return await inter.create_response(f"Removed <@&{role_id}>!", ephemeral=True)
+        if inter.author._roles.has(role_id):
+            await inter.author.remove_roles(discord.Object(role_id))
+            return await inter.create_response(f"Removed <@&{role_id}>!", ephemeral=True)
 
-            # does not have the role
-            await inter.author.add_roles(discord.Object(role_id))
-            await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
-
-        if inter.component.custom_id.startswith("change_access_role"):
-            role_id = int(inter.component.custom_id[19:])
-
-            if inter.author._roles.has(role_id):
-                await inter.author.remove_roles(discord.Object(role_id))
-                return await inter.create_response(f"Removed <@&{role_id}>!", ephemeral=True)
-
-            # does not have the role
-            await inter.author.add_roles(discord.Object(role_id))
-            await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
-
-        if inter.component.custom_id.startswith("change_ping_role"):
-            role_id = int(inter.component.custom_id[17:])
-
-            if inter.author._roles.has(role_id):
-                await inter.author.remove_roles(discord.Object(role_id))
-                return await inter.create_response(f"Removed <@&{role_id}>!", ephemeral=True)
-
-            # does not have the role
-            await inter.author.add_roles(discord.Object(role_id))
-            await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
-
+        # does not have the role
+        await inter.author.add_roles(discord.Object(role_id))
+        await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
 
 def setup(bot):
     bot.add_cog(SelfRoles(bot))
+    
