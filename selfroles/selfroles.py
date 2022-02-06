@@ -232,6 +232,7 @@ class SelfRoles(commands.Cog):
 
         if inter.component.custom_id.startswith("change_ping_role"):
             role_id = int(inter.component.custom_id[21:])
+            await inter.create_response(f"{role_id}")
 
             if inter.author._roles.has(role_id):
                 await inter.author.remove_roles(discord.Object(role_id))
