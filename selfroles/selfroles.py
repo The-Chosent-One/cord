@@ -63,6 +63,7 @@ class SelfRoles(commands.Cog):
             "● Daily Question ●": (872546624461738035,"❓")
             "● Heist Hipphoes ●": (684987530118299678,"<a:fh_pepeheist:939747192451772486>")
             "● Hype My Stream! ●": (865796857887981579,"<:streaming:939747138030669834>")
+        }
 
         if not hasattr(self.bot, "inter_client"):
             slash_commands.InteractionClient(self.bot)
