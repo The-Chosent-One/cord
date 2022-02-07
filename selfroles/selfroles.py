@@ -173,7 +173,7 @@ class SelfRoles(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def mafia(self, ctx: commands.Context):
+    async def send_mafia_embed(self, ctx: commands.Context):
         row = ActionRow(
             Button(
                 style=ButtonStyle.green,
@@ -193,7 +193,7 @@ class SelfRoles(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def dank(self, ctx: commands.Context):
+    async def send_dank_embed(self, ctx: commands.Context):
         row = ActionRow(
             Button(
                 style=ButtonStyle.green,
@@ -213,7 +213,7 @@ class SelfRoles(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def pokemon(self, ctx: commands.Context):
+    async def send_pokemon_embed(self, ctx: commands.Context):
         row = ActionRow(
             Button(
                 style=ButtonStyle.green,
@@ -233,7 +233,7 @@ class SelfRoles(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def anime(self, ctx: commands.Context):
+    async def send_anime_embed(self, ctx: commands.Context):
         row = ActionRow(
             Button(
                 style=ButtonStyle.green,
@@ -253,7 +253,7 @@ class SelfRoles(commands.Cog):
 
     @commands.command
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def friendly_heist(self, ctx: commands.Context):
+    async def send_friendly_embed(self, ctx: commands.Context):
         row = ActionRow(
             Button(
                 style=ButtonStyle.green,
@@ -272,7 +272,7 @@ class SelfRoles(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def heist(self, ctx: commands.Context):
+    async def send_heist_embed(self, ctx: commands.Context):
         row = ActionRow(
             Button(
                 style=ButtonStyle.green,
