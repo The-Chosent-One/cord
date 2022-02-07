@@ -251,7 +251,7 @@ class SelfRoles(commands.Cog):
         await ctx.message.delete()
         await ctx.send(embed=anime_embed, components=[row])
 
-    @commands.command()
+    @commands.command
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def send_friendly_embed(self, ctx: commands.Context):
         row = ActionRow(
@@ -289,6 +289,46 @@ class SelfRoles(commands.Cog):
         await ctx.message.delete()
         await ctx.send(embed=heist_embed, components=[row])
 
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def send_giveaways_embed(self, ctx: commands.Context):
+        row = ActionRow(
+            Button(
+                style=ButtonStyle.green,
+                label="● • Giveawayss • ●",
+                custom_id="giveaways"
+            )
+        )
+
+        giveaways_embed = discord.Embed(
+            title="Giveaways",
+            description="<@&672889430171713538> - React below to be notified of giveaways including: \n ⇾ Dank Memer Coins \n ⇾ Dank Memer Items \n ⇾ Discord Nitro \n ⇾ More random giveaways! \n <@&672889430171713538>",
+            color=0x90ee90
+        )
+
+        await ctx.message.delete()
+        await ctx.send(embed=giveaways_embed, components=[row])
+
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def send_events_embed(self, ctx: commands.Context):
+        row = ActionRow(
+            Button(
+                style=ButtonStyle.green,
+                label="● • Event Time! • ●",
+                custom_id="events"
+            )
+        )
+
+        events_embed = discord.Embed(
+            title="Events",
+            description="React below to be notified of Events including: \n ⇾ Tea \n ⇾ Bingo \n ⇾ Coin Bombs \n ⇾ Quiplash \n ⇾ Guessing Games \n ⇾ Online Games \n ⇾ Custom Events and More! \n <@&684552219344764934>",
+            color=0x90ee90
+        )
+
+        await ctx.message.delete()
+        await ctx.send(embed=events_embed, components=[row])
+        
     @commands.Cog.listener("on_button_click")
     async def other_clicks(self, inter: MessageInteraction):
         if inter.component.custom_id in ("colour_role", "access_roles", "ping_roles"):
