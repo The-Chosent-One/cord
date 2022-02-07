@@ -302,7 +302,7 @@ class SelfRoles(commands.Cog):
 
         giveaways_embed = discord.Embed(
             title="Giveaways",
-            description="<@&672889430171713538> - React below to be notified of giveaways including: \n ⇾ Dank Memer Coins \n ⇾ Dank Memer Items \n ⇾ Discord Nitro \n ⇾ More random giveaways! \n <@&672889430171713538>",
+            description="React below to be notified of giveaways including: \n ⇾ Dank Memer Coins \n ⇾ Dank Memer Items \n ⇾ Discord Nitro \n ⇾ More random giveaways! \n <@&672889430171713538>",
             color=0x90ee90
         )
 
