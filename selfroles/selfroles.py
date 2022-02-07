@@ -251,7 +251,7 @@ class SelfRoles(commands.Cog):
         await ctx.message.delete()
         await ctx.send(embed=anime_embed, components=[row])
 
-    @commands.command
+    @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def send_friendly_embed(self, ctx: commands.Context):
         row = ActionRow(
