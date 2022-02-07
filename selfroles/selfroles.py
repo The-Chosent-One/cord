@@ -397,7 +397,7 @@ class SelfRoles(commands.Cog):
 
         if inter.author._roles.has(role_id):
             await inter.author.remove_roles(discord.Object(role_id))
-            return await inter.create_response(f"Removed <@&&{role_id}>!", ephemeral=True)
+            return await inter.create_response(f"Removed <@&{role_id}>!", ephemeral=True)
 
         if inter.author._roles.has(719260653541654608):
             circus = inter.author.guild.get_role(role_id)
@@ -417,7 +417,7 @@ class SelfRoles(commands.Cog):
                     ephemeral=True)
 
         await inter.author.add_roles(discord.Object(role_id))
-        await inter.create_response(f"Added <@&&{role_id}>!", ephemeral=True)
+        await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
 
 
 def setup(bot):
