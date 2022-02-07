@@ -360,6 +360,8 @@ class SelfRoles(commands.Cog):
 
     @commands.Cog.listener("on_button_click")
     async def get_roles(self, inter: MessageInteraction):
+        if inter.component.custom_id not in ("colour_role", "access_roles", "ping_roles"):
+            return
         # the default is 5, but can be changed
         max_items_per_row = 5
 
