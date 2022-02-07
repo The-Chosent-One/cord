@@ -314,7 +314,7 @@ class SelfRoles(commands.Cog):
                     "Circus Animals are not allowed this role, DM <@855270214656065556> to appeal", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(672889430171713538))
-            await inter.message.channel.send("You have been given the <@672889430171713538> role", ephemeral=True)
+            await inter.create_response("You have been given the <@672889430171713538> role", ephemeral=True)
         elif inter.component.custom_id == "events":
             if inter.author._roles.has(684552219344764934):
                 await inter.author.remove_roles(684552219344764934)
@@ -324,28 +324,28 @@ class SelfRoles(commands.Cog):
                     "Circus Animals are not allowed this role, DM <@855270214656065556> to appeal", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(684552219344764934))
-            await inter.message.channel.send("You have been given the <@684552219344764934> role", ephemeral=True)
+            await inter.create_response("You have been given the <@684552219344764934> role", ephemeral=True)
         elif inter.component.custom_id == "pokemon_role":
             if inter.author._roles.has(680115782645973003):
                 await inter.author.remove_roles(680115782645973003)
                 return await inter.create_response("<@680115782645973003> has been removed from you", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(680115782645973003))
-            await inter.message.channel.send("You have been given the <@680115782645973003> role", ephemeral=True)
+            await inter.create_response("You have been given the <@680115782645973003> role", ephemeral=True)
         elif inter.component.custom_id == "anime_role":
             if inter.author._roles.has(791439539854901248):
                 await inter.author.remove_roles(791439539854901248)
                 return await inter.create_response("<@791439539854901248> has been removed from you", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(791439539854901248))
-            await inter.message.channel.send("You have been given the <@791439539854901248> role", ephemeral=True)
+            await inter.create_response("You have been given the <@791439539854901248> role", ephemeral=True)
         elif inter.component.custom_id == "friendly_heist":
             if inter.author._roles.has(750908803704160268):
                 await inter.author.remove_roles(750908803704160268)
                 return await inter.create_response("<@750908803704160268> has been removed from you", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(750908803704160268))
-            await inter.message.channel.send("You have been given the <@750908803704160268> role", ephemeral=True)
+            await inter.create_response("You have been given the <@750908803704160268> role", ephemeral=True)
         elif inter.component.custom_id == "heist_role":
             if inter.author._roles.has(684987530118299678):
                 return await inter.create_response("<@684987530118299678> has been removed from you", ephemeral=True)
@@ -355,7 +355,7 @@ class SelfRoles(commands.Cog):
                     ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(684987530118299678))
-            await inter.message.channel.send("You have been given the <@684987530118299678> role", ephemeral=True)
+            await inter.create_response("You have been given the <@684987530118299678> role", ephemeral=True)
 
     @commands.Cog.listener("on_button_click")
     async def get_roles(self, inter: MessageInteraction):
