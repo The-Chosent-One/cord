@@ -331,7 +331,7 @@ class SelfRoles(commands.Cog):
         
     @commands.Cog.listener("on_button_click")
     async def other_clicks(self, inter: MessageInteraction):
-        if inter.component.custom_id in ("colour_role", "access_roles", "ping_roles"):
+        if inter.component.custom_id in ("colour_roles", "access_roles", "ping_roles"):
             return
         if inter.component.custom_id == "mafia_role":
             if inter.author._roles.has(713898461606707273):
