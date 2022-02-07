@@ -184,7 +184,7 @@ class SelfRoles(commands.Cog):
 
         mafia_embed = discord.Embed(
             title="Mafia",
-            description="Click the button below to get the <@713898461606707273> role so you can get notifications for games and access the <#756552586248585368> and <#756566417456889965> channels ",
+            description="Click the button below to get the <@&713898461606707273> role so you can get notifications for games and access the <#756552586248585368> and <#756566417456889965> channels ",
             color=0x90ee90
         )
 
@@ -204,7 +204,7 @@ class SelfRoles(commands.Cog):
 
         dank_embed = discord.Embed(
             title="Having trouble viewing the dank memer channels below?",
-            description="Click the button below to get the <@> role and gain access to trade/fight and other dank channels",
+            description="Click the button below to get the <@&> role and gain access to trade/fight and other dank channels",
             color=0x90ee90
         )
 
@@ -224,7 +224,7 @@ class SelfRoles(commands.Cog):
 
         pokemon_embed = discord.Embed(
             title="Having trouble seeing all of the pokemon channels in the server?",
-            description="Click the button below to get the <@680115782645973003> role and gain access to the pokemon channels",
+            description="Click the button below to get the <@&680115782645973003> role and gain access to the pokemon channels",
             color=0x90ee90
         )
 
@@ -244,7 +244,7 @@ class SelfRoles(commands.Cog):
 
         anime_embed = discord.Embed(
             title="React for access to the anime bot channels! ",
-            description=" __**Anime bots:**__ \n  <@722418701852344391> \n <@432610292342587392> \n <@571027211407196161> \n <@646937666251915264> (Level 10 req) \n <@280497242714931202>",
+            description=" __**Anime bots:**__ \n  <@&722418701852344391> \n <@&432610292342587392> \n <@&571027211407196161> \n <@&646937666251915264> (Level 10 req) \n <@&280497242714931202>",
             color=0x90ee90
         )
 
@@ -263,7 +263,7 @@ class SelfRoles(commands.Cog):
         )
 
         friendly_heist_embed = discord.Embed(
-            description="<@750908803704160268> - React to be notified of Friendly Heists both in Bot Farm and partnered servers!",
+            description="<@&750908803704160268> - React to be notified of Friendly Heists both in Bot Farm and partnered servers!",
             color=0x90ee90
         )
 
@@ -282,7 +282,7 @@ class SelfRoles(commands.Cog):
         )
 
         heist_embed = discord.Embed(
-            description="<@684987530118299678> - React to be notified of **UN**-Friendly Heists that are scouted by members and **__take place in rob/heist enabled servers!__**",
+            description="<@&684987530118299678> - React to be notified of **UN**-Friendly Heists that are scouted by members and **__take place in rob/heist enabled servers!__**",
             color=0x90ee90
         )
 
@@ -294,68 +294,69 @@ class SelfRoles(commands.Cog):
         if inter.component.custom_id == "mafia_role":
             if inter.author._roles.has(713898461606707273):
                 await inter.author.remove_roles(713898461606707273)
-                return await inter.create_response("<@713898461606707273> has been removed from you", ephemeral=True)
+                return await inter.create_response("<@&713898461606707273> has been removed from you", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(713898461606707273))
-            await inter.create_response("You have been given the <@713898461606707273> role", ephemeral=True)
+            await inter.create_response("You have been given the <@&713898461606707273> role", ephemeral=True)
         elif inter.component.custom_id == "dank_role":
             if inter.author._roles.has(680115778967699517):
                 await inter.author.remove_roles(680115778967699517)
-                return await inter.create_response("<@680115778967699517> has been removed from you", ephemeral=True)
+                return await inter.create_response("<@&680115778967699517> has been removed from you", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(680115778967699517))
-            await inter.create_response("You have been given the <@680115778967699517> role", ephemeral=True)
+            await inter.create_response("You have been given the <@&680115778967699517> role", ephemeral=True)
         elif inter.component.custom_id == "giveaways":
             if inter.author._roles.has(672889430171713538):
                 await inter.author.remove_roles(672889430171713538)
-                await inter.create_response("<@672889430171713538> has been removed from you", ephemeral=True)
+                await inter.create_response("<@&672889430171713538> has been removed from you", ephemeral=True)
             if inter.author._roles.has(719260653541654608):
                 return await inter.create_response(
                     "Circus Animals are not allowed this role, DM <@855270214656065556> to appeal", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(672889430171713538))
-            await inter.create_response("You have been given the <@672889430171713538> role", ephemeral=True)
+            await inter.create_response("You have been given the <@&672889430171713538> role", ephemeral=True)
         elif inter.component.custom_id == "events":
             if inter.author._roles.has(684552219344764934):
                 await inter.author.remove_roles(684552219344764934)
-                return await inter.create_response("<@684552219344764934> has been removed from you", ephemeral=True)
+                return await inter.create_response("<@&684552219344764934> has been removed from you", ephemeral=True)
             if inter.author._roles.has(719260653541654608):
                 return await inter.create_response(
                     "Circus Animals are not allowed this role, DM <@855270214656065556> to appeal", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(684552219344764934))
-            await inter.create_response("You have been given the <@684552219344764934> role", ephemeral=True)
+            await inter.create_response("You have been given the <@&684552219344764934> role", ephemeral=True)
         elif inter.component.custom_id == "pokemon_role":
             if inter.author._roles.has(680115782645973003):
                 await inter.author.remove_roles(680115782645973003)
-                return await inter.create_response("<@680115782645973003> has been removed from you", ephemeral=True)
+                return await inter.create_response("<@&680115782645973003> has been removed from you", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(680115782645973003))
-            await inter.create_response("You have been given the <@680115782645973003> role", ephemeral=True)
+            await inter.create_response("You have been given the <@&680115782645973003> role", ephemeral=True)
         elif inter.component.custom_id == "anime_role":
             if inter.author._roles.has(791439539854901248):
                 await inter.author.remove_roles(791439539854901248)
-                return await inter.create_response("<@791439539854901248> has been removed from you", ephemeral=True)
+                return await inter.create_response("<@&791439539854901248> has been removed from you", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(791439539854901248))
-            await inter.create_response("You have been given the <@791439539854901248> role", ephemeral=True)
+            await inter.create_response("You have been given the <@&791439539854901248> role", ephemeral=True)
         elif inter.component.custom_id == "friendly_heist":
             if inter.author._roles.has(750908803704160268):
                 await inter.author.remove_roles(750908803704160268)
-                return await inter.create_response("<@750908803704160268> has been removed from you", ephemeral=True)
+                return await inter.create_response("<@&750908803704160268> has been removed from you", ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(750908803704160268))
-            await inter.create_response("You have been given the <@750908803704160268> role", ephemeral=True)
+            await inter.create_response("You have been given the <@&750908803704160268> role", ephemeral=True)
         elif inter.component.custom_id == "heist_role":
             if inter.author._roles.has(684987530118299678):
-                return await inter.create_response("<@684987530118299678> has been removed from you", ephemeral=True)
+                await inter.author.remove_roles(684987530118299678)
+                return await inter.create_response("<@&684987530118299678> has been removed from you", ephemeral=True)
             if inter.author._roles.has(761251579381678081):
                 return await inter.create_response(
-                    "<@761251579381678081> is not allowed this role, DM <@855270214656065556> to appeal",
+                    "<@&761251579381678081> is not allowed this role, DM <@855270214656065556> to appeal",
                     ephemeral=True)
             await inter.message.guild.get_member(inter.author.id).add_roles(
                 inter.message.guild.get_role(684987530118299678))
-            await inter.create_response("You have been given the <@684987530118299678> role", ephemeral=True)
+            await inter.create_response("You have been given the <@&684987530118299678> role", ephemeral=True)
 
     @commands.Cog.listener("on_button_click")
     async def get_roles(self, inter: MessageInteraction):
@@ -394,7 +395,7 @@ class SelfRoles(commands.Cog):
 
         if inter.author._roles.has(role_id):
             await inter.author.remove_roles(discord.Object(role_id))
-            return await inter.create_response(f"Removed <@&{role_id}>!", ephemeral=True)
+            return await inter.create_response(f"Removed <@&&{role_id}>!", ephemeral=True)
 
         if inter.author._roles.has(719260653541654608):
             circus = inter.author.guild.get_role(role_id)
@@ -414,7 +415,7 @@ class SelfRoles(commands.Cog):
                     ephemeral=True)
 
         await inter.author.add_roles(discord.Object(role_id))
-        await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
+        await inter.create_response(f"Added <@&&{role_id}>!", ephemeral=True)
 
 
 def setup(bot):
