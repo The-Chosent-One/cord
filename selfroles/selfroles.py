@@ -143,7 +143,7 @@ class SelfRoles(commands.Cog):
         )
 
         access_embed = discord.Embed(
-            title="Get your colour roles here!",
+            title="Get your access roles here to view channels in the server!",
             description="Click the button below to choose access roles",
             color=0x90ee90
         )
@@ -204,7 +204,7 @@ class SelfRoles(commands.Cog):
 
         dank_embed = discord.Embed(
             title="Having trouble viewing the dank memer channels below?",
-            description="Click the button below to get the <@&> role and gain access to trade/fight and other dank channels",
+            description="Click the button below to get the <@&680115778967699517> role and gain access to trade/fight and other dank channels",
             color=0x90ee90
         )
 
@@ -244,7 +244,7 @@ class SelfRoles(commands.Cog):
 
         anime_embed = discord.Embed(
             title="React for access to the anime bot channels! ",
-            description=" __**Anime bots:**__ \n  <@&722418701852344391> \n <@&432610292342587392> \n <@&571027211407196161> \n <@&646937666251915264> (Level 10 req) \n <@&280497242714931202>",
+            description=" __**Anime bots:**__ \n  <@722418701852344391> \n <@432610292342587392> \n <@571027211407196161> \n <@646937666251915264> (Level 10 req) \n <@280497242714931202>",
             color=0x90ee90
         )
 
