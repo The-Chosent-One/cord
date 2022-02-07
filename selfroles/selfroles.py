@@ -171,6 +171,156 @@ class SelfRoles(commands.Cog):
         await ctx.message.delete()
         await ctx.send(embed=ping_embed, components=[row])
 
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def mafia(self, ctx: commands.Context):
+        row = ActionRow(
+            Button(
+                style=ButtonStyle.green,
+                label="● • Mafia Time! • ● ",
+                custom_id="mafia_role"
+            )
+        )
+
+        mafia_embed = discord.Embed(
+            title="Mafia",
+            description="Click the button below to get the <@713898461606707273> role so you can get notifications for games and access the <#756552586248585368> and <#756566417456889965> channels ",
+            color=0x90ee90
+        )
+
+        await ctx.message.delete()
+        await ctx.send(embed=mafia_embed, components=[row])
+
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def dank(self, ctx: commands.Context):
+        row = ActionRow(
+            Button(
+                style=ButtonStyle.green,
+                label="├── Dank Access──┤",
+                custom_id="dank_role"
+            )
+        )
+
+        dank_embed = discord.Embed(
+            title="Having trouble viewing the dank memer channels below?",
+            description="Click the button below to get the <@> role and gain access to trade/fight and other dank channels",
+            color=0x90ee90
+        )
+
+        await ctx.message.delete()
+        await ctx.send(embed=dank_embed, components=[row])
+
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def pokemon(self, ctx: commands.Context):
+        row = ActionRow(
+            Button(
+                style=ButtonStyle.green,
+                label="├──Pokémon Access─┤",
+                custom_id="pokemon_role"
+            )
+        )
+
+        pokemon_embed = discord.Embed(
+            title="Having trouble seeing all of the pokemon channels in the server?",
+            description="Click the button below to get the <@680115782645973003> role and gain access to the pokemon channels",
+            color=0x90ee90
+        )
+
+        await ctx.message.delete()
+        await ctx.send(embed=pokemon_embed, components=[row])
+
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def anime(self, ctx: commands.Context):
+        row = ActionRow(
+            Button(
+                style=ButtonStyle.green,
+                label="├──Anime Access──┤",
+                custom_id="anime_role"
+            )
+        )
+
+        anime_embed = discord.Embed(
+            title="React for access to the anime bot channels! ",
+            description=" __**"Anime" bots:**__ \n  <@722418701852344391> \n <@432610292342587392> \n <@571027211407196161> \n <@646937666251915264> (Level 10 req) \n <@280497242714931202>",
+            color=0x90ee90
+        )
+
+        await ctx.message.delete()
+        await ctx.send(embed=anime_embed, components=[row])
+
+    @commands.command
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def friendly_heist(self, ctx: commands.Context):
+        row = ActionRow(
+            Button(
+                style=ButtonStyle.green,
+                label="├──Friendly Heist Access──┤",
+                custom_id="friendly_heist"
+            )
+        )
+
+        friendly_heist_embed = discord.Embed(
+            title="blank??",
+            description="<@750908803704160268> - React to be notified of Friendly Heists both in Bot Farm and partnered servers!",
+            color=0x90ee90
+        )
+
+        await ctx.message.delete()
+        await ctx.send(embed=friendly_heist_embed, components=[row])
+
+    @commands.command()
+    @checks.has_permissions(PermissionLevel.ADMIN)
+    async def heist(self, ctx: commands.Context):
+        row = ActionRow(
+            Button(
+                style=ButtonStyle.green,
+                label="● Heist Hipphoes ●",
+                custom_id="heist_role"
+            )
+        )
+
+        heist_embed = discord.Embed(
+            title="blank??",
+            description="<@684987530118299678> - React to be notified of **UN**-Friendly Heists that are scouted by members and **__take place in rob/heist enabled servers!__**",
+            color=0x90ee90
+        )
+
+        await ctx.message.delete()
+        await ctx.send(embed=heist_embed, components=[row])
+
+
+
+    @commands.Cog.listener("on_button_click")
+    async def other_clicks(self, inter: MessageInteraction):
+        if inter.custom_id == "mafia_role":
+            await inter.message.guild.get_member(inter.author.id).add_roles(inter.message.guild.get_role(713898461606707273))
+            await inter.message.channel.send("You have been given the <@713898461606707273> role")
+        elif inter.custom_id == "dank_role":
+            await inter.message.guild.get_member(inter.author.id).add_roles(inter.message.guild.get_role(680115778967699517))
+            await inter.message.channel.send("You have been given the <@680115778967699517> role")
+        elif inter.custom_id == "giveaways":
+            await inter.message.guild.get_member(inter.author.id).add_roles(inter.message.guild.get_role(672889430171713538))
+            await inter.message.channel.send("You have been given the <@672889430171713538> role")
+        elif inter.custom_id == "events":
+            await inter.message.guild.get_member(inter.author.id).add_roles(inter.message.guild.get_role(684552219344764934))
+            await inter.message.channel.send("You have been given the <@684552219344764934> role")
+        elif inter.custom_id == "pokemon_role":
+            await inter.message.guild.get_member(inter.author.id).add_roles(inter.message.guild.get_role(680115782645973003))
+            await inter.message.channel.send("You have been given the <@680115782645973003> role")
+        elif inter.custom_id == "anime_role":
+            await inter.message.guild.get_member(inter.author.id).add_roles(inter.message.guild.get_role(791439539854901248))
+            await inter.message.channel.send("You have been given the <@791439539854901248> role")
+        elif inter.custom_id == "friendly_heist":
+            await inter.message.guild.get_member(inter.author.id).add_roles(inter.message.guild.get_role(750908803704160268))
+            await inter.message.channel.send("You have been given the <@750908803704160268> role")
+        elif inter.custom_id == "heist_role":
+            await inter.message.guild.get_member(inter.author.id).add_roles(inter.message.guild.get_role(684987530118299678))
+            await inter.message.channel.send("You have been given the <@684987530118299678> role")
+
+
     @commands.Cog.listener("on_button_click")
     async def get_roles(self, inter: MessageInteraction):
         # the default is 5, but can be changed
@@ -222,7 +372,7 @@ class SelfRoles(commands.Cog):
             hype = inter.author.guild.get_role(role_id)
             if hype.id == 865796857887981579:
                 return await inter.create_response("You have the No Hype role so you are not allowed this role, DM <@855270214656065556> to appeal", ephemeral=True)
-            
+
         await inter.author.add_roles(discord.Object(role_id))
         await inter.create_response(f"Added <@&{role_id}>!", ephemeral=True)
 
