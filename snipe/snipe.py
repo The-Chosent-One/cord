@@ -40,8 +40,8 @@ class Snipe(commands.Cog):
         if str(msg.channel.id) not in self.data['snipe_list']:
             self.data['snipe_list'][str(msg.channel.id)] = []
 
-        elif len(self.data['snipe_list'][str(msg.channel.id)]) > 6:
-            self.data['snipe_list'][str(msg.channel.id)].pop(0)
+        elif len(self.data['snipe_list'][str(msg.channel.id)]) > 4:
+            self.data['snipe_list'][str(msg.channel.id)] = self.data['snipe_list'][str(msg.channel.id)].pop(0)
 
         self.data['snipe_list'][str(msg.channel.id)].append(data)
 
@@ -121,8 +121,8 @@ class Snipe(commands.Cog):
         if str(msg.channel.id) not in self.data['esnipe_list']:
             self.data['esnipe_list'][str(msg.channel.id)] = []
 
-        elif len(self.data['esnipe_list'][str(msg.channel.id)]) > 6:
-            self.data['esnipe_list'][str(msg.channel.id)].pop(0)
+        elif len(self.data['esnipe_list'][str(msg.channel.id)]) > 4:
+            self.data['esnipe_list'][str(msg.channel.id)] = self.data['esnipe_list'][str(msg.channel.id)].pop(0)
 
         self.data['esnipe_list'][str(msg.channel.id)].append({'author': before.author, 'before': before.content,
                                                          'after': after.content, 'time': after.created_at})
