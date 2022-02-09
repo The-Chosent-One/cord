@@ -87,7 +87,7 @@ class Snipe(commands.Cog):
         if str(ch.id) not in self.data['snipe_list']:
             return await ctx.send('There\'s nothing to be sniped!')
 
-        data = self.data['snipe_list'][str(ch.id)][:5]
+        data = self.data['snipe_list'][str(ch.id)]
         em = discord.Embed(title='Snipe list', description='', colour=discord.Colour.random())
 
         description = ''
