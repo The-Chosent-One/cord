@@ -40,7 +40,7 @@ class Snipe(commands.Cog):
         if str(msg.channel.id) not in self.data['snipe_list']:
             self.data['snipe_list'][str(msg.channel.id)] = [em]
 
-        elif len(self.data['snipe_list'][str(msg.channel.id)].keys()) > 6:
+        elif len(self.data['snipe_list'][str(msg.channel.id)]) > 6:
             self.data['snipe_list'][str(msg.channel.id)].pop(0)
 
         self.data['snipe_list'][str(msg.channel.id)].append(data)
@@ -103,9 +103,9 @@ class Snipe(commands.Cog):
         if any(word in before.content.lower() for word in nosnipe) or any(word in after.content.lower() for word in
                                                                           nosnipe) or before.author.bot or before.content == after.content:
             return
-        
+
         msg = before
-        
+
         em = discord.Embed(description=f'**Before: ** {before.content}\n**After: ** {after.content}')
         em.set_author(name=msg.author.display_name, icon_url=msg.author.avatar_url)
 
@@ -117,7 +117,7 @@ class Snipe(commands.Cog):
         if str(msg.channel.id) not in self.data['esnipe_list']:
             self.data['esnipe_list'][str(msg.channel.id)] = [em]
 
-        elif len(self.data['esnipe_list'][str(msg.channel.id)].keys()) > 6:
+        elif len(self.data['esnipe_list'][str(msg.channel.id)]) > 6:
             self.data['esnipe_list'][str(msg.channel.id)].pop(0)
 
         self.data['esnipe_list'][str(msg.channel.id)].append({'author': before.author, 'before': before.content,
@@ -183,4 +183,3 @@ class Snipe(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Snipe(bot))
-    
