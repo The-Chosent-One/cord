@@ -89,13 +89,17 @@ class Snipe(commands.Cog):
 
         data = self.data['snipe_list'][str(ch.id)][:5]
         em = discord.Embed(title='Snipe list', description='', colour=discord.Colour.random())
-
+        
+        description = ''
+        
         for x in data:
-            em.description += '**Sniped!**\n'
-            em.description += f"User: {x['author'].mention}({x['author'].id})\n"
-            em.description += f'Content: {x["content"]}\n'
-            em.description += f'{x["time"].strftime("%m/%d/%Y, %H:%M:%S")}GMT\n\n'
-
+            description += '**Sniped!**\n'
+            description += f"User: {x['author'].mention}({x['author'].id})\n"
+            description += f'Content: {x["content"]}\n'
+            description += f'{x["time"].strftime("%m/%d/%Y, %H:%M:%S")}GMT\n\n'
+        
+        em.description = description
+        
         await ctx.send(embed=em)
 
     @commands.Cog.listener()
@@ -170,14 +174,18 @@ class Snipe(commands.Cog):
 
         data = self.data['esnipe_list'][str(ch.id)][:5]
         em = discord.Embed(title='Edit Snipe list', description='', colour=discord.Colour.random())
-
+        
+        description = ''
+        
         for x in data:
-            em.description += '**Edited!**\n'
-            em.description += f"User: {x['author'].mention}({x['author'].id})\n"
-            em.description += f'Before: {x["before"]}\n'
-            em.description += f'After: {x["after"]}\n'
-            em.description += f'{x["time"].strftime("%m/%d/%Y, %H:%M:%S")} GMT\n\n'
-
+            description += '**Edited!**\n'
+            description += f"User: {x['author'].mention}({x['author'].id})\n"
+            description += f'Before: {x["before"]}\n'
+            description += f'After: {x["after"]}\n'
+            description += f'{x["time"].strftime("%m/%d/%Y, %H:%M:%S")} GMT\n\n'
+        
+        em.description = description
+        
         await ctx.send(embed=em)
 
 
