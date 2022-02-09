@@ -15,33 +15,35 @@ def check_view_perms(channel, member):
 
 
 class Snipe(commands.Cog):
-    sniped = {}
-    snipe_list = {}
+    data = {
+        'snipe': {},
+        'snipe_list': {},
+        'esnipe': {},
+        'esnipe_list': {}
+    }
 
-    esniped = {}
-    esnipe_list = {}
-
-    @commands.Cog.listener()
-    async def on_message_delete(self, message):
-        if any(word in message.content.lower() for word in nosnipe) or message.author.bot:
+    @commands.Cog.listener('on_message_delete')
+    async def on_message_delete(self, msg):
+        if any(word in msg.content.lower() for word in nosnipe) or msg.author.bot:
             return
 
-        em = discord.Embed(description=message.content)
-        em.set_author(name=message.author.display_name, icon_url=message.author.avatar_url)
+        em = discord.Embed(description=msg.content)
+        em.set_author(name=msg.author.display_name, icon_url=msg.author.avatar_url)
 
         em.set_footer(text='Sent at: ')
-        em.timestamp = message.created_at
+        em.timestamp = msg.created_at
 
-        self.sniped[str(message.channel.id)] = em
+        data = {'author': msg.author, 'content': msg.content, 'time': msg.created_at}
 
-        if str(message.channel.id) not in self.snipe_list:
-            self.snipe_list[str(message.channel.id)] = []
+        self.data['snipe'][str(msg.channel.id)] = em
 
-        elif len(self.snipe_list[str(message.channel.id)]) > 11:
-            self.snipe_list[str(message.channel.id)] = self.snipe_list[str(message.channel.id)][1:]
+        if str(msg.channel.id) not in self.data['snipe_list']:
+            self.data['snipe_list'][str(msg.channel.id)] = [em]
 
-        self.snipe_list[str(message.channel.id)].append({'author': message.author, 'content': message.content,
-                                                         'time': message.created_at})
+        elif len(self.data['snipe_list'][str(msg.channel.id)].keys()) > 6:
+            self.data['snipe_list'][str(msg.channel.id)].pop(0)
+
+        self.data['snipe_list'][str(msg.channel.id)].append(data)
 
     @commands.check_any(
         commands.is_owner(),
@@ -63,17 +65,13 @@ class Snipe(commands.Cog):
         ch = channel or ctx.channel
         member = ctx.author
 
-        if ctx.channel.id == 882758609921015839:
-            return
-
         if check_view_perms(ch, member):
-
-            if str(ch.id) not in self.sniped:
+            if str(ch.id) not in self.data['snipe']:
                 return await ctx.send('There\'s nothing to be sniped!')
 
-            return await ctx.send(embed=self.sniped[str(ch.id)])
+            return await ctx.send(embed=self.data['snipe'][str(ch.id)])
         else:
-            await ctx.send("You arent supposed to see whats going on here!")
+            await ctx.message.delete()
 
     @commands.check_any(
         commands.is_owner(),
@@ -86,10 +84,10 @@ class Snipe(commands.Cog):
     async def _snipe_list_(self, ctx, *, channel: discord.TextChannel = None):
         ch = channel or ctx.channel
 
-        if str(ch.id) not in self.snipe_list:
+        if str(ch.id) not in self.data['snipe_list']:
             return await ctx.send('There\'s nothing to be sniped!')
 
-        data = self.snipe_list[str(ch.id)][:5]
+        data = self.data['snipe_list'][str(ch.id)][:5]
         em = discord.Embed(title='Snipe list', description='', colour=discord.Colour.random())
 
         for x in data:
@@ -105,22 +103,24 @@ class Snipe(commands.Cog):
         if any(word in before.content.lower() for word in nosnipe) or any(word in after.content.lower() for word in
                                                                           nosnipe) or before.author.bot or before.content == after.content:
             return
-
+        
+        msg = before
+        
         em = discord.Embed(description=f'**Before: ** {before.content}\n**After: ** {after.content}')
-        em.set_author(name=before.author.display_name, icon_url=before.author.avatar_url)
+        em.set_author(name=msg.author.display_name, icon_url=msg.author.avatar_url)
 
         em.set_footer(text='Sent at: ')
-        em.timestamp = before.created_at
+        em.timestamp = msg.created_at
 
-        self.esniped[str(before.channel.id)] = em
+        self.data['esnipe'][str(msg.channel.id)] = em
 
-        if str(before.channel.id) not in self.esnipe_list:
-            self.esnipe_list[str(before.channel.id)] = []
+        if str(msg.channel.id) not in self.data['esnipe_list']:
+            self.data['esnipe_list'][str(msg.channel.id)] = [em]
 
-        elif len(self.esnipe_list[str(before.channel.id)]) > 11:
-            self.esnipe_list[str(before.channel.id)] = self.esnipe_list[str(before.channel.id)][1:]
+        elif len(self.data['esnipe_list'][str(msg.channel.id)].keys()) > 6:
+            self.data['esnipe_list'][str(msg.channel.id)].pop(0)
 
-        self.esnipe_list[str(before.channel.id)].append({'author': before.author, 'before': before.content,
+        self.data['esnipe_list'][str(msg.channel.id)].append({'author': before.author, 'before': before.content,
                                                          'after': after.content, 'time': after.created_at})
 
     @commands.check_any(
@@ -147,12 +147,12 @@ class Snipe(commands.Cog):
             return
 
         if check_view_perms(ch, member):
-            if str(ch.id) not in self.esniped:
+            if str(ch.id) not in self.data['esnipe']:
                 return await ctx.send('There\'s nothing to be sniped!')
 
-            return await ctx.send(embed=self.esniped[str(ch.id)])
+            return await ctx.send(embed=self.data['esnipe'][str(ch.id)])
         else:
-            await ctx.send("You arent supposed to see whats going on here!")
+            await ctx.message.delete()
 
     @commands.check_any(
         commands.is_owner(),
@@ -165,10 +165,10 @@ class Snipe(commands.Cog):
     async def snipe_list_(self, ctx, *, channel: discord.TextChannel = None):
         ch = channel or ctx.channel
 
-        if str(ch.id) not in self.esnipe_list:
+        if str(ch.id) not in self.data['esnipe_list']:
             return await ctx.send('There\'s nothing to be sniped!')
 
-        data = self.esnipe_list[str(ch.id)][:5]
+        data = self.data['esnipe_list'][str(ch.id)][:5]
         em = discord.Embed(title='Edit Snipe list', description='', colour=discord.Colour.random())
 
         for x in data:
@@ -183,3 +183,4 @@ class Snipe(commands.Cog):
 
 def setup(bot):
     bot.add_cog(Snipe(bot))
+    
