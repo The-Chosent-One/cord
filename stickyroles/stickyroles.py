@@ -18,4 +18,4 @@ class StickyRoles(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(SelfRoles(bot))
+    bot.add_cog(StickyRoles(bot))
