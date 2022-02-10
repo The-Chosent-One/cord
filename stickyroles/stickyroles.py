@@ -1,5 +1,5 @@
-import discord
 from discord.ext import commands
+import discord
 
 
 class StickyRoles(commands.Cog):
@@ -7,14 +7,39 @@ class StickyRoles(commands.Cog):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
 
-    async def update_sticky(self, unique, role: discord.Role):
+    async def add_sticky(self, unique, role: discord.Role):
         await self.coll.find_one_and_update({"unique": unique}, {"$push": {"role_id": role.id}}, upsert=True)
+
+    async def remove_sticky(self, unique, role: discord.Role):
+        await self.coll.find_one_and_update({"unique": unique}, {"$pull": {"role_id": role.id}})
 
     @commands.command()
     async def addsticky(self, ctx, role: discord.Role):
         """Adds a sticky role to the database"""
-        await self.update_sticky("1", role)
+        await self.add_sticky("1", role)
         await ctx.send(f"Added {role.name} to the sticky roles")
+
+    @commands.command()
+    async def removesticky(self, ctx, role: discord.Role):
+        """Removes a sticky role from the database"""
+        await self.remove_sticky("1", role)
+        await ctx.send(f"Removed {role.name} from the sticky roles")
+
+    @commands.Cog.listener()
+    async def on_member_leave(self, member):
+        s = []
+        for role in member.roles:
+            if role.id in self.coll.find_one({"unique": "1"})["role_id"]:
+                s.append(role.id)
+
+        await self.coll.insert_one({"member_id": member.id, "role_id": s})
+
+    @commands.Cog.listener()
+    async def on_member_join(self, ctx, member):
+        if self.coll.find_one({"member_id": member.id}) is not None:
+            for role in self.coll.find_one({"member_id": member.id})["role_id"]:
+                sticky = ctx.guild.get_role(role)
+                await member.add_roles(sticky)
 
 
 def setup(bot):
