@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 
-class SelfRoles(commands.Cog):
+class StickyRoles(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
