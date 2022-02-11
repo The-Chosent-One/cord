@@ -30,10 +30,10 @@ class StickyRoles(commands.Cog):
         print("someone left")
         s = []
         for role in member.roles:
-            if role.id in self.coll.find_one({"unique": "1"})["role_id"]:
-                print("they had a role you wanted")
-                s.append(role.id)
-
+            check = await self.coll.find_one({"role_id": role.id})
+            if not check:
+                return
+            s.append(role.id)
         print("trying to insert ok?")
         await self.coll.insert_one({"member_id": member.id, "role_id": s})
         print("inserted tadaa")
