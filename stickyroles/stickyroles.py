@@ -38,10 +38,10 @@ class StickyRoles(commands.Cog):
         print("inserted tadaa")
 
     @commands.Cog.listener()
-    async def on_member_join(self, ctx, member):
-        if self.coll.find_one({"member_id": member.id}) is not None:
-            for role in self.coll.find_one({"member_id": member.id})["role_id"]:
-                sticky = ctx.guild.get_role(role)
+    async def on_member_join(self, member):
+        if self.coll.find_one({"member_id": member.id}):
+            for role in await self.coll.find_one({"member_id": member.id})["role_id"]:
+                sticky = member.guild.get_role(role)
                 await member.add_roles(sticky)
 
 
