@@ -16,34 +16,38 @@ class StickyRoles(commands.Cog):
     @commands.command()
     async def addsticky(self, ctx, role: discord.Role):
         """Adds a sticky role to the database"""
+        check = await self.coll.find_one({"role_id": role.id})
+        if check:
+            return await ctx.send("This role is already a sticky role")
         await self.add_sticky("1", role)
-        await ctx.send(f"Added {role.name} to the sticky roles")
+        await ctx.send(f"Added `{role.name`}` to the sticky roles")
 
     @commands.command()
     async def removesticky(self, ctx, role: discord.Role):
         """Removes a sticky role from the database"""
+        check = await self.coll.find_one({"role_id": role.id})
+        if not check:
+            return await ctx.send("This role is not a sticky role")
         await self.remove_sticky("1", role)
-        await ctx.send(f"Removed {role.name} from the sticky roles")
+        await ctx.send(f"Removed `{role.name}` from the sticky roles")
 
     @commands.Cog.listener()
     async def on_member_remove(self, member):
-        print("someone left")
         s = []
         for role in member.roles:
             check = await self.coll.find_one({"role_id": role.id})
             if check:
                 s.append(role.id)
-        print("trying to insert ok?")
         await self.coll.insert_one({"member_id": member.id, "role_id": s})
-        print("inserted tadaa")
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-        if self.coll.find_one({"member_id": member.id}):
-            for role in await self.coll.find_one({"member_id": member.id})["role_id"]:
-                sticky = member.guild.get_role(role)
-                await member.add_roles(sticky)
-
+            check = await self.coll.find_one({"member_id": member.id})
+            if check:
+                for role in check["role_id"]:
+                    sticky = member.guild.get_role(role)
+                    await member.add_roles(sticky)
+                await self.coll.delete_one({"member_id": member.id})
 
 def setup(bot):
     bot.add_cog(StickyRoles(bot))
