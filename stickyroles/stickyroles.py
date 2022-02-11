@@ -26,7 +26,7 @@ class StickyRoles(commands.Cog):
         await ctx.send(f"Removed {role.name} from the sticky roles")
 
     @commands.Cog.listener()
-    async def on_member_leave(self, member):
+    async def on_member_remove(self, member):
         print("someone left")
         s = []
         for role in member.roles:
