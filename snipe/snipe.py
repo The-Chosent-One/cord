@@ -104,7 +104,7 @@ class Snipe(commands.Cog):
         check = await self.coll.find_one({'channels': channel.id})
         if check:
             return await ctx.send('This channel is already unsnipeable!')
-        await self.coll.find_one_and_update({"unique": dontsnipe}, {"$push": {"channels": channel.id}}, upsert=True)
+        await self.coll.find_one_and_update({"unique": "dontsnipe"}, {"$push": {"channels": channel.id}}, upsert=True)
         await ctx.send(f'{channel.mention} is no longer snipeable!')
 
 
