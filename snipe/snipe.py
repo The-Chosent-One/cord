@@ -96,6 +96,16 @@ class Snipe(commands.Cog):
             return await ctx.send(embed=self.esniped[str(ch.id)])
         else:
             await ctx.send("You arent supposed to see whats going on here!")
+            
+    @commands.command()
+    async def dontsnipe (self, ctx, channel: discord.TextChannel = None):
+        if channel is None:
+            return await ctx.send('Please specify a channel where you dont want snipe to work!')
+        check = await self.coll.find_one({'channels': channel.id})
+        if check:
+            return await ctx.send('This channel is already unsnipeable!')
+        await self.coll.find_one_and_update("unique": dontsnipe, {"$push": {"channels": channel.id}}, upsert=True)
+        await ctx.send(f'{channel.mention} is no longer snipeable!')
 
 
 def setup(bot):
