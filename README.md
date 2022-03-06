@@ -1,6 +1,6 @@
 
 **Todo:**
-
+Stickroles has to be completed?
 
 **Not being used rn:**
 
@@ -13,4 +13,7 @@ DailyPoll
 DiscordYT
 
 PremiumSupport
+
+SaleItem
+
 
