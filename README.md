@@ -6,6 +6,8 @@
 
 NSFWDetector
 
+ChannelLock
+
 DailyPoll
 
 DiscordYT
