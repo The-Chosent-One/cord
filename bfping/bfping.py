@@ -16,7 +16,7 @@ class BFPing(commands.Cog):
         if ctx.invoked_subcommand is None:
             await ctx.send("You are probably looking for `??pings config`")
 
-    @pings.command(invoke_without_command=True)
+    @pings.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def config(self, ctx):
         if ctx.invoked_subcommand is None:
