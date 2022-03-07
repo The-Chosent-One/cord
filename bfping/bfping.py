@@ -94,7 +94,7 @@ class BFPing(commands.Cog):
             await ctx.author.remove_roles(gwm)
             return await ctx.send("Pretty sure you don't want to do that man")
         find = await self.coll.find_one({'Cog': 'BFPing'})
-        channel = find[gaw_channel]
+        channel = find['gaw_channel']
         for chaid in channel:
             chai = self.bot.get_channel(chaid)
             c += f"{chai.mention}, "
@@ -114,7 +114,7 @@ class BFPing(commands.Cog):
             await ctx.author.remove_roles(partner)
             return await ctx.send("Pretty sure you don't want to do that man")
         find = await self.coll.find_one({'Cog': 'BFPing'})
-        channel = find[partner_channel]
+        channel = find['partner_channel']
         for chaid in channel:
             chai = self.bot.get_channel(chaid)
             c += f"{chai.mention},"
@@ -133,7 +133,7 @@ class BFPing(commands.Cog):
             await ctx.author.remove_roles(heist)
             return await ctx.send("Pretty sure you don't want to do that man")
         find = await self.coll.find_one({'Cog': 'BFPing'})
-        channel = find[heist_channel]
+        channel = find['heist_channel']
         for chaid in channel:
             chai = self.bot.get_channel(chaid)
             c += f"{chai.mention}, "
@@ -152,7 +152,7 @@ class BFPing(commands.Cog):
             await ctx.author.remove_roles(gwm)
             return await ctx.send("Pretty sure you don't want to do that man")
         find = await self.coll.find_one({'Cog': 'BFPing'})
-        channel = find[ev_channel]
+        channel = find['ev_channel']
         for chaid in channel:
             chai = self.bot.get_channel(chaid)
             c += f"{chai.mention}, "
@@ -171,7 +171,7 @@ class BFPing(commands.Cog):
             await ctx.author.remove_roles(gwm)
             return await ctx.send("Pretty sure you don't want to do that man")
         find = await self.coll.find_one({'Cog': 'BFPing'})
-        channel = find[friendly_channel]
+        channel = find['friendly_channel']
         for chaid in channel:
             chai = self.bot.get_channel(chaid)
             c += f"{chai.mention}, "
@@ -190,7 +190,7 @@ class BFPing(commands.Cog):
             await ctx.author.remove_roles(gwm)
             return await ctx.send("Pretty sure you don't want to do that man")
         find = await self.coll.find_one({'Cog': 'BFPing'})
-        channel = find[lot_channel]
+        channel = find['lot_channel']
         for chaid in channel:
             chai = self.bot.get_channel(chaid)
             c += f"{chai.mention}, "
@@ -209,7 +209,7 @@ class BFPing(commands.Cog):
             await ctx.author.remove_roles(gwm)
             return await ctx.send("Pretty sure you don't want to do that man")
         find = await self.coll.find_one({'Cog': 'BFPing'})
-        channel = find[maf_channel]
+        channel = find['maf_channel']
         for chaid in channel:
             chai = self.bot.get_channel(chaid)
             c += f"{chai.mention}, "
