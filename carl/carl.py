@@ -127,15 +127,15 @@ class Carl(commands.Cog):
             if message.channel.id != 747853054329487500:
                 return await message.reply("You can only use this command in <#747853054329487500>")
             else:
-                # hacky way to split by ',' and exclude command invocation
-                args = message.content.replace('.donate', '').split(',')
+                # hacky way to split by '/' and exclude command invocation
+                args = message.content.replace('.donate', '').split('/')
 
                 if len(args) < 4 or len(args) >= 5:
                     await message.delete()
                     return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
-                                                      "use:`.donate <message>,<amount>,<time>,<winners>`\n"
-                                                      "Eg:`.donate Hi this is fire,1m,10m,1`\n"
-                                                      "NOTE: COMMAS AND EACH PART ARE REQUIRED")
+                                                      "use:`.donate <message>/<amount>/<time>/<winners>`\n"
+                                                      "Eg:`.donate Hi this is fire/1m/10m/1`\n"
+                                                      "NOTE: SLASH AND EACH PART ARE REQUIRED")
 
                 donate_embed = discord.Embed(
                     title=f"{message.author} wants to sponsor a giveaway!",
@@ -154,22 +154,22 @@ class Carl(commands.Cog):
             if message.channel.id != 756004818866405376:
                 return await message.reply("You can only use this command in <#756004818866405376>")
             else:
-                # hacky way to split by ',' and exclude command invocation
-                args = message.content.replace('.mm', '').split(',')
+                # hacky way to split by '/' and exclude command invocation
+                args = message.content.replace('.mm', '').split('/')
 
                 if len(args) < 4 or len(args) >= 5:
                     await message.delete()
                     return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
-                                                      "use:`.mm <item/money you are giving>,<item/money you are receiving>,<what channel>,<who you are fighting/trading>`\n"
-                                                      "Eg:`.mm 850k,pepec,#👊🏻┃fight-here-1,@fire`\n"
-                                                      "NOTE: COMMAS AND EACH PART ARE REQUIRED")
+                                                      "use:`.mm <your bet>/<their bet>/<what channel>/<who you are fighting>`\n"
+                                                      "Eg:`.mm 850k/pepec/#👊🏻┃fight-here-1/@fire`\n"
+                                                      "NOTE: SLASH AND EACH PART ARE REQUIRED")
 
                 mm_embed = discord.Embed(
                     title=f"{message.author} needs a middleman!",
-                    description=f"**Giving**: {args[0]}\n"
-                                f"**Receiving**: {args[1]}\n"
+                    description=f"**My Bet**: {args[0]}\n"
+                                f"**Their Bet**: {args[1]}\n"
                                 f"**Channel**: {args[2]}\n"
-                                f"**Who I'm fighting/trading**: {args[3]}\n",
+                                f"**Who I'm fighting**: {args[3]}\n",
                     timestamp=datetime.now()
                 )
                 mm_embed.set_footer(text="Tag made by Firecracker#3077")
