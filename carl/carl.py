@@ -1,187 +1,392 @@
 import discord
 from discord.ext import commands
-from core import checks
-from core.models import PermissionLevel
-from datetime import datetime
+import stringcase
+import re
+import random
+import unicodedata
+from unidecode import unidecode
 
 
-class Carl(commands.Cog):
+class Decancer(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
 
-    @commands.command()
-    @checks.has_permissions(PermissionLevel.ADMIN)
-    async def addtrigger(self, ctx, trigger: str, title: str, description: str, color: discord.Color = None,
-                         allowed_roles: commands.Greedy[discord.Role] = None,
-                         channels: commands.Greedy[discord.TextChannel] = None):
-        if color is None:
-            color = 0x00ff00
-        if allowed_roles is None:
-            allowed_roles = "None"
-        else:
-            allowed_roles = [r.id for r in allowed_roles]
-        if channels is None:
-            channels = "None"
-        else:
-            chaid = [c.id for c in channels]
-            channels = chaid
+    nouns = [
+        "Dog",
+        "Cat",
+        "Gamer",
+        "Ork",
+        "Memer",
+        "Robot",
+        "Programmer",
+        "Player",
+        "Doctor",
+        "Apple",
+        "Godfather",
+        "Mafia",
+        "Detective",
+        "Politician"]
+    adjectives = [
+        "Fast",
+        "Defiant",
+        "Homeless",
+        "Adorable",
+        "Delightful",
+        "Homely",
+        "Quaint",
+        "Adventurous",
+        "Depressed",
+        "Horrible",
+        "Aggressive",
+        "Determined",
+        "Hungry",
+        "Real",
+        "Agreeable",
+        "Different",
+        "Hurt",
+        "Relieved",
+        "Alert",
+        "Difficult",
+        "Repulsive",
+        "Alive",
+        "Disgusted",
+        "Ill",
+        "Rich",
+        "Amused",
+        "Distinct",
+        "Important",
+        "Angry",
+        "Disturbed",
+        "Impossible",
+        "Scary",
+        "Annoyed",
+        "Dizzy",
+        "Inexpensive",
+        "Selfish",
+        "Annoying",
+        "Doubtful",
+        "Innocent",
+        "Shiny",
+        "Anxious",
+        "Drab",
+        "Inquisitive",
+        "Shy",
+        "Arrogant",
+        "Dull",
+        "Itchy",
+        "Silly",
+        "Ashamed",
+        "Sleepy",
+        "Attractive",
+        "Eager",
+        "Jealous",
+        "Smiling",
+        "Average",
+        "Easy",
+        "Jittery",
+        "Smoggy",
+        "Awful",
+        "Elated",
+        "Jolly",
+        "Sore",
+        "Elegant",
+        "Joyous",
+        "Sparkling",
+        "Bad",
+        "Embarrassed",
+        "Splendid",
+        "Beautiful",
+        "Enchanting",
+        "Kind",
+        "Spotless",
+        "Better",
+        "Encouraging",
+        "Stormy",
+        "Bewildered",
+        "Energetic",
+        "Lazy",
+        "Strange",
+        "Enthusiastic",
+        "Light",
+        "Stupid",
+        "Bloody",
+        "Envious",
+        "Lively",
+        "Successful",
+        "Blue",
+        "Evil",
+        "Lonely",
+        "Super",
+        "Blue-eyed",
+        "Excited",
+        "Long",
+        "Blushing",
+        "Expensive",
+        "Lovely",
+        "Talented",
+        "Bored",
+        "Exuberant",
+        "Lucky",
+        "Tame",
+        "Brainy",
+        "Tender",
+        "Brave",
+        "Fair",
+        "Magnificent",
+        "Tense",
+        "Breakable",
+        "Faithful",
+        "Misty",
+        "Terrible",
+        "Bright",
+        "Famous",
+        "Modern",
+        "Tasty",
+        "Busy",
+        "Fancy",
+        "Motionless",
+        "Thankful",
+        "Fantastic",
+        "Muddy",
+        "Thoughtful",
+        "Calm",
+        "Fierce",
+        "Mushy",
+        "Thoughtless",
+        "Careful",
+        "Filthy",
+        "Mysterious",
+        "Tired",
+        "Cautious",
+        "Fine",
+        "Tough",
+        "Charming",
+        "Foolish",
+        "Nasty",
+        "Troubled",
+        "Cheerful",
+        "Fragile",
+        "Naughty",
+        "Clean",
+        "Frail",
+        "Nervous",
+        "Ugliest",
+        "Clear",
+        "Frantic",
+        "Nice",
+        "Ugly",
+        "Clever",
+        "Friendly",
+        "Nutty",
+        "Uninterested",
+        "Cloudy",
+        "Frightened",
+        "Unsightly",
+        "Clumsy",
+        "Funny",
+        "Obedient",
+        "Unusual",
+        "Colorful",
+        "Obnoxious",
+        "Upset",
+        "Combative",
+        "Gentle",
+        "Odd",
+        "Uptight",
+        "Comfortable",
+        "Gifted",
+        "Old-fashioned",
+        "Concerned",
+        "Glamorous",
+        "Open",
+        "Vast",
+        "Condemned",
+        "Gleaming",
+        "Outrageous",
+        "Victorious",
+        "Confused",
+        "Glorious",
+        "Outstanding",
+        "Vivacious",
+        "Cooperative",
+        "Good",
+        "Courageous",
+        "Gorgeous",
+        "Panicky",
+        "Wandering",
+        "Crazy",
+        "Graceful",
+        "Perfect",
+        "Weary",
+        "Creepy",
+        "Grieving",
+        "Plain",
+        "Wicked",
+        "Crowded",
+        "Grotesque",
+        "Pleasant",
+        "Wide-eyed",
+        "Cruel",
+        "Grumpy",
+        "Poised",
+        "Wild",
+        "Curious",
+        "Poor",
+        "Witty",
+        "Cute",
+        "Handsome",
+        "Powerful",
+        "Worrisome",
+        "Happy",
+        "Precious",
+        "Worried",
+        "Dangerous",
+        "Healthy",
+        "Prickly",
+        "Wrong",
+        "Dark",
+        "Helpful",
+        "Proud",
+        "Dead",
+        "Helpless",
+        "Putrid",
+        "Zany",
+        "Defeated",
+        "Hilarious",
+        "Puzzled",
+        "Zealous",
+        "Dank",
+        "Sexy",
+        "Darth"]
 
-        check = await self.coll.find_one({"trigger": trigger})
-        if check:
-            await ctx.send("Trigger already exists")
-        else:
-            await self.coll.insert_one(
-                {"trigger": trigger, "title": title, "description": description, "color": color.value,
-                 "allowed_roles": allowed_roles, "channel": channels})
-            await ctx.send("Added trigger")
+    @staticmethod
+    def is_cancerous(text: str) -> bool:
+        for segment in text.split():
+            for char in segment:
+                if not (char.isascii() and char.isalnum()):
+                    return True
+        return False
 
-    @commands.command(alias=["deltrigger"])
-    @checks.has_permissions(PermissionLevel.ADMIN)
-    async def deletetrigger(self, ctx, trigger: str):
-        check = await self.coll.find_one({"trigger": trigger})
-        if check:
-            await self.coll.delete_one(check)
-            await ctx.send("Deleted trigger")
-        else:
-            await ctx.send("Trigger does not exist")
+    # the magic
+    @staticmethod
+    def strip_accs(text):
+        try:
+            text = unicodedata.normalize("NFKC", text)
+            text = unicodedata.normalize("NFD", text)
+            text = unidecode(text)
+            text = text.encode("ascii", "ignore")
+            text = text.decode("utf-8")
+        except Exception as e:
+            print(e)
+        return str(text)
 
-    @commands.command()
-    @checks.has_permissions(PermissionLevel.ADMIN)
-    async def trigger(self, ctx, trigger: str = None):
-        c = ""
-        r = ""
-        t = ""
-        if trigger is None:
-            fetchall = self.coll.find({})
-            async for x in fetchall:
-                trigger = x["trigger"]
-                t += f"{trigger} \n"
-            embed = discord.Embed(title="All triggers", description=t, color=0x00ff00)
-            await ctx.send(embed=embed)
-        else:
-            find = await self.coll.find_one({"trigger": trigger})
-            if find:
-                description = find["description"]
-                title = find["title"]
-                channel = find["channel"]
-                allowed_roles = find["allowed_roles"]
-                embed = discord.Embed(title=title, description=description)
-                for chamention in channel:
-                    chamen = self.bot.get_channel(chamention)
-                    c += f"{chamen.mention}, "
-                for roleid in allowed_roles:
-                    rolename = ctx.guild.get_role(roleid)
-                    r += f"{rolename.name}, "
-                if channel == 'None' and allowed_roles == 'None':
-                    await ctx.send("This trigger is allowed everywhere.", embed=embed)
-                if channel == 'None' and allowed_roles != 'None':
-                    await ctx.send(f"This trigger is allowed in all channels but only for these roles: \n {r}",
-                                   embed=embed)
-                if channel != 'None' and allowed_roles == 'None':
-                    await ctx.send(f"This trigger is allowed in the channels: \n {c} for everyone.", embed=embed)
-                if channel != 'None' and allowed_roles != 'None':
-                    await ctx.send(
-                        f"This is only allowed in the channels \n {c} \n for who have one of the roles: \n {r}",
-                        embed=embed)
-            else:
-                await ctx.send("Trigger does not exist, try `??trigger` to see available triggers")
+    # the magician
+    async def nick_maker(self, old_shit_nick):
+        try:
+            old_shit_nick = self.strip_accs(old_shit_nick)
+            new_cool_nick = re.sub("[^a-zA-Z0-9 \n.]", "", old_shit_nick)
+            new_cool_nick = " ".join(new_cool_nick.split())
+            new_cool_nick = stringcase.lowercase(new_cool_nick)
+            new_cool_nick = stringcase.titlecase(new_cool_nick)
+            if len(new_cool_nick.replace(" ", "")) <= 1 or len(new_cool_nick) > 32:
+                return f"{random.choice(self.adjectives)} {random.choice(self.nouns)}"
+            return new_cool_nick
+        except Exception:
+            return f"{random.choice(self.adjectives)} {random.choice(self.nouns)}"
 
     @commands.Cog.listener()
-    async def on_message(self, message: discord.Message):
-        if message.author.bot:
-            return
-        if message.content.startswith('??'):
-            return
-        check = await self.coll.find_one({"trigger": message.content.lower()})
-        if not check:
-            return
-        else:
-            channel = check["channel"]
-            allowed_roles = check["allowed_roles"]
-            color = check["color"]
-            title = check["title"]
-            description = check["description"]
-            if channel == 'None' and allowed_roles == 'None':
-                embed = discord.Embed(title=title, description=description, color=color)
-                return await message.channel.send(embed=embed)
-            if channel == 'None' and allowed_roles != 'None':
-                if any(r.id in allowed_roles for r in message.author.roles):
-                    embed = discord.Embed(title=title, description=description, color=color)
-                    return await message.channel.send(embed=embed)
-            if channel != 'None' and allowed_roles == 'None':
-                if message.channel.id in channel:
-                    embed = discord.Embed(title=title, description=description, color=color)
-                    return await message.channel.send(embed=embed)
-            if channel != 'None' and allowed_roles != 'None':
-                if any(r.id in allowed_roles for r in message.author.roles) and message.channel.id in channel:
-                    embed = discord.Embed(title=title, description=description, color=color)
-                    return await message.channel.send(embed=embed)
+    async def on_member_join(self, member):
 
-    @commands.Cog.listener('on_message')
-    async def donatemm(self, message: discord.Message):
-        if message.author.bot:
+        random_nick = f"{random.choice(self.adjectives)} {random.choice(self.nouns)}"
+        nice_nick = await self.nick_maker(member.display_name)
+        bad_nick = member.display_name
+
+        if member.display_name == nice_nick:
+            return
+        if nice_nick.lower() == bad_nick.lower():
             return
 
-        if message.content.startswith('.donate'):
-            if message.channel.id != 747853054329487500:
-                return await message.reply("You can only use this command in <#747853054329487500>")
-            else:
-                # hacky way to split by '/' and exclude command invocation
-                args = message.content.replace('.donate', '').split('/')
+        if len(nice_nick) <= 1:
+            channel = self.bot.get_channel(676931619294281729)
+            await member.edit(nick=random_nick)
+            return await channel.send(f'Decancered `{member.name}` to {random_nick}')
+        elif len(nice_nick) >= 2:
+            channel = self.bot.get_channel(676931619294281729)
+            await member.edit(nick=nice_nick)
+            return await channel.send(f'Decancered `{member.name}` to {nice_nick}')
 
-                if len(args) < 4 or len(args) >= 5:
-                    await message.delete()
-                    return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
-                                                      "use:`.donate <message>/<amount>/<time>/<winners>`\n"
-                                                      "Eg:`.donate Hi this is fire/1m/10m/1`\n"
-                                                      "NOTE: SLASH AND EACH PART ARE REQUIRED")
+    @commands.check_any(
+        commands.has_permissions(manage_nicknames=True),
+        commands.has_role('Farm Hand - Chat Moderator')
+    )
+    @commands.command(name='decancer', aliases=['dc'])
+    async def decancer(self, ctx, member: discord.Member = None):
 
-                donate_embed = discord.Embed(
-                    title=f"{message.author} wants to sponsor a giveaway!",
-                    description=f"**Sponsor**: {message.author.mention}\n"
-                                f"**Message**: {args[0]}\n"
-                                f"**Amount**: {args[1]}\n"
-                                f"**Time**: {args[2]}\n"
-                                f"**Winners**: {args[3]}\n",
-                    timestamp=datetime.now()
-                )
-                donate_embed.set_footer(text="Tag made by Firecracker#3077")
-                await message.channel.send(embed=donate_embed)
-                await message.delete()
+        random_nick = f"{random.choice(self.adjectives)} {random.choice(self.nouns)}"
+        nice_nick = await self.nick_maker(member.display_name)
+        bad_nick = member.display_name
 
-        if message.content.startswith('.mm'):
-            if message.channel.id != 756004818866405376:
-                return await message.reply("You can only use this command in <#756004818866405376>")
-            else:
-                # hacky way to split by '/' and exclude command invocation
-                args = message.content.replace('.mm', '').split('/')
+        if member is None:
+            return await ctx.send('Please provide a valid member lol\nExample: `??decancer @user`')
+        if member.top_role.position >= ctx.author.top_role.position:
+            return await ctx.send('<a:youtried:881184651232817232> lol')
+        if nice_nick.lower() == bad_nick.lower():
+            return await ctx.send('What are you trying to decancer huh? Its pingable smh')
 
-                if len(args) < 4 or len(args) >= 5:
-                    await message.delete()
-                    return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
-                                                      "use:`.mm <your bet>/<their bet>/<what channel>/<who you are fighting>`\n"
-                                                      "Eg:`.mm 850k/pepec/#👊🏻┃fight-here-1/@fire`\n"
-                                                      "NOTE: SLASH AND EACH PART ARE REQUIRED")
+        if len(nice_nick) <= 1:
+            await member.edit(nick=random_nick)
+            return await ctx.send(
+                embed=discord.Embed(title='Randomized their nickname since I couldnt decancer!',
+                                    colour=discord.Colour.red(),
+                                    description=f'**Old nick:** {bad_nick}\n**New nick:** {random_nick}'))
+        elif len(nice_nick) >= 2:
+            await member.edit(nick=nice_nick)
+            return await ctx.send(
+                embed=discord.Embed(title='Decancered their nickname!', colour=discord.Colour.green(),
+                                    description=f'**Old nick:** {bad_nick}\n**New nick:** {nice_nick}'))
 
-                mm_embed = discord.Embed(
-                    title=f"{message.author} needs a middleman!",
-                    description=f"**My Bet**: {args[0]}\n"
-                                f"**Their Bet**: {args[1]}\n"
-                                f"**Channel**: {args[2]}\n"
-                                f"**Who I'm fighting**: {args[3]}\n",
-                    timestamp=datetime.now()
-                )
-                mm_embed.set_footer(text="Tag made by Firecracker#3077")
-                await message.channel.send(embed=mm_embed)
-                await message.delete()
+    @commands.Cog.listener()
+    async def on_member_update(self, before, after):
+        if before.nick != after.nick:
+            frozencheck = await self.coll.find_one({"user_id": str(after.id)})
+            if not frozencheck:
+                return
+            frozennick = frozencheck['Nickname']
+            await after.edit(nick=frozennick)
 
+    @commands.check_any(
+        commands.has_permissions(manage_nicknames=True)
+    )
     @commands.command()
-    @checks.has_permissions(PermissionLevel.ADMIN)
-    async def embed(self, channel: discord.TextChannel, color: discord.Color, title, description):
-        embed = discord.Embed(title=title, description=description, color=color)
-        await channel.send(embed=embed)
+    async def freezenick(self, ctx, user: discord.Member, *, nickname: str):
+        if user.top_role.position >= ctx.author.top_role.position:
+            return await ctx.send('<a:youtried:881184651232817232> lol')
+
+        frozencheck = await self.coll.find_one({"user_id": str(user.id)})
+        if frozencheck:
+            return await ctx.send("The user's nickname is alr frozen")
+
+        frozenadd = {"user_id": str(user.id), "Nickname": nickname}
+        await ctx.send(f'Trying to freeze {user.nick} to {nickname}')
+        try:
+            await self.coll.insert_one(frozenadd)
+            await user.edit(nick=nickname)
+            await ctx.send('Done!')
+        except Exception:
+            await ctx.send("Something went wrong, please ping Cordila")
+
+    @commands.check_any(
+        commands.has_permissions(manage_nicknames=True)
+    )
+    @commands.command()
+    async def unfreezenick(self, ctx, user: discord.Member):
+        frozencheck = await self.coll.find_one({"user_id": str(user.id)})
+        if frozencheck is None:
+            return await ctx.send("The user's nickname is not frozen")
+        await self.coll.delete_one(frozencheck)
+        await ctx.send(f'I unfreezed <@{user.id}>')
 
 
 def setup(bot):
-    bot.add_cog(Carl(bot))
+    bot.add_cog(decancer(bot))
