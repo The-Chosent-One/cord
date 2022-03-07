@@ -38,38 +38,6 @@ class Extras(commands.Cog):
             await message.delete()
 
     @commands.Cog.listener('on_message')
-    async def wrongchannel(self, message: discord.Message):
-        if message.channel.id == 759131412539768872:
-            if any(word in message.content.lower() for word in ('selling', 'sell', 'loan')):
-                alert = self.bot.get_channel(931503735052591124)
-                embed = discord.Embed(title="**Selling/Loan ad in #trade-buyers**",
-                                      description=f"Someone posted a selling ad in <#759131412539768872> \n **[Jump to the ad]({message.jump_url})**",
-                                      color=0xf70202)
-                react = await alert.send(embed=embed)
-                await react.add_reaction("<:farm_1wrongchannel:749882327458644058>")
-        if message.channel.id == 685572368919298291:
-            if any(word in message.content.lower() for word in ('buying', 'loan')):
-                alert = self.bot.get_channel(931503735052591124)
-                embed = discord.Embed(title="**Buying/Loan ad in #trade-sellers**",
-                                      description=f"Someone posted a buying ad in <#685572368919298291> \n **[Jump to the ad]({message.jump_url})**",
-                                      color=0xf70202)
-                react = await alert.send(embed=embed)
-                await react.add_reaction("<:farm_1wrongchannel:749882327458644058>")
-        if message.channel.id == 784080892905652224:
-            if any(word in message.content.lower() for word in ('selling', 'sell', 'loan', 'buying', 'buy')):
-                alert = self.bot.get_channel(931503735052591124)
-                embed = discord.Embed(title="**Buying/Selling/Loan ad in #fight-ads**",
-                                      description=f"Someone posted a buying/selling/loan ad in <#784080892905652224> \n **[Jump to the ad]({message.jump_url})**",
-                                      color=0xf70202)
-                react = await alert.send(embed=embed)
-                await react.add_reaction("<:farm_1wrongchannel:749882327458644058>")
-
-    @commands.Cog.listener('on_reaction_add')
-    async def handled(self, reaction, user):
-        if reaction.message.channel.id == 931503735052591124 and user.id != 855270214656065556:
-            await reaction.message.delete()
-
-    @commands.Cog.listener('on_message')
     async def scammeralert(self, message: discord.Message):
         if not message.guild:
             return
@@ -187,7 +155,7 @@ class Extras(commands.Cog):
         await ctx.send(ctx.thread.id)
 
     @commands.Cog.listener()
-    async def on_member_update(self, before, after):
+    async def on_presence_update(self, before, after):
         if str(before.activity) == str(after.activity):
             return
 
