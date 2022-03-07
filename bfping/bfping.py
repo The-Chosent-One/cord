@@ -102,9 +102,8 @@ class BFPing(commands.Cog):
             await ctx.channel.purge(limit=1)
             await ctx.send(f'<@&672889430171713538> {messages}')
         else:
-
             await ctx.send(f'You can only use this command in {c}')
-
+            
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def partner(self, ctx, *, messages="^_^"):
