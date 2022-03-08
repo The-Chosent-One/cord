@@ -283,7 +283,7 @@ class TypeRacer(commands.Cog):
         ref = msg.to_reference(fail_if_not_exists=False)
 
         while True:
-            if dt.utcnow() > end_time:
+            if discord.utils.utcnow() > end_time:
                 embed = self.get_completion_embed(msg, completions, True)
                 await ctx.send(embed=embed, reference=ref)
                 break
@@ -291,7 +291,7 @@ class TypeRacer(commands.Cog):
                 winner = await ctx.bot.wait_for(
                     "message",
                     check=check,
-                    timeout=(end_time - dt.utcnow()).total_seconds(),
+                    timeout=(end_time - discord.utils.utcnow()).total_seconds(),
                 )
             except asyncio.TimeoutError:
                 embed = self.get_completion_embed(msg, completions, True)
