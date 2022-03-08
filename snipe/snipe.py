@@ -109,11 +109,11 @@ class Snipe(commands.Cog):
         if ctx.invoked_subcommand is None:
             await ctx.send("You are probably looking for `??snipes config`")
 
-    @snipes.group()
+    @snipes.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def config(self, ctx):
-        await ctx.send(
-            "Config options: \n `nosnipe` - Make the channel unsnipeable \n `yessnipe` - Make the channel snipeable again")
+        if ctx.invoked_subcommand is None:
+            await ctx.send("Config options: \n `nosnipe` - Make the channel unsnipeable \n `yessnipe` - Make the channel snipeable again")
 
     @config.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
