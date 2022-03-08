@@ -48,7 +48,7 @@ class NewComers(commands.Cog):
         if days == 0:
             await self.tempban(user, str((90 - days) * 24 * 60 * 60))
             await user.ban(reason="Suspected ALT, Banned for 90 days.")
-            channel = self.bot.get_channel(676931619294281729)
+            channel = self.bot.get_channel(950235045698863188)
             await channel.send(
                 f"Auto Banned {user} `{user.id}` for being a suspected ALT, Come back in {(90 - days)} days")
 
@@ -56,7 +56,7 @@ class NewComers(commands.Cog):
             await self.tempban(user, str((14 - days) * 24 * 60 * 60))
             await user.ban(
                 reason="Your account is too new! Feel free to join back when your account is atleast 15 days old. discord.gg/dank")
-            channel = self.bot.get_channel(676931619294281729)
+            channel = self.bot.get_channel(950235045698863188)
             await channel.send(
                 f"Auto banned {user} `{user.id}` for being younger than 14d. Come back in {(14 - days)} days")
 
@@ -69,7 +69,7 @@ class NewComers(commands.Cog):
                 if current_time >= x["BannedUntil"]:  # do stuff after this
                     unbanuser = x["user_id"]
                     member = discord.Object(id=unbanuser)
-                    guild = self.bot.get_guild(645753561329696785)
+                    guild = self.bot.get_guild(950235045698863184)
                     try:
                         await guild.unban(member, reason="Tempban for new account expired.")
                         deletetime = await self.coll.find_one({"user_id": int(unbanuser)})
