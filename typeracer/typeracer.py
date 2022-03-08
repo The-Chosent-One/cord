@@ -249,8 +249,7 @@ class TypeRacer(commands.Cog):
             raise commands.UserFeedbackCheckFailure(
                 "Could not fetch quote. Please try again later."
             )
-        orange = 0xe67e22
-        color = discord.Color.from_hsv(orange, 1, 1)
+        color = discord.Color.from_rgb(230, 126, 34)
         img = await self.render_typerace(quote, color)
         embed = discord.Embed(color=color)
         embed.set_image(url="attachment://typerace.png")
