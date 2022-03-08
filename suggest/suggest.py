@@ -61,7 +61,7 @@ class Suggest(commands.Cog):
 
                     embed = discord.Embed(color=0x59E9FF)
                     embed.set_author(name=f"Suggestion #{next_id}: Waiting")
-                    embed.set_thumbnail(url=ctx.author.avatar_url)
+                    embed.set_thumbnail(url=ctx.author.avatar)
                     embed.add_field(
                         name="Author",
                         value=f"{ctx.author} (ID: {ctx.author.id})",
