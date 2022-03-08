@@ -80,7 +80,7 @@ class LockAndSlow(commands.Cog):
         slomo_embed = discord.Embed(
             title=f" A slowmode of {delay} has been activated by a moderator.",
             color=0x363940, timestamp=ctx.message.created_at)
-        slomo_embed.set_footer(text=f'Applied by {ctx.author}', icon_url=ctx.author.avatar_url)
+        slomo_embed.set_footer(text=f'Applied by {ctx.author}', icon_url=ctx.author.avatar)
         await ctx.message.delete()
         await ctx.channel.edit(slowmode_delay=to_seconds(delay))
         await ctx.send(content=None, embed=slomo_embed)
