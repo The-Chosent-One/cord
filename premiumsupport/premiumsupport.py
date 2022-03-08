@@ -108,7 +108,7 @@ class PremiumSupport(commands.Cog):
         """
         embed = discord.Embed(colour=self.bot.main_color)
         embed.set_author(
-            name="Premium Support Configurations:", icon_url=self.bot.user.avatar_url
+            name="Premium Support Configurations:", icon_url=self.bot.user.avatar
         )
         embed.add_field(name="Premium Roles", value=f"`{self.roles}`", inline=False)
         embed.add_field(
