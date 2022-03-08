@@ -129,7 +129,7 @@ class TypeRacer(commands.Cog):
                 text,
                 spacing=newline,
                 font=self.font,
-                fill=0xfd9016,
+                fill=color.to_rgb(),
             )
 
             buffer = BytesIO()
@@ -250,7 +250,7 @@ class TypeRacer(commands.Cog):
                 "Could not fetch quote. Please try again later."
             )
 
-        color = 0xfd9016
+        color = discord.Color.from_rgb(253, 144, 22)
         img = await self.render_typerace(quote, color)
         embed = discord.Embed(color=color)
         embed.set_image(url="attachment://typerace.png")
