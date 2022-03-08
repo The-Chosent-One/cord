@@ -41,7 +41,7 @@ class NewComers(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, user: discord.Member):
-        now = datetime.utcnow()
+        now = discord.utils.utcnow()
         age = now - user.created_at
         days = age.days
 
