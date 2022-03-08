@@ -24,7 +24,7 @@ class Snipe(commands.Cog):
         if any(word in message.content.lower() for word in nosnipe) or message.author.bot:
             return
         em = discord.Embed(description=message.content)
-        em.set_author(name=message.author.display_name, icon_url=message.author.avatar_url)
+        em.set_author(name=message.author.display_name, icon_url=message.author.avatar)
         em.set_footer(text='Sent at: ')
         em.timestamp = message.created_at
         self.sniped[str(message.channel.id)] = em
@@ -64,7 +64,7 @@ class Snipe(commands.Cog):
             return
 
         em = discord.Embed(description=f'**Before: ** {before.content}\n**After: ** {after.content}')
-        em.set_author(name=before.author.display_name, icon_url=before.author.avatar_url)
+        em.set_author(name=before.author.display_name, icon_url=before.author.avatar)
         em.set_footer(text='Sent at: ')
         em.timestamp = before.created_at
         self.esniped[str(before.channel.id)] = em
