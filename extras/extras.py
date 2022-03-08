@@ -102,8 +102,8 @@ class Extras(commands.Cog):
 
         roles = [role for role in member.roles]
         embed = discord.Embed(colour=discord.Colour.green(), timestamp=ctx.message.created_at)
-        embed.set_author(name=member.name, icon_url=member.avatar_url)
-        embed.set_thumbnail(url=member.avatar_url)
+        embed.set_author(name=member.name, icon_url=member.avatar)
+        embed.set_thumbnail(url=member.avatar)
         embed.set_footer(text=f"Requested by {ctx.author}")
         embed.add_field(name="Created Account On:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %p UTC"),
                         inline=True)
