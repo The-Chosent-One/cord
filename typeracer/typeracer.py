@@ -129,7 +129,7 @@ class TypeRacer(commands.Cog):
                 text,
                 spacing=newline,
                 font=self.font,
-                fill=color.to_rgb(),
+                fill=0xfd9016,
             )
 
             buffer = BytesIO()
