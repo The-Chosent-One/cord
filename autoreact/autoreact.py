@@ -53,10 +53,7 @@ class Autoreact(commands.Cog):
             
         for i in range(0, len(s), 15):            
             chunk = s[i:i + 15]
-            chunk2 = *chunk, sep="\n"
             await ctx.send(chunk)
-            await ctx.send(chunk2)
-
 
 def setup(bot):
     bot.add_cog(Autoreact(bot))
