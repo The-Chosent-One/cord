@@ -11,7 +11,7 @@ class Autoreact(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def addar(self, ctx, member: discord.Member, emoji: discord.Emoji):
+    async def addar(self, ctx, member: discord.Member, emoji: typing.Union[discord.Emoji,str]):
         check = await self.coll.find_one({"user_id": member.id})
         if check:
             return await ctx.send("The autoreact already exists for this user")
