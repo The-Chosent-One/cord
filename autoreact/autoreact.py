@@ -54,7 +54,8 @@ class Autoreact(commands.Cog):
         stuff = s.splitlines()
         for i in range(0, len(stuff), 15):            
             chunk = stuff[i:i + 15]
-            await ctx.send(chunk)
+            final = "\n".join(chunk)
+            await ctx.send(final)
             
 def setup(bot):
     bot.add_cog(Autoreact(bot))
