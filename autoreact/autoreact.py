@@ -54,8 +54,7 @@ class Autoreact(commands.Cog):
         stuff = s.splitlines()
         for i in range(0, len(stuff), 15):            
             chunk = stuff[i:i + 15]
-            chunk2 = (*chunk, sep="\n")
-            await ctx.send(chunk2)
+            await ctx.send(*chunk, sep="\n")
 
 
 def setup(bot):
