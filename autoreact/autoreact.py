@@ -22,13 +22,13 @@ class Autoreact(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def removear(self, ctx, member: discord.Member):
-        ar = await self.coll.find_one({"user_id": member.id})
+    async def removear(self, ctx, user: discord.User):
+        ar = await self.coll.find_one({"user_id": user.id})
         if not ar:
             return await ctx.send("This user doesnt have an autoreact anyways whatcha up to?")
         reaction1 = ar["reaction"]
         await self.coll.delete_one(ar)
-        await ctx.send(f"Deleted reaction {reaction1} for {member.mention}")
+        await ctx.send(f"Deleted reaction {reaction1} for {user.name}")
 
     @commands.Cog.listener()
     async def on_message(self, message):
