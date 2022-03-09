@@ -50,9 +50,10 @@ class Autoreact(commands.Cog):
             convert = x['user_id']
             converted = self.bot.get_user(convert)
             s += f"{converted} (`{convert}`) : {x['reaction']} \n"
-
-        for i in range(0, len(s), 15):            
-            chunk = s[i:i + 15]
+            
+        stuff = s.splitlines()
+        for i in range(0, len(stuff), 15):            
+            chunk = stuff[i:i + 15]
             await ctx.send(chunk)
 
 
