@@ -54,7 +54,9 @@ class Autoreact(commands.Cog):
         for i in range(0, len(s), 15):            
             chunk = s[i:i + 15]
             chunk2 = *chunk, sep="\n"
+            chunk3 = = [s[10*i:10*(i+1)] for i in range(len(s)//10 + 1)]
             await ctx.send(chunk)
+            await ctx.send(chunk3)
             await ctx.send(chunk2)
 
 
