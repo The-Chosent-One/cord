@@ -51,7 +51,8 @@ class Autoreact(commands.Cog):
             converted = self.bot.get_user(convert)
             s += f"{converted} (`{convert}`) : {x['reaction']} \n"
 
-        await ctx.send(s)
+        stuff = [s[x:x+20] for x in xrange(0, len(data), 20)]
+        await ctx.send(stuff)
 
 
 def setup(bot):
