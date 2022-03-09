@@ -52,8 +52,8 @@ class Autoreact(commands.Cog):
             s += f"{converted} (`{convert}`) : {x['reaction']} \n"
             
         stuff = s.splitlines()
-        for i in range(0, len(stuff), 15):            
-            chunk = stuff[i:i + 15]
+        for i in range(0, len(stuff), 22):            
+            chunk = stuff[i:i + 22]
             final = "\n".join(chunk)
             await ctx.send(final)
             
