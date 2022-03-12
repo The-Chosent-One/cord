@@ -120,7 +120,7 @@ class BFPing(commands.Cog):
                 await ctx.message.reply("Please keep the time between 1 minute and 1 hour.")
                 raise BaseException
 
-            role = ctx.guild.get_role(787572079573598220)
+            role = ctx.guild.get_role(950242881724100668)
             if role not in member.roles:
                 await member.add_roles(role)
                 await ctx.send("The role has been added")
