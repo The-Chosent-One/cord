@@ -110,8 +110,9 @@ class BFPing(commands.Cog):
         }).total_seconds())
 
     @commands.command()
+    @commands.has_any_role(682698693472026749, 663162896158556212, 658770981816500234, 855877108055015465)
     async def esponsor(self, ctx, member: discord.Member, seconds=None):
-        role = ctx.guild.get_role(950242881724100668)
+        role = ctx.guild.get_role(787572079573598220)
         if seconds is None:
             if role in member.roles:            
                 await member.remove_roles(role)
