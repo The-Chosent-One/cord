@@ -4,6 +4,7 @@ from discord.ext import commands
 
 time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'}
 
+
 class BFPing(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -131,6 +132,9 @@ class BFPing(commands.Cog):
             else:
                 await member.remove_roles(role)
                 await ctx.send("The role has been removed from them!")
+        except ValueError:
+            await ctx.message.reply('You must enter a number!')
+
 
 def setup(bot):
     bot.add_cog(BFPing(bot))
