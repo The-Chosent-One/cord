@@ -111,6 +111,10 @@ class BFPing(commands.Cog):
 
     @commands.command()
     async def esponsor(self, ctx, member: discord.Member, seconds):
+        role = ctx.guild.get_role(950242881724100668)
+        if role in member.roles:            
+            await member.remove_roles(role)
+            await ctx.send("The role has been removed from them!")            
         try:
             text = seconds
             seconds = sum(
@@ -121,7 +125,6 @@ class BFPing(commands.Cog):
                 await ctx.message.reply("Please keep the time between 1 minute and 1 hour.")
                 raise BaseException
 
-            role = ctx.guild.get_role(950242881724100668)
             if role not in member.roles:
                 await member.add_roles(role)
                 await ctx.send("The role has been added")
@@ -129,9 +132,6 @@ class BFPing(commands.Cog):
                 if role in member.roles:
                     await member.remove_roles(role)
                     await ctx.send(f"The Event Sponsor role has has been removed from {member.mention}")
-            else:
-                await member.remove_roles(role)
-                await ctx.send("The role has been removed from them!")
         except ValueError:
             await ctx.message.reply('You must enter a number!')
 
