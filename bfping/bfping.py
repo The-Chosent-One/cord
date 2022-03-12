@@ -1,6 +1,7 @@
 import discord
 import asyncio
 from discord.ext import commands
+import re
 
 time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'}
 
