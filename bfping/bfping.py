@@ -110,11 +110,14 @@ class BFPing(commands.Cog):
         }).total_seconds())
 
     @commands.command()
-    async def esponsor(self, ctx, member: discord.Member, seconds):
+    async def esponsor(self, ctx, member: discord.Member, seconds=None):
         role = ctx.guild.get_role(950242881724100668)
-        if role in member.roles:            
-            await member.remove_roles(role)
-            await ctx.send("The role has been removed from them!")            
+        if seconds is None:
+            if role in member.roles:            
+                await member.remove_roles(role)
+                await ctx.send("The role has been removed from them!")
+            else:
+                await ctx.send("Please specify a time. Eg. `3m`")
         try:
             text = seconds
             seconds = sum(
