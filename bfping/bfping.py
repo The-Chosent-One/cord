@@ -120,17 +120,17 @@ class BFPing(commands.Cog):
                 await ctx.message.reply("Please keep the time between 1 minute and 1 hour.")
                 raise BaseException
 
-        role = ctx.guild.get_role(787572079573598220)
-        if role not in member.roles:
-            await member.add_roles(role)
-            await ctx.send("The role has been added")
-            await asyncio.sleep(seconds)
-            if role in member.roles:
+            role = ctx.guild.get_role(787572079573598220)
+            if role not in member.roles:
+                await member.add_roles(role)
+                await ctx.send("The role has been added")
+                await asyncio.sleep(time)
+                if role in member.roles:
+                    await member.remove_roles(role)
+                    await ctx.send(f"The Event Sponsor role has has been removed from {member.mention}")
+            else:
                 await member.remove_roles(role)
-                await ctx.send(f"The Event Sponsor role has has been removed from {member.mention}")
-        else:
-            await member.remove_roles(role)
-            await ctx.send("The role has been removed from them!")
+                await ctx.send("The role has been removed from them!")
 
 def setup(bot):
     bot.add_cog(BFPing(bot))
