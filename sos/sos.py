@@ -24,7 +24,7 @@ class SplitOrSteal(commands.Cog):
     async def sos(self, ctx: commands.Context, player1: discord.Member, player2: discord.Member):
         embed = discord.Embed(title="Split or Steal?", description="You have 30 seconds to decide!",
                               colour=0x90EE90)
-        await ctx.send(embed=embed, view=view())
+        await ctx.send(embed=embed, view=Buttons())
 
 
 def setup(bot):
