@@ -124,7 +124,7 @@ class BFPing(commands.Cog):
         if role not in member.roles:
             await member.add_roles(role)
             await ctx.send("The role has been added")
-            await asyncio.sleep(time)
+            await asyncio.sleep(seconds)
             if role in member.roles:
                 await member.remove_roles(role)
                 await ctx.send(f"The Event Sponsor role has has been removed from {member.mention}")
