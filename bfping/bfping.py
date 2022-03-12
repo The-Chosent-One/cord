@@ -109,7 +109,6 @@ class BFPing(commands.Cog):
         }).total_seconds())
 
     @commands.command()
-    @commands.has_any_role(682698693472026749, 663162896158556212, 658770981816500234, 855877108055015465)
     async def esponsor(self, ctx, member: discord.Member, seconds):
         try:
             text = seconds
