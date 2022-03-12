@@ -124,7 +124,7 @@ class BFPing(commands.Cog):
                 int(num) * {'h': 60 * 60, 'm': 60, 's': 1, ' ': 1}[weight if weight else 's'] for num, weight in
                 re.findall(r'(\d+)\s?([msh])?', text))
 
-            if not 60 < seconds < 3600:
+            if not 59 < seconds < 3601:
                 await ctx.message.reply("Please keep the time between 1 minute and 1 hour.")
                 raise BaseException
 
