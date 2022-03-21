@@ -11,7 +11,7 @@ class Owners(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def dm(self, ctx, user: discord.Member, *, message):
-        await user.send(f'Message from Bot Owner: {message}')
+        await user.send(f'Message from the staff team: {message}')
         await ctx.channel.send("Sent the message")
 
     @commands.command(aliases=['ed'])
