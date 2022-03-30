@@ -212,7 +212,7 @@ class Extras(commands.Cog):
     async def special(self,ctx):
         member = ctx.guild.get_member(ctx.thread.id)
 
-        role = discord.utils.get(member.guild.roles, name='▪ ⟶ ∽ ✰ ★ I'M SPECIAL ★ ✰ ∼ ⟵ ▪')
+        role = discord.utils.get(member.guild.roles, name='▪ ⟶ ∽ ✰ ★ I\'M SPECIAL ★ ✰ ∼ ⟵ ▪')
         if role in member.roles:
             await member.remove_roles(role, reason=f'Special role removed, requested by {str(ctx.author.id)}')
             await ctx.channel.send("The Special Role has been removed.")
