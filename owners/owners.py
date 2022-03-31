@@ -9,9 +9,9 @@ class Owners(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    @commands.is_owner()
+    @checks.has_permissions(PermissionLevel.ADMIN)
     async def dm(self, ctx, user: discord.Member, *, message):
-        await user.send(f'Message from Bot Owner: {message}')
+        await user.send(f'Message from the staff team at `The Farm`: {message}')
         await ctx.channel.send("Sent the message")
 
     @commands.command(aliases=['ed'])
