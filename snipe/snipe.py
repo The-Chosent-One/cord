@@ -118,7 +118,7 @@ class Snipe(commands.Cog):
     @config.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def nosnipe(self, ctx, channel: discord.TextChannel = None):
-        u = ""
+        c = ""
         if channel is None:
             fetch = await self.coll.find_one({"unique": "nosnipe"})
             chan = fetch["channels"]
