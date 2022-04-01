@@ -140,5 +140,5 @@ class BFPing(commands.Cog):
             await ctx.message.reply('You must enter a number!')
 
 
-def setup(bot):
-    bot.add_cog(BFPing(bot))
+async def setup(bot):
+    await bot.add_cog(BFPing(bot))

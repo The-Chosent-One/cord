@@ -150,5 +150,5 @@ class Extras(commands.Cog):
             await ctx.channel.send("The Special Role has been added.")
 
 
-def setup(bot):
-    bot.add_cog(Extras(bot))
+async def setup(bot):
+    await bot.add_cog(Extras(bot))

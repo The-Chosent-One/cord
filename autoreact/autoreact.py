@@ -60,5 +60,5 @@ class Autoreact(commands.Cog):
             await ctx.send(final)
 
 
-def setup(bot):
-    bot.add_cog(Autoreact(bot))
+async def setup(bot):
+    await bot.add_cog(Autoreact(bot))

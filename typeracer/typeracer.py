@@ -318,5 +318,5 @@ class TypeRacer(commands.Cog):
             # not sending anything if leaderboard is full
 
 
-def setup(bot):
-    bot.add_cog(TypeRacer(bot))
+async def setup(bot):
+    await bot.add_cog(TypeRacer(bot))

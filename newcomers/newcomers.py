@@ -83,5 +83,5 @@ class NewComers(commands.Cog):
             print(e)
 
 
-def setup(bot):
-    bot.add_cog(NewComers(bot))
+async def setup(bot):
+    await bot.add_cog(NewComers(bot))

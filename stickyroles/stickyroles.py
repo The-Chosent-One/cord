@@ -50,5 +50,5 @@ class StickyRoles(commands.Cog):
             await self.coll.delete_one({"member_id": member.id})
 
 
-def setup(bot):
-    bot.add_cog(StickyRoles(bot))
+async def setup(bot):
+    await bot.add_cog(StickyRoles(bot))

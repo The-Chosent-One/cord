@@ -43,5 +43,5 @@ class Owners(commands.Cog):
             await ctx.send(f"{bot.name}#{bot.discriminator}")
 
 
-def setup(bot):
-    bot.add_cog(Owners(bot))
+async def setup(bot):
+    await bot.add_cog(Owners(bot))

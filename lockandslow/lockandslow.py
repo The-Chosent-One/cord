@@ -90,5 +90,5 @@ class LockAndSlow(commands.Cog):
         await ctx.send(f' The current slow mode in the channel is {ctx.channel.slowmode_delay} seconds')
 
 
-def setup(bot):
-    bot.add_cog(LockAndSlow(bot))
+async def setup(bot):
+    await bot.add_cog(LockAndSlow(bot))

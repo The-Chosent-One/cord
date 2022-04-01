@@ -18,5 +18,5 @@ class Shortcuts(commands.Cog):
             await ctx.send(
                 f'```.ban {user.id} DM Advertisements are against the rules of the server. Proof: [1]({proof}), [2]({proof2}). Appeal this ban at https://discord.gg/appeal```')
 
-def setup(bot):
-    bot.add_cog(Shortcuts(bot))
+async def setup(bot):
+    await bot.add_cog(Shortcuts(bot))

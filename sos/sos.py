@@ -27,5 +27,5 @@ class SplitOrSteal(commands.Cog):
         await ctx.send(embed=embed, view=Buttons())
 
 
-def setup(bot):
-    bot.add_cog(SplitOrSteal(bot))
+async def setup(bot):
+    await bot.add_cog(SplitOrSteal(bot))
