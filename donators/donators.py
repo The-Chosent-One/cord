@@ -36,9 +36,22 @@ class Donators(commands.Cog):
         except asyncio.TimeoutError:
             await ctx.send(f"{member.mention} has cancelled the perk redemption.")
 
-    @commands.command()
+    @commands.group(invoke_without_command=True)
+    async def donator(self, ctx):
+        """
+        Donator commands.
+        """
+        if ctx.invoked_subcommand is None:
+            embed = discord.Embed(title="Donator Commands",
+                                  color=0x10ea64)
+            embed.add_field(name="`donator add`", value="Adds a donation value to a member", inline=False)
+            embed.add_field(name="`donator remove`", value="Removes a donation value from a member", inline=False)
+            embed.add_field(name="`donator balance`", value="Shows the balance of the member.", inline=False)
+            embed.add_field(name="`donator redeem`", value="Redeems the requested perk", inline=False)
+
+    @donator.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def donatoradd(self, ctx, member: discord.Member, amount: int):
+    async def add(self, ctx, member: discord.Member, amount: int):
         """
         Adds the donated value to the member.
         """
@@ -70,9 +83,9 @@ class Donators(commands.Cog):
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
 
-    @commands.command()
+    @donator.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def donatorremove(self, ctx, member: discord.Member, amount: int):
+    async def remove(self, ctx, member: discord.Member, amount: int):
         """
         Removes the donated value from the member.
         """
@@ -95,8 +108,9 @@ class Donators(commands.Cog):
         else:
             await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
 
-    @commands.command()
-    async def donatorbalance(self, ctx, member: discord.Member):
+    @donator.command()
+    @checks.has_permissions(PermissionLevel.MODERATOR)
+    async def balance(self, ctx, member: discord.Member):
         """
         Shows the balance of the member.
         """
@@ -106,6 +120,7 @@ class Donators(commands.Cog):
             perk_level = check["perk_name"]
             expiry = check["expiry"]
             embed = discord.Embed(title="**Balance**",
+                                  description=f"{member.mention} has ${balance} in their balance.",
                                   color=0x10ea64)
             embed.add_field(name="Total Balance:", value=f"${balance}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
@@ -114,7 +129,7 @@ class Donators(commands.Cog):
         else:
             await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
 
-    @commands.command()
+    @donator.command()
     async def redeem(self, ctx, perk_level=None):
         """
         Redeem perks from balance
