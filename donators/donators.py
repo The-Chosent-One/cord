@@ -48,6 +48,7 @@ class Donators(commands.Cog):
             embed.add_field(name="`donator remove`", value="Removes a donation value from a member", inline=False)
             embed.add_field(name="`donator balance`", value="Shows the balance of the member.", inline=False)
             embed.add_field(name="`donator redeem`", value="Redeems the requested perk", inline=False)
+            await ctx.send(embed=embed)
 
     @donator.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
