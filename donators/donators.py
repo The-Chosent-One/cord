@@ -31,6 +31,7 @@ class Donators(commands.Cog):
                 embed.add_field(name="Total Balance:", value=f"${total}", inline=True)
                 embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
                 embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
+                await ctx.send(embed=embed)
             else:
                 await ctx.send(f"{member.mention} has cancelled the perk redemption.")
         except asyncio.TimeoutError:
