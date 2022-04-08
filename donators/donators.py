@@ -30,7 +30,7 @@ class Donators(commands.Cog):
                                       color=0x10ea64)
                 embed.add_field(name="Total Balance:", value=f"{total}", inline=True)
                 embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-                embed.add_field(name="expiry", value=f"{expiry}", inline=True)
+                embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             else:
                 await ctx.send(f"{member.mention} has cancelled the perk redemption.")
         except asyncio.TimeoutError:
@@ -54,19 +54,20 @@ class Donators(commands.Cog):
                                   color=0x10ea64)
             embed.add_field(name="Total Balance:", value=f"{total}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-            embed.add_field(name="expiry", value=f"{expiry}", inline=True)
+            embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
         else:
             new = await self.coll.insert_one(
                 {"user_id": member.id, "balance": amount, "perk_name": "None", "expiry": "None"})
-            perk_level = new["perk_name"]
-            expiry = new["expiry"]
+            check = await self.coll.find_one({"user_id": member.id})
+            perk_level = check["perk_name"]
+            expiry = check["expiry"]
             embed = discord.Embed(title="**Amount added**",
                                   description=f"{member.mention} has had ${amount} added to their balance.",
                                   color=0x10ea64)
             embed.add_field(name="Total Balance:", value=f"{amount}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-            embed.add_field(name="expiry", value=f"{expiry}", inline=True)
+            embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
 
     @commands.command()
@@ -89,7 +90,7 @@ class Donators(commands.Cog):
                                   color=0xfb0404)
             embed.add_field(name="Total Balance:", value=f"{total}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-            embed.add_field(name="expiry", value=f"{expiry}", inline=True)
+            embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
@@ -108,9 +109,8 @@ class Donators(commands.Cog):
                                   color=0x10ea64)
             embed.add_field(name="Total Balance:", value=f"{balance}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-            embed.add_field(name="expiry", value=f"{expiry}", inline=True)
+            embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
-            await ctx.send(f"{member.mention} has ${balance}")
         else:
             await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
 
