@@ -11,6 +11,7 @@ class Donators(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
+        self.check_expiry.start()
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
