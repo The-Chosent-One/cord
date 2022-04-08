@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from discord.ext import tasks
 from datetime import datetime, timedelta
+import asyncio
 
 from core import checks
 from core.models import PermissionLevel
@@ -12,6 +13,28 @@ class Donators(commands.Cog):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
         self.check_expiry.start()
+
+    async def confirm(self, member: discord.Member, balance, perk_value, perk_level):
+        expiry = datetime.utcnow() + timedelta(days=30)
+        total = balance - perk_value
+        await ctx.send(
+            f"{member.mention}, Are you sure you want to redeem the `{perk_level}` perk for 30 days? (yes/no)")
+        try:
+            msg = await self.bot.wait_for('message', check=lambda m: m.author == member,
+                                          timeout=30.0 and m.channel.id == ctx.channel.id)
+            if msg.content.lower() == "yes":
+                await self.coll.update_one({"user_id": member.id},
+                                           {"$set": {"balance": total, "perk_name": perk_level, "expiry": expiry}})
+                embed = discord.Embed(title="**Perk Redeemed**",
+                                      description=f"{member.mention} has redeemed the {perk_level} perk.",
+                                      color=0x10ea64)
+                embed.add_field(name="Total Balance:", value=f"{total}", inline=True)
+                embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
+                embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
+            else:
+                await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+        except asyncio.TimeoutError:
+            await ctx.send(f"{member.mention} has cancelled the perk redemption.")
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
@@ -41,7 +64,7 @@ class Donators(commands.Cog):
             embed = discord.Embed(title="**Amount added**",
                                   description=f"{member.mention} has had ${amount} added to their balance.",
                                   color=0x10ea64)
-            embed.add_field(name="Total Balance:", value=f"{total}", inline=True)
+            embed.add_field(name="Total Balance:", value=f"{amount}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
@@ -90,28 +113,6 @@ class Donators(commands.Cog):
             await ctx.send(f"{member.mention} has ${balance}")
         else:
             await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
-
-    async def confirm(self, member: discord.Member, balance, perk_value, perk_level):
-        expiry = datetime.utcnow() + timedelta(days=30)
-        total = balance - perk_value
-        await ctx.send(
-            f"{member.mention}, Are you sure you want to redeem the `{perk_level}` perk for 30 days? (yes/no)")
-        try:
-            msg = await self.bot.wait_for('message', check=lambda m: m.author == member,
-                                          timeout=30.0 and m.channel.id == ctx.channel.id)
-            if msg.content.lower() == "yes":
-                await self.coll.update_one({"user_id": member.id},
-                                           {"$set": {"balance": total, "perk_name": perk_level, "expiry": expiry}})
-                embed = discord.Embed(title="**Perk Redeemed**",
-                                      description=f"{member.mention} has redeemed the {perk_level} perk.",
-                                      color=0x10ea64)
-                embed.add_field(name="Total Balance:", value=f"{total}", inline=True)
-                embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-                embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
-            else:
-                await ctx.send(f"{member.mention} has cancelled the perk redemption.")
-        except asyncio.TimeoutError:
-            await ctx.send(f"{member.mention} has cancelled the perk redemption.")
 
     @commands.command()
     async def redeem(self, ctx, perk_level=None):
