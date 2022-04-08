@@ -14,7 +14,7 @@ class Donators(commands.Cog):
         self.coll = bot.plugin_db.get_partition(self)
         self.check_expiry.start()
 
-    async def confirm(self, member: discord.Member, balance, perk_value, perk_level):
+    async def conf(self, member: discord.Member, balance, perk_value, perk_level):
         expiry = datetime.utcnow() + timedelta(days=30)
         total = balance - perk_value
         await ctx.send(
@@ -129,28 +129,28 @@ class Donators(commands.Cog):
                 await ctx.send("You have already redeemed a perk. Please wait for it to expire.")
             elif perk_level == "$5":
                 if balance >= 5:
-                    await self.confirm(ctx.author, balance, 5, perk_level)
+                    await self.conf(ctx.author, balance, 5, perk_level)
                     donator5 = ctx.guild.get_role(794300647137738762)
                     await ctx.author.add_roles(donator5)
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             elif perk_level == "$10":
                 if balance >= 10:
-                    await self.confirm(ctx.author, balance, 10, perk_level)
+                    await self.conf(ctx.author, balance, 10, perk_level)
                     donator10 = ctx.guild.get_role(794301192359378954)
                     await ctx.author.add_roles(donator10)
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             elif perk_level == "$20":
                 if balance >= 20:
-                    await self.confirm(ctx.author, balance, 20, perk_level)
+                    await self.conf(ctx.author, balance, 20, perk_level)
                     donator20 = ctx.guild.get_role(794301389769015316)
                     await ctx.author.add_roles(donator20)
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             elif perk_level == "$30":
                 if balance >= 30:
-                    await self.confirm(ctx.author, balance, 30, perk_level)
+                    await self.conf(ctx.author, balance, 30, perk_level)
                     donator30 = ctx.guild.get_role(794302939371929622)
                     serverboss = ctx.guild.get_role(820294120621867049)
                     await ctx.author.add_roles(serverboss)
