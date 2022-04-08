@@ -57,7 +57,7 @@ class Donators(commands.Cog):
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
         else:
-            new = await self.coll.insert_one(
+            await self.coll.insert_one(
                 {"user_id": member.id, "balance": amount, "perk_name": "None", "expiry": "None"})
             check = await self.coll.find_one({"user_id": member.id})
             perk_level = check["perk_name"]
@@ -80,7 +80,7 @@ class Donators(commands.Cog):
         if check:
             balance = check["balance"]
             if balance < amount:
-                await ctx.send("How do you plan to remove more than they have?")
+                return await ctx.send("How do you plan to remove more than they have?")
             total = balance - amount
             await self.coll.update_one({"user_id": member.id}, {"$set": {"balance": total}})
             perk_level = check["perk_name"]
