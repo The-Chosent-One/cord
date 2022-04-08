@@ -184,23 +184,20 @@ class Donators(commands.Cog):
         """
         Checks if the expiry time > current time.
         """
-        print("before try")
         try:
-            print("reached")
             fetchall = await self.coll.find().sort("expiry", 1).to_list(10)  # Top 10
             current_time = datetime.utcnow()
             for x in fetchall:
                 if current_time >= x["expiry"]:
                     perk_level = x["perk_name"]
                     user = x["user_id"]
-                    member = discord.Object(id=user)
+                    member = self.bot.get_user(user)
                     guild = self.bot.get_guild(645753561329696785)
                     if perk_level == "$5":
                         donator5 = guild.get_role(794300647137738762)
                         await member.remove_roles(donator5)
                     elif perk_level == "$10":
                         donator10 = guild.get_role(794301192359378954)
-                        print("got role")
                         await member.remove_roles(donator10)
                     elif perk_level == "$20":
                         donator20 = guild.get_role(794301389769015316)
