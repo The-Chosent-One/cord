@@ -191,7 +191,7 @@ class Donators(commands.Cog):
                 if current_time >= x["expiry"]:
                     perk_level = x["perk_name"]
                     user = x["user_id"]
-                    member = self.bot.get_user(user)
+                    member = self.bot.get_member(user)
                     guild = self.bot.get_guild(645753561329696785)
                     if perk_level == "$5":
                         donator5 = guild.get_role(794300647137738762)
