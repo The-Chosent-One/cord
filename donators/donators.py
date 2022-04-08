@@ -196,15 +196,23 @@ class Donators(commands.Cog):
                     if perk_level == "$5":
                         donator5 = guild.get_role(794300647137738762)
                         await member.remove_roles(donator5)
+                        await self.coll.update_one({"user_id": user},
+                                                   {"$set": {"perk_level": "None", "expiry": "None"}})
                     elif perk_level == "$10":
                         donator10 = guild.get_role(794301192359378954)
                         await member.remove_roles(donator10)
+                        await self.coll.update_one({"user_id": user},
+                                                   {"$set": {"perk_level": "None", "expiry": "None"}})
                     elif perk_level == "$20":
                         donator20 = guild.get_role(794301389769015316)
                         await member.remove_roles(donator20)
+                        await self.coll.update_one({"user_id": user},
+                                                   {"$set": {"perk_level": "None", "expiry": "None"}})
                     elif perk_level == "$30":
                         donator30 = guild.get_role(794302939371929622)
                         await member.remove_roles(donator30)
+                        await self.coll.update_one({"user_id": user},
+                                                   {"$set": {"perk_level": "None", "expiry": "None"}})
         except Exception as e:
             print(e)
 
