@@ -20,8 +20,8 @@ class Donators(commands.Cog):
         await ctx.send(
             f"{member.mention}, Are you sure you want to redeem the `{perk_level}` perk for 30 days? (yes/no)")
         try:
-            msg = await self.bot.wait_for('message', check=lambda m: m.author == member,
-                                          timeout=30.0 and m.channel.id == ctx.channel.id)
+            msg = await self.bot.wait_for("message", timeout=30,
+                                          check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
             if msg.content.lower() == "yes":
                 await self.coll.update_one({"user_id": member.id},
                                            {"$set": {"balance": total, "perk_name": perk_level, "expiry": expiry}})
@@ -100,7 +100,7 @@ class Donators(commands.Cog):
             perk_level = check["perk_name"]
             expiry = check["expiry"]
             embed = discord.Embed(title="**Amount added**",
-                                  description=f"{member.mention} has had ${amount} added to their balance.",
+                                  description=f"{member.mention} has had ${amount} remove from their balance.",
                                   color=0xfb0404)
             embed.add_field(name="Total Balance:", value=f"${total}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
@@ -140,7 +140,7 @@ class Donators(commands.Cog):
             balance = check["balance"]
             perkname = check["perk_name"]
             if perk_level is None:
-                await ctx.send("Please specify a perk level. `$5`, `$10`, `$20`, `$30`")
+                return await ctx.send("Please specify a perk level. `$5`, `$10`, `$20`, `$30`")
             if perkname != "None":
                 await ctx.send("You have already redeemed a perk. Please wait for it to expire.")
             elif perk_level == "$5":
