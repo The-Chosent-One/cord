@@ -192,7 +192,7 @@ class Donators(commands.Cog):
                     perk_level = x["perk_name"]
                     user = x["user_id"]
                     guild = self.bot.get_guild(645753561329696785)
-                    member = self.guild.get_member(user)
+                    member = guild.get_member(user)
                     if perk_level == "$5":
                         donator5 = guild.get_role(794300647137738762)
                         await member.remove_roles(donator5)
