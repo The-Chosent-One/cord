@@ -100,7 +100,7 @@ class Donators(commands.Cog):
             perk_level = check["perk_name"]
             expiry = check["expiry"]
             embed = discord.Embed(title="**Amount added**",
-                                  description=f"{member.mention} has had ${amount} remove from their balance.",
+                                  description=f"{member.mention} has had ${amount} removed from their balance.",
                                   color=0xfb0404)
             embed.add_field(name="Total Balance:", value=f"${total}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
