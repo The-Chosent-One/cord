@@ -192,5 +192,5 @@ class Donators(commands.Cog):
             print(e)
 
 
-async def setup(bot):
-    await bot.add_cog(Donators(bot))
+def setup(bot):
+    bot.add_cog(Donators(bot))
