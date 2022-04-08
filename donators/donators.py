@@ -48,7 +48,7 @@ class Donators(commands.Cog):
             total = balance + amount
             await self.coll.update_one({"user_id": member.id}, {"$set": {"balance": total}})
             perk_level = check["perk_name"]
-            expiry = check["expiry"]
+            expiry = check["Expiry"]
             embed = discord.Embed(title="**Amount added**",
                                   description=f"{member.mention} has had ${amount} added to their balance.",
                                   color=0x10ea64)
@@ -83,7 +83,7 @@ class Donators(commands.Cog):
             total = balance - amount
             await self.coll.update_one({"user_id": member.id}, {"$set": {"balance": total}})
             perk_level = check["perk_name"]
-            expiry = check["expiry"]
+            expiry = check["Expiry"]
             embed = discord.Embed(title="**Amount added**",
                                   description=f"{member.mention} has had ${amount} added to their balance.",
                                   color=0xfb0404)
@@ -103,7 +103,7 @@ class Donators(commands.Cog):
         if check:
             balance = check["balance"]
             perk_level = check["perk_name"]
-            expiry = check["expiry"]
+            expiry = check["Expiry"]
             embed = discord.Embed(title="**Balance**",
                                   color=0x10ea64)
             embed.add_field(name="Total Balance:", value=f"{balance}", inline=True)
@@ -171,7 +171,7 @@ class Donators(commands.Cog):
             fetchall = await self.coll.find().sort("expiry", 1).to_list(10)  # Top 10
             current_time = datetime.utcnow()
             for x in fetchall:
-                if current_time >= x["expiry"]:
+                if current_time >= x["Expiry"]:
                     perk_level = x["perk_name"]
                     user = x["user_id"]
                     member = discord.Object(id=user)
