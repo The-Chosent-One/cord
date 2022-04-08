@@ -28,7 +28,7 @@ class Donators(commands.Cog):
                 embed = discord.Embed(title="**Perk Redeemed**",
                                       description=f"{member.mention} has redeemed the {perk_level} perk.",
                                       color=0x10ea64)
-                embed.add_field(name="Total Balance:", value=f"{total}", inline=True)
+                embed.add_field(name="Total Balance:", value=f"${total}", inline=True)
                 embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
                 embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             else:
@@ -52,7 +52,7 @@ class Donators(commands.Cog):
             embed = discord.Embed(title="**Amount added**",
                                   description=f"{member.mention} has had ${amount} added to their balance.",
                                   color=0x10ea64)
-            embed.add_field(name="Total Balance:", value=f"{total}", inline=True)
+            embed.add_field(name="Total Balance:", value=f"${total}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
@@ -65,7 +65,7 @@ class Donators(commands.Cog):
             embed = discord.Embed(title="**Amount added**",
                                   description=f"{member.mention} has had ${amount} added to their balance.",
                                   color=0x10ea64)
-            embed.add_field(name="Total Balance:", value=f"{amount}", inline=True)
+            embed.add_field(name="Total Balance:", value=f"${amount}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
@@ -88,7 +88,7 @@ class Donators(commands.Cog):
             embed = discord.Embed(title="**Amount added**",
                                   description=f"{member.mention} has had ${amount} added to their balance.",
                                   color=0xfb0404)
-            embed.add_field(name="Total Balance:", value=f"{total}", inline=True)
+            embed.add_field(name="Total Balance:", value=f"${total}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
@@ -107,7 +107,7 @@ class Donators(commands.Cog):
             expiry = check["expiry"]
             embed = discord.Embed(title="**Balance**",
                                   color=0x10ea64)
-            embed.add_field(name="Total Balance:", value=f"{balance}", inline=True)
+            embed.add_field(name="Total Balance:", value=f"${balance}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
