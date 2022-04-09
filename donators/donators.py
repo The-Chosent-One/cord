@@ -148,6 +148,23 @@ class Donators(commands.Cog):
             else:
                 await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
 
+    @balance.command()
+    @checks.has_permissions(PermissionLevel.MODERATOR)
+    async def details(self, ctx, member: discord.Member):
+        """
+        Shows details of each donation
+        """
+        s = ""
+        check = await self.coll.find_one({"user_id": member.id})
+        if check:
+            donations = await self.coll.find({"Donation":{"$gt:0"}})
+            for i in donations:
+                s += f"{i['Date']} - [${i['Value']}]({i['Proof']})\n"
+            embed = discord.Embed(title=f"**{member.name} Detailed Donations**", description=s, color=0x10ea64)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
+
     @donator.command()
     async def redeem(self, ctx, perk_level=None):
         """
