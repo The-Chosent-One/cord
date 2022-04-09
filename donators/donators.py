@@ -77,9 +77,12 @@ class Donators(commands.Cog):
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
         else:
-            await self.coll.insert_one(
-                {"user_id": member.id, "total_donated": amount, "balance": amount, "perk_name": "None",
-                 "expiry": "None", "Donation": {"Value": amount, "Date": datetime.utcnow(), "Proof": proof}})
+            """
+            insert array
+            """
+            await self.coll.insert_one({"user_id": member.id, "balance": amount, "total_donated": amount,
+                                        "perk_name": "None", "expiry": "None", "Donation": [
+                {"Value": amount, "Date": datetime.utcnow(), "Proof": proof}]})
             check = await self.coll.find_one({"user_id": member.id})
             perk_level = check["perk_name"]
             expiry = check["expiry"]
