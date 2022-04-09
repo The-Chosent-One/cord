@@ -148,6 +148,23 @@ class Donators(commands.Cog):
             else:
                 await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
 
+    @balance.command()
+    @checks.has_permissions(PermissionLevel.MODERATOR)
+    async def details(self, ctx, member: discord.Member):
+        """
+        Shows details of each donation
+        """
+        s = ""
+        check = await self.coll.find_one({"user_id": member.id})
+        if check:
+            donations = check["Donation"]
+            for i in donations:
+                s += f"{i['Date']} - [${i['Value']}]({i['Proof']}\n"
+                embed = discord.Embed(title=f"**{member.name} Detailed Donations**", description=s, color=0x10ea64)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
+
     @donator.command()
     async def redeem(self, ctx, perk_level=None):
         """
@@ -204,8 +221,8 @@ class Donators(commands.Cog):
         Shows the top 10 donators
         """
         if ctx.invoked_subcommand is None:
-            return await ctx.send("Are you looking for `??donator leaderboard total` or `??donator leaderboard balance`?")
-
+            return await ctx.send(
+                "Are you looking for `??donator leaderboard total` or `??donator leaderboard balance`?")
 
     @leaderboard.command()
     async def total(self, ctx):
@@ -216,12 +233,12 @@ class Donators(commands.Cog):
         for i, user in enumerate(top10):
             user_id = user["user_id"]
             user_name = await self.bot.fetch_user(user_id)
-            s += f"{i+1}. {user_name.name} - ${user['total_donated']}\n"
+            s += f"{i + 1}. {user_name.name} - ${user['total_donated']}\n"
             embed = discord.Embed(title="**Top 10 Donators (Total Donated)**",
                                   description=s,
                                   color=0x10ea64)
         await ctx.send(embed=embed)
-        
+
     @leaderboard.command()
     async def balance(self, ctx):
         s = ""
@@ -231,12 +248,11 @@ class Donators(commands.Cog):
         for i, user in enumerate(top10):
             user_id = user["user_id"]
             user_name = await self.bot.fetch_user(user_id)
-            s += f"{i+1}. {user_name.name} - ${user['balance']}\n"
+            s += f"{i + 1}. {user_name.name} - ${user['balance']}\n"
             embed = discord.Embed(title="**Top 10 Donators (Balance)**",
                                   description=s,
                                   color=0x10ea64)
         await ctx.send(embed=embed)
-    
 
     @tasks.loop(hours=12)
     async def check_expiry(self):
