@@ -197,11 +197,18 @@ class Donators(commands.Cog):
         else:
             await ctx.send("You are not a donator yet and have no balance.")
 
-    @donator.command()
+    @donator.group(invoke_without_command=True)
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def leaderboard(self, ctx):
         """
         Shows the top 10 donators
         """
+        if ctx.invoked_subcommand is None:
+            return await ctx.send("Are you looking for `??donator leaderboard total` or `??donator leaderboard balance`?")
+
+
+    @leaderboard.command()
+    async def total(self, ctx):
         s = ""
         top10 = await self.coll.find().sort("total_donated", -1).limit(10).to_list(length=10)
         embed = discord.Embed(title="**Top 10 Donators**",
@@ -210,10 +217,26 @@ class Donators(commands.Cog):
             user_id = user["user_id"]
             user_name = await self.bot.fetch_user(user_id)
             s += f"{i+1}. {user_name.name} - ${user['total_donated']}\n"
-            embed = discord.Embed(title="**Top 10 Donators**",
+            embed = discord.Embed(title="**Top 10 Donators (Total Donated)**",
                                   description=s,
                                   color=0x10ea64)
         await ctx.send(embed=embed)
+        
+    @leaderboard.command()
+    async def balance(self, ctx):
+        s = ""
+        top10 = await self.coll.find().sort("balance", -1).limit(10).to_list(length=10)
+        embed = discord.Embed(title="**Top 10 Donators**",
+                              color=0x10ea64)
+        for i, user in enumerate(top10):
+            user_id = user["user_id"]
+            user_name = await self.bot.fetch_user(user_id)
+            s += f"{i+1}. {user_name.name} - ${user['balance']}\n"
+            embed = discord.Embed(title="**Top 10 Donators (Balance)**",
+                                  description=s,
+                                  color=0x10ea64)
+        await ctx.send(embed=embed)
+    
 
     @tasks.loop(hours=12)
     async def check_expiry(self):
