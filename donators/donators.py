@@ -196,19 +196,23 @@ class Donators(commands.Cog):
                 await ctx.send("Please specify a perk level. `$5`, `$10`, `$20`, `$30`")
         else:
             await ctx.send("You are not a donator yet and have no balance.")
-            
+
     @donator.command()
     async def leaderboard(self, ctx):
         """
         Shows the top 10 donators
         """
+        s = ""
         top10 = await self.coll.find().sort("total_donated", -1).limit(10).to_list(length=10)
         embed = discord.Embed(title="**Top 10 Donators**",
                               color=0x10ea64)
         for i, user in enumerate(top10):
             user_id = user["user_id"]
             user_name = await self.bot.fetch_user(user_id)
-            embed.add_field(name=f"{i+1}. {user_name.name}", value=f"${user['total_donated']}", inline=True)
+            s += f"{i+1}. {user_name.name} - ${user['total_donated']}\n"
+            embed = discord.Embed(title="**Top 10 Donators**",
+                                  description=s,
+                                  color=0x10ea64)
         await ctx.send(embed=embed)
 
     @tasks.loop(hours=12)
