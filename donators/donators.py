@@ -77,19 +77,18 @@ class Donators(commands.Cog):
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
         else:
-            """
-            insert array
-            """
             await self.coll.insert_one({"user_id": member.id, "balance": amount, "total_donated": amount,
                                         "perk_name": "None", "expiry": "None", "Donation": [
                 {"Value": amount, "Date": datetime.utcnow(), "Proof": proof}]})
             check = await self.coll.find_one({"user_id": member.id})
             perk_level = check["perk_name"]
             expiry = check["expiry"]
+            totdonated = check["total_donated"]
             embed = discord.Embed(title="**Amount added**",
                                   description=f"{member.mention} has had ${amount} added to their balance.",
                                   color=0x10ea64)
-            embed.add_field(name="Total Balance:", value=f"${amount}", inline=True)
+            embed.add_field(name="Total Donated:", value=f"${totdonated}", inline=True)
+            embed.add_field(name="Balance:", value=f"${amount}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
             await ctx.send(embed=embed)
