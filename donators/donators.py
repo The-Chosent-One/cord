@@ -14,7 +14,7 @@ class Donators(commands.Cog):
         self.coll = bot.plugin_db.get_partition(self)
         self.check_expiry.start()
 
-    async def confirm(self, ctx, member: discord.Member, balance, perk_value, perk_level, time):
+    async def confirm(self, ctx, member: discord.Member, balance, perk_value, perk_level, time, totdonated):
         expiry = datetime.utcnow() + timedelta(days=time)
         total = balance - perk_value
         await ctx.send(
@@ -28,7 +28,8 @@ class Donators(commands.Cog):
                 embed = discord.Embed(title="**Perk Redeemed**",
                                       description=f"{member.mention} has redeemed the {perk_level} perk.",
                                       color=0x10ea64)
-                embed.add_field(name="Total Balance:", value=f"${total}", inline=True)
+                embed.add_field(name="Total Donated:", value=f"${totdonated}", inline=True)
+                embed.add_field(name="Balance:", value=f"${total}", inline=True)
                 embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
                 embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
                 await ctx.send(embed=embed)
@@ -78,7 +79,8 @@ class Donators(commands.Cog):
             await ctx.send(embed=embed)
         else:
             await self.coll.insert_one({"user_id": member.id, "balance": amount, "total_donated": amount,
-                                        "perk_name": "None", "expiry": "None", "Donation": [{"Value": amount, "Date": datetime.utcnow(), "Proof": proof}]})
+                                        "perk_name": "None", "expiry": "None",
+                                        "Donation": [{"Value": amount, "Date": datetime.utcnow(), "Proof": proof}]})
             check = await self.coll.find_one({"user_id": member.id})
             perk_level = check["perk_name"]
             expiry = check["expiry"]
@@ -114,7 +116,7 @@ class Donators(commands.Cog):
             embed = discord.Embed(title="**Amount removed**",
                                   description=f"{member.mention} has had ${amount} removed from their balance.",
                                   color=0xfb0404)
-            embed.add_field(name="Total Donated:", value=f"${totdonated}", inline=True)
+            embed.add_field(name="Total Donated:", value=f"${totdonated - amount}", inline=True)
             embed.add_field(name="Balance:", value=f"${total}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
             embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
@@ -155,34 +157,35 @@ class Donators(commands.Cog):
         if check:
             balance = check["balance"]
             perkname = check["perk_name"]
+            totdonated = check["total_donated"]
             if perk_level is None:
                 return await ctx.send("Please specify a perk level. `$5`, `$10`, `$20`, `$30`")
             if perkname != "None":
                 await ctx.send("You have already redeemed a perk. Please wait for it to expire.")
             elif perk_level == "$5":
                 if balance >= 5:
-                    await self.confirm(ctx, ctx.author, balance, 5, perk_level, 15)
+                    await self.confirm(ctx, ctx.author, balance, 5, perk_level, 15, totdonated)
                     donator5 = ctx.guild.get_role(794300647137738762)
                     await ctx.author.add_roles(donator5)
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             elif perk_level == "$10":
                 if balance >= 10:
-                    await self.confirm(ctx, ctx.author, balance, 10, perk_level, 30)
+                    await self.confirm(ctx, ctx.author, balance, 10, perk_level, 30, totdonated)
                     donator10 = ctx.guild.get_role(794301192359378954)
                     await ctx.author.add_roles(donator10)
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             elif perk_level == "$20":
                 if balance >= 20:
-                    await self.confirm(ctx, ctx.author, balance, 20, perk_level, 60)
+                    await self.confirm(ctx, ctx.author, balance, 20, perk_level, 60, totdonated)
                     donator20 = ctx.guild.get_role(794301389769015316)
                     await ctx.author.add_roles(donator20)
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             elif perk_level == "$30":
                 if balance >= 30:
-                    await self.confirm(ctx, ctx.author, balance, 30, perk_level, 90)
+                    await self.confirm(ctx, ctx.author, balance, 30, perk_level, 90, totdonated)
                     donator30 = ctx.guild.get_role(794302939371929622)
                     serverboss = ctx.guild.get_role(820294120621867049)
                     await ctx.author.add_roles(serverboss)
