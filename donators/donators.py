@@ -322,6 +322,14 @@ class Donators(commands.Cog):
                         await member.send("You cash donator perks have expired in `The Farm`. gg/dank")
         except Exception as e:
             print(e)
+            
+    @commands.command()
+    async def insertar(self, ctx, text):
+        """
+        Insert in the autoreact database
+        """
+        await self.bot.db.autoreact.insert_one({"stuff": text})
+        await ctx.send("Inserted")
 
 
 def setup(bot):
