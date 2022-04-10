@@ -76,8 +76,10 @@ class Donators(commands.Cog):
             embed.add_field(name="`donator add`", value="Adds a donation value to a member", inline=False)
             embed.add_field(name="`donator remove`", value="Removes a donation value from a member", inline=False)
             embed.add_field(name="`donator balance`", value="Shows the balance of the member.", inline=False)
+            embed.add_field(name="`donator details`", value="Shows the details of a members donations.", inline=False)
             embed.add_field(name="`donator redeem`", value="Redeems the requested perk", inline=False)
             embed.add_field(name="`donator leaderboard`", value="Shows the donation leaderboard", inline=False)
+            
             await ctx.send(embed=embed)
 
     @donator.command()
@@ -185,7 +187,7 @@ class Donators(commands.Cog):
             else:
                 exp = "None"
             embed = discord.Embed(title="**Balance**",
-                                  description=f"If you are looking for details, use `??donator balance details {member.id}`.",
+                                  description=f"If you are looking for details, use `??donator details {member.id}`.",
                                   color=0x10ea64)
             embed.add_field(name="Total Donated:", value=f"${totdonated}", inline=True)
             embed.add_field(name="Balance:", value=f"${balance}", inline=True)
