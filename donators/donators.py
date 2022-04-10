@@ -156,7 +156,7 @@ class Donators(commands.Cog):
         s = ""
         check = await self.coll.find_one({"user_id": member.id})
         if check:
-            for i in check.Donation:
+            for i in check['Donation']:
                 s += f"{i['Date']} - ${i['Value']} - {i['Proof']}\n"
             embed = discord.Embed(title=f"**{member.name} Detailed Donations**", description=s, color=0x10ea64)
             await ctx.send(embed=embed)
