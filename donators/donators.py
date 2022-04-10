@@ -326,7 +326,7 @@ class Donators(commands.Cog):
         """
         if ctx.invoked_subcommand is None:
             return await ctx.send(
-                "Are you looking for `??donator leaderboard total`, `??donator leaderboard balance` or `??donator leaderboard top5`?")
+                "Are you looking for `??donator leaderboard total`, `??donator leaderboard balance`,`??donator leaderboard top10` or `??donator leaderboard top1`?")
 
     @commands.Cog.listener("on_raw_reaction_add")
     @commands.Cog.listener("on_raw_reaction_remove")
@@ -406,20 +406,35 @@ class Donators(commands.Cog):
         await message.add_reaction("\U000025b6")
 
     @leaderboard.command()
-    async def top5(self, ctx):
+    async def top10(self, ctx):
         s = ""
-        top5 = await self.coll.aggregate([{"$set": {"Donation30d": {"$filter": {"input": "$Donation", "cond": {
+        top10 = await self.coll.aggregate([{"$set": {"Donation30d": {"$filter": {"input": "$Donation", "cond": {
             "$lt": [{"$dateDiff": {"startDate": "$$this.Date", "endDate": "$$NOW", "unit": "day"}}, 30]}}}}}, {"$set": {
             "sum30d": {"$sum": {"$filter": {"input": "$Donation30d.Value", "cond": {"$gt": ["$$this", 0]}}}}}},
-                                          {"$sort": {"sum30d": -1}}, {"$limit": 5}]).to_list(None)
-        for i in top5:
+                                          {"$sort": {"sum30d": -1}}, {"$limit": 10}]).to_list(None)
+        for i in top10:
             value = i["sum30d"]
             user_id = i["user_id"]
             user = await self.bot.fetch_user(user_id)
             s += f"{user.name} - ${value}\n"
-        embed = discord.Embed(title="Top 5 Donators", description=s, colour=0x10ea64)
+        embed = discord.Embed(title="Top 10 Donators", description=s, colour=0x10ea64)
         await ctx.send(embed=embed)
-
+        
+    @leaderboard.command()
+    async def top1(self, ctx):
+        s = ""
+        top1 = await self.coll.aggregate([{"$set": {"Donation90d": {"$filter": {"input": "$Donation", "cond": {
+            "$lt": [{"$dateDiff": {"startDate": "$$this.Date", "endDate": "$$NOW", "unit": "day"}}, 90]}}}}}, {"$set": {
+            "sum90d": {"$sum": {"$filter": {"input": "$Donation90d.Value", "cond": {"$gt": ["$$this", 0]}}}}}},
+                                          {"$sort": {"sum90d": -1}}, {"$limit": 1}]).to_list(None)
+        for i in top1:
+            value = i["sum90d"]
+            user_id = i["user_id"]
+            user = await self.bot.fetch_user(user_id)
+            s += f"{user.name} - ${value}\n"
+        embed = discord.Embed(title="Top 1 Donator", description=s, colour=0x10ea64)
+        await ctx.send(embed=embed)
+        
     @tasks.loop(hours=12)
     async def check_expiry(self):
         """
