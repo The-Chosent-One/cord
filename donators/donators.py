@@ -124,31 +124,30 @@ class Donators(commands.Cog):
         else:
             await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
 
-    @donator.group(invoke_without_command=True)
+    @donator.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def balance(self, ctx, member: discord.Member):
         """
         Shows the balance of the member.
         """
-        if ctx.invoked_subcommand is None:
-            check = await self.coll.find_one({"user_id": member.id})
-            if check:
-                totdonated = check["total_donated"]
-                balance = check["balance"]
-                perk_level = check["perk_name"]
-                expiry = check["expiry"]
-                embed = discord.Embed(title="**Balance**",
-                                      description=f"If you are looking for details, use `??donator balance details {member.id}`.",
-                                      color=0x10ea64)
-                embed.add_field(name="Total Donated:", value=f"${totdonated}", inline=True)
-                embed.add_field(name="Balance:", value=f"${balance}", inline=True)
-                embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-                embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
-                await ctx.send(embed=embed)
-            else:
-                await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
+        check = await self.coll.find_one({"user_id": member.id})
+        if check:
+            totdonated = check["total_donated"]
+            balance = check["balance"]
+            perk_level = check["perk_name"]
+            expiry = check["expiry"]
+            embed = discord.Embed(title="**Balance**",
+                                  description=f"If you are looking for details, use `??donator balance details {member.id}`.",
+                                  color=0x10ea64)
+            embed.add_field(name="Total Donated:", value=f"${totdonated}", inline=True)
+            embed.add_field(name="Balance:", value=f"${balance}", inline=True)
+            embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
+            embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
+            await ctx.send(embed=embed)
+        else:
+            await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
 
-    @balance.command()
+    @donator.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def details(self, ctx, member: discord.Member):
         """
