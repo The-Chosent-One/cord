@@ -3,6 +3,7 @@ from discord.ext import commands
 from discord.ext import tasks
 from datetime import datetime, timedelta
 import asyncio
+import re
 
 from core import checks
 from core.models import PermissionLevel
