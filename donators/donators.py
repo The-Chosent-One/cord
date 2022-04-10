@@ -294,6 +294,8 @@ class Donators(commands.Cog):
                 if balance >= 10:
                     await self.confirm(ctx, ctx.author, balance, 10, perk_level, 30, totdonated, ctx.message.jump_url)
                     donator10 = ctx.guild.get_role(794301192359378954)
+                    donator5 = ctx.guild.get_role(794300647137738762)
+                    await ctx.author.add_roles(donator5)
                     await ctx.author.add_roles(donator10)
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
@@ -301,12 +303,22 @@ class Donators(commands.Cog):
                 if balance >= 20:
                     await self.confirm(ctx, ctx.author, balance, 20, perk_level, 60, totdonated, ctx.message.jump_url)
                     donator20 = ctx.guild.get_role(794301389769015316)
+                    donator10 = ctx.guild.get_role(794301192359378954)
+                    donator5 = ctx.guild.get_role(794300647137738762)
+                    await ctx.author.add_roles(donator5)
+                    await ctx.author.add_roles(donator10)
                     await ctx.author.add_roles(donator20)
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             elif perk_level == "$30":
                 if balance >= 30:
                     await self.confirm(ctx, ctx.author, balance, 30, perk_level, 90, totdonated, ctx.message.jump_url)
+                    donator20 = ctx.guild.get_role(794301389769015316)
+                    donator10 = ctx.guild.get_role(794301192359378954)
+                    donator5 = ctx.guild.get_role(794300647137738762)
+                    await ctx.author.add_roles(donator5)
+                    await ctx.author.add_roles(donator10)
+                    await ctx.author.add_roles(donator20)
                     donator30 = ctx.guild.get_role(794302939371929622)
                     serverboss = ctx.guild.get_role(820294120621867049)
                     await ctx.author.add_roles(serverboss)
