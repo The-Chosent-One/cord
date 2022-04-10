@@ -107,10 +107,11 @@ class Donators(commands.Cog):
             if balance < amount:
                 return await ctx.send("How do you plan to remove more than they have?")
             total = balance - amount
+            url = ctx.message.jump_url
             await self.coll.update_one({"user_id": member.id},
                                        {"$set": {"balance": total, "total_donated": totdonated - amount}, "$push": {
                                            "Donation": {"Value": -abs(amount), "Date": datetime.utcnow(),
-                                                        "Proof": {ctx.message.jump_url}}}})
+                                                        "Proof": url}}})
             perk_level = check["perk_name"]
             expiry = check["expiry"]
             embed = discord.Embed(title="**Amount removed**",
