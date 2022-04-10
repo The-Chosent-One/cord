@@ -34,7 +34,7 @@ class Donators(commands.Cog):
                         msg = await self.bot.wait_for("message", timeout=30,
                                                       check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
                         ar = {"user_id": member.id, "reaction": msg.content}
-                        await self.bot.db.Autoreact.insert_one(ar)
+                        await self.bot.db.plugins.Autoreact.insert_one(ar)
                         await ctx.send(f"Added reaction {msg.content} for {member.mention}")
                     except asyncio.TimeoutError:
                         return await ctx.send(f"{member.mention} has cancelled the perk redemption.")
