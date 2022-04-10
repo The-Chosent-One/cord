@@ -294,7 +294,7 @@ class Donators(commands.Cog):
     @commands.Cog.listener("on_update_leaderboard")
     async def update_leaderboard(self, message: discord.Message, payload: discord.RawReactionActionEvent) -> None:
         embed = message.embeds[0]
-        _, page_number = embed.footer.split()
+        _, page_number = str(embed.footer).split()
         page_number = int(page_number)
         page_add = str(payload.emoji) == "\U000025b6"
         leaderboard_type = "total_donated" if embed.title == "**Top Donators**" else "balance"
