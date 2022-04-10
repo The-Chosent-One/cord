@@ -199,23 +199,74 @@ class Donators(commands.Cog):
         else:
             await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
 
+    @commands.Cog.listener("on_raw_reaction_add")
+    @commands.Cog.listener("on_raw_reaction_remove")
+    async def detailed_donation_pagination(self, payload: discord.RawReactionActionEvent) -> None:
+        if str(payload.emoji) not in ("\U000025c0", "\U000025b6"):
+            return
+
+        if payload.member and payload.member.bot:
+            return
+
+        message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+
+        if message.embeds == []:
+            return
+
+        if "Detailed Donations" in message.embeds[0].title:
+            return self.bot.dispatch("update_detailed_donations", message, payload)
+
+    @commands.Cog.listener("on_update_detailed_donations")
+    async def update_detailed_donation(self, message: discord.Message, payload: discord.RawReactionActionEvent) -> None:
+        embed = message.embeds[0]
+        page_number, user_id = map(int, re.findall(r"\d+", embed.footer.text))
+        page_add = str(payload.emoji) == "\U000025b6"
+
+        if page_number == 1 and not page_add:
+            return
+
+        offset = (page_number - 2) * 10
+        if page_add:
+            offset = page_number * 10
+
+        user_info = await self.coll.find_one({"user_id": user_id})
+        donation_info = user_info["Donation"]
+
+        if len(donation_info) < offset:
+            return
+
+        embed.description = ""
+
+        for entry in donation_info[offset:min(len(donation_info), offset + 10)]:
+            date, value, proof = entry["Date"], entry["Value"], entry["Proof"]
+            timestamp = round(datetime.timestamp(date))
+
+            embed.description += f"<t:{timestamp}:f> - [${value}]({proof})\n"
+
+        embed.set_footer(text=f"Page: {page_number + (-1) ** (page_add + 1)}, id: {user_id}")
+        await message.edit(embed=embed)
+
     @donator.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def details(self, ctx, member: discord.Member):
-        """
-        Shows details of each donation
-        """
-        s = ""
-        check = await self.coll.find_one({"user_id": member.id})
-        if check:
-            for i in check['Donation']:
-                date = i['Date']
-                timestamp = round(datetime.timestamp(date))
-                s += f"<t:{timestamp}:f> - [${i['Value']}]({i['Proof']})\n"
-            embed = discord.Embed(title=f"**{member.name} Detailed Donations**", description=s, color=0x10ea64)
-            await ctx.send(embed=embed)
-        else:
-            await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
+        """Shows details of each donation"""
+        user_info = await self.coll.find_one({"user_id": member.id})
+
+        if not user_info:
+            return await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
+
+        embed = discord.Embed(title=f"**{member.name} Detailed Donations**", description="", color=0x10ea64)
+
+        for entry in user_info["Donation"][:10]:
+            date, value, proof = entry["Date"], entry["Value"], entry["Proof"]
+            timestamp = round(datetime.timestamp(date))
+
+            embed.description += f"<t:{timestamp}:f> - [${value}]({proof})\n"
+
+        embed.set_footer(text=f"Page: 1, id: {member.id}")
+        message = await ctx.send(embed=embed)
+        await message.add_reaction("\U000025c0")
+        await message.add_reaction("\U000025b6")
 
     @donator.command()
     async def redeem(self, ctx, perk_level=None):
