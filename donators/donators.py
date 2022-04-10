@@ -129,9 +129,9 @@ class Donators(commands.Cog):
         else:
             await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
 
-    @donator.command()
+    @donator.command(name="balance")
     @checks.has_permissions(PermissionLevel.MODERATOR)
-    async def balance(self, ctx, member: discord.Member):
+    async def _balance(self, ctx, member: discord.Member):
         """
         Shows the balance of the member.
         """
