@@ -148,7 +148,7 @@ class Donators(commands.Cog):
             else:
                 await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
 
-    @commands.command()
+    @balance.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def details(self, ctx, member: discord.Member):
         """
@@ -157,8 +157,7 @@ class Donators(commands.Cog):
         s = ""
         check = await self.coll.find_one({"user_id": member.id})
         if check:
-            donations = await self.coll.find({"Donation":{"$gt:0"}})
-            for i in donations:
+            for i in check.Donation:
                 s += f"{i['Date']} - [${i['Value']}]({i['Proof']})\n"
             embed = discord.Embed(title=f"**{member.name} Detailed Donations**", description=s, color=0x10ea64)
             await ctx.send(embed=embed)
