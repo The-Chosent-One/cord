@@ -36,7 +36,9 @@ class Donators(commands.Cog):
                         ar = {"user_id": member.id, "reaction": msg.content}
                         await self.bot.db.Autoreact.insert_one(ar)
                         await ctx.send(f"Added reaction {msg.content} for {member.mention}")
-                        await self.coll.update_one({"user_id": member.id},
+                    except asyncio.TimeoutError:
+                        return await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+                await self.coll.update_one({"user_id": member.id},
                                            {"$set": {"balance": total, "perk_name": perk_level, "expiry": expiry},
                                             "$push": {"Donation": {"Value": -abs(perk_value), "Date": datetime.utcnow(),
                                                                    "Proof": url}}})
