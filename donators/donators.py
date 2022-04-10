@@ -308,9 +308,12 @@ class Donators(commands.Cog):
 
         top = await self.coll.find().sort(leaderboard_type, -1).skip(offset).limit(10).to_list(length=10)
 
+        if not top:
+            return
+
         embed.description = ""
 
-        for pos, donation_information in enumerate(top, start=1):
+        for pos, donation_information in enumerate(top, start=1 + offset):
             user_id, total = donation_information["user_id"], donation_information[leaderboard_type]
 
             embed.description += f"{pos}. <@{user_id}> ➜ ${total}\n"
