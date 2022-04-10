@@ -14,8 +14,8 @@ class Donators(commands.Cog):
         self.coll = bot.plugin_db.get_partition(self)
         self.check_expiry.start()
 
-    async def confirm(self, ctx, member: discord.Member, balance, perk_value, perk_level, time, totdonated, url):
-        expiry = datetime.utcnow() + timedelta(days=time)
+    async def confirm(self, ctx, member: discord.Member, balance, perk_value, perk_level, validity, totdonated, url):
+        expiry = datetime.utcnow() + timedelta(days=validity)
         if expiry != "None":
             timestamp = round(datetime.timestamp(expiry))
             exp = f"<t:{timestamp}:f>"
@@ -23,7 +23,7 @@ class Donators(commands.Cog):
             exp = "None"
         total = balance - perk_value
         await ctx.send(
-            f"{member.mention}, Are you sure you want to redeem the `{perk_level}` perk for {time} days? (yes/no)")
+            f"{member.mention}, Are you sure you want to redeem the `{perk_level}` perk for {validity} days? (yes/no)")
         try:
             msg = await self.bot.wait_for("message", timeout=30,
                                           check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
