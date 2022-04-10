@@ -79,7 +79,7 @@ class Donators(commands.Cog):
             embed.add_field(name="`donator details`", value="Shows the details of a members donations.", inline=False)
             embed.add_field(name="`donator redeem`", value="Redeems the requested perk", inline=False)
             embed.add_field(name="`donator leaderboard`", value="Shows the donation leaderboard", inline=False)
-            
+
             await ctx.send(embed=embed)
 
     @donator.command()
