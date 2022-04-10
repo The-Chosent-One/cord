@@ -28,6 +28,14 @@ class Donators(commands.Cog):
             msg = await self.bot.wait_for("message", timeout=30,
                                           check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
             if msg.content.lower() == "yes":
+                if perk_value in (20, 30):
+                    await ctx.send("You are eligible for a autoreact on ping. Please send ONLY the emoji you want to use.")
+                    try:
+                        msg = await self.bot.wait_for("message", timeout=30,
+                                                      check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
+                        ar = {"user_id": member.id, "reaction": msg.content}
+                        await self.bot.db.Autoreact.insert_one(ar)
+                        await ctx.send(f"Added reaction {msg.content} for {member.mention}")
                 await self.coll.update_one({"user_id": member.id},
                                            {"$set": {"balance": total, "perk_name": perk_level, "expiry": expiry},
                                             "$push": {"Donation": {"Value": -abs(perk_value), "Date": datetime.utcnow(),
@@ -322,14 +330,6 @@ class Donators(commands.Cog):
                         await member.send("You cash donator perks have expired in `The Farm`. gg/dank")
         except Exception as e:
             print(e)
-            
-    @commands.command()
-    async def insertar(self, ctx, text):
-        """
-        Insert in the autoreact database
-        """
-        await self.bot.db.autoreact.insert_one({"stuff": text})
-        await ctx.send("Inserted")
 
 
 def setup(bot):
