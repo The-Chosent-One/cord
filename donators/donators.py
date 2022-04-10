@@ -110,7 +110,7 @@ class Donators(commands.Cog):
             await self.coll.update_one({"user_id": member.id},
                                        {"$set": {"balance": total, "total_donated": totdonated - amount}, "$push": {
                                            "Donation": {"Value": -abs(amount), "Date": datetime.utcnow(),
-                                                        "Proof": f"Requested to be removed by `{ctx.author.id}`"}}})
+                                                        "Proof":{ctx.message.jump_url}"}}})
             perk_level = check["perk_name"]
             expiry = check["expiry"]
             embed = discord.Embed(title="**Amount removed**",
