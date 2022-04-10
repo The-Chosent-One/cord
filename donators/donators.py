@@ -274,35 +274,79 @@ class Donators(commands.Cog):
             return await ctx.send(
                 "Are you looking for `??donator leaderboard total` or `??donator leaderboard balance`?")
 
-    @leaderboard.command()
-    async def total(self, ctx):
-        s = ""
-        top10 = await self.coll.find().sort("total_donated", -1).limit(10).to_list(length=10)
-        embed = discord.Embed(title="**Top 10 Donators**",
-                              color=0x10ea64)
-        for i, user in enumerate(top10):
-            user_id = user["user_id"]
-            user_name = await self.bot.fetch_user(user_id)
-            s += f"{i + 1}. {user_name.name} - ${user['total_donated']}\n"
-            embed = discord.Embed(title="**Top 10 Donators (Total Donated)**",
-                                  description=s,
-                                  color=0x10ea64)
-        await ctx.send(embed=embed)
+    @commands.Cog.listener("on_raw_reaction_add")
+    @commands.Cog.listener("on_raw_reaction_remove")
+    async def leaderboard_pagination(self, payload: discord.RawReactionActionEvent) -> None:
+        if str(payload.emoji) not in ("\U000025c0", "\U000025b6"):
+            return
+
+        if payload.member and payload.member.bot:
+            return
+
+        message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
+
+        if message.embeds == []:
+            return
+
+        if message.embeds[0].title in ("**Top Donators**", "**Top Balance**"):
+            return self.bot.dispatch("update_leaderboard", message, payload)
+
+    @commands.Cog.listener("on_update_leaderboard")
+    async def update_leaderboard(self, message: discord.Message, payload: discord.RawReactionActionEvent) -> None:
+        embed = message.embeds[0]
+        _, page_number = embed.footer.split()
+        page_number = int(page_number)
+        page_add = str(payload.emoji) == "\U000025b6"
+        leaderboard_type = "total_donated" if embed.title == "**Top Donators**" else "balance"
+
+        if page_number == 1 and not page_add:
+            return
+
+        offset = (page_number - 2) * 10
+        if page_add:
+            offset = page_number * 10
+
+        top = await self.coll.find().sort(leaderboard_type, -1).skip(offset).limit(10).to_list(length=10)
+
+        embed.description = ""
+
+        for pos, donation_information in enumerate(top, start=1):
+            user_id, total = donation_information["user_id"], donation_information[leaderboard_type]
+
+            embed.description += f"{pos}. <@{user_id}> ➜ ${total}\n"
+
+        embed.set_footer(text=f"Page: {page_number + (-1) ** (page_add + 1)}")
+        await message.edit(embed=embed)
 
     @leaderboard.command()
-    async def balance(self, ctx):
-        s = ""
-        top10 = await self.coll.find().sort("balance", -1).limit(10).to_list(length=10)
-        embed = discord.Embed(title="**Top 10 Donators**",
-                              color=0x10ea64)
-        for i, user in enumerate(top10):
-            user_id = user["user_id"]
-            user_name = await self.bot.fetch_user(user_id)
-            s += f"{i + 1}. {user_name.name} - ${user['balance']}\n"
-            embed = discord.Embed(title="**Top 10 Donators (Balance)**",
-                                  description=s,
-                                  color=0x10ea64)
-        await ctx.send(embed=embed)
+    async def total(self, ctx: commands.Context):
+        top = await self.coll.find().sort("total_donated", -1).limit(10).to_list(length=10)
+
+        embed = discord.Embed(title="**Top Donators**", description="", colour=0x10ea64)
+        for pos, donation_information in enumerate(top, start=1):
+            user_id, total = donation_information["user_id"], donation_information["total_donated"]
+
+            embed.description += f"{pos}. <@{user_id}> ➜ ${total}\n"
+
+        embed.set_footer(text="Page: 1")
+        message = await ctx.send(embed=embed)
+        await message.add_reaction("\U000025c0")
+        await message.add_reaction("\U000025b6")
+
+    @leaderboard.command()
+    async def balance(self, ctx: commands.Context):
+        top = await self.coll.find().sort("balance", -1).limit(10).to_list(length=10)
+
+        embed = discord.Embed(title="**Top Balance**", description="", colour=0x10ea64)
+        for pos, donation_information in enumerate(top, start=1):
+            user_id, total = donation_information["user_id"], donation_information["balance"]
+
+            embed.description += f"{pos}. <@{user_id}> ➜ ${total}\n"
+
+        embed.set_footer(text="Page: 1")
+        message = await ctx.send(embed=embed)
+        await message.add_reaction("\U000025c0")
+        await message.add_reaction("\U000025b6")
 
     @tasks.loop(hours=12)
     async def check_expiry(self):
