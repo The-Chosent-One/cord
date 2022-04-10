@@ -32,11 +32,13 @@ class Donators(commands.Cog):
                     await ctx.send(
                         "You are eligible for a autoreact on ping. Do you want one? (yes/no)")
                     try:
-                        msg = await self.bot.wait_for("message", timeout=30, check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
+                        msg = await self.bot.wait_for("message", timeout=30, check=lambda
+                            m: m.author == ctx.author and m.channel.id == ctx.channel.id)
                         if msg.content.lower() == "yes":
                             await ctx.send("Please send ONLY the emoji you want to use. **Must be in this server**")
                             try:
-                                msg = await self.bot.wait_for("message", timeout=30, check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
+                                msg = await self.bot.wait_for("message", timeout=30, check=lambda
+                                    m: m.author == ctx.author and m.channel.id == ctx.channel.id)
                                 ar = {"user_id": member.id, "reaction": msg.content}
                                 await self.bot.db.plugins.Autoreact.insert_one(ar)
                                 await ctx.send(f"Added reaction {msg.content} for {member.mention}")
@@ -272,7 +274,7 @@ class Donators(commands.Cog):
         """
         if ctx.invoked_subcommand is None:
             return await ctx.send(
-                "Are you looking for `??donator leaderboard total` or `??donator leaderboard balance`?")
+                "Are you looking for `??donator leaderboard total`, `??donator leaderboard balance` or `??donator leaderboard top5`?")
 
     @commands.Cog.listener("on_raw_reaction_add")
     @commands.Cog.listener("on_raw_reaction_remove")
@@ -350,11 +352,14 @@ class Donators(commands.Cog):
         message = await ctx.send(embed=embed)
         await message.add_reaction("\U000025c0")
         await message.add_reaction("\U000025b6")
-  
+
     @leaderboard.command()
     async def top5(self, ctx):
         s = ""
-        top5 = await self.coll.aggregate( [{"$set": {"Donation30d": {"$filter": {"input": "$Donation", "cond": {"$lt": [{"$dateDiff": {"startDate": "$$this.Date", "endDate": "$$NOW", "unit": "day"}}, 30]}}}}}, {"$set": {"sum30d": {"$sum": {"$filter": {"input": "$Donation30d.Value", "cond": {"$gt": ["$$this", 0]}}}}}}, {"$sort": {"sum30d": -1}}, {"$limit": 5}]).to_list(None)
+        top5 = await self.coll.aggregate([{"$set": {"Donation30d": {"$filter": {"input": "$Donation", "cond": {
+            "$lt": [{"$dateDiff": {"startDate": "$$this.Date", "endDate": "$$NOW", "unit": "day"}}, 30]}}}}}, {"$set": {
+            "sum30d": {"$sum": {"$filter": {"input": "$Donation30d.Value", "cond": {"$gt": ["$$this", 0]}}}}}},
+                                          {"$sort": {"sum30d": -1}}, {"$limit": 5}]).to_list(None)
         for i in top5:
             value = i["sum30d"]
             user_id = i["user_id"]
@@ -362,7 +367,7 @@ class Donators(commands.Cog):
             s += f"{user.name} - ${value}\n"
         embed = discord.Embed(title="Top 5 Donators", description=s, colour=0x10ea64)
         await ctx.send(embed=embed)
-        
+
     @tasks.loop(hours=12)
     async def check_expiry(self):
         """
@@ -409,6 +414,7 @@ class Donators(commands.Cog):
                         await member.send("You cash donator perks have expired in `The Farm`. gg/dank")
         except Exception as e:
             print(e)
-            
+
+
 def setup(bot):
     bot.add_cog(Donators(bot))
