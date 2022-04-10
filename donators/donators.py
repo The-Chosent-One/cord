@@ -29,13 +29,23 @@ class Donators(commands.Cog):
                                           check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
             if msg.content.lower() == "yes":
                 if perk_value in (20, 30):
-                    await ctx.send("You are eligible for a autoreact on ping. Please send ONLY the emoji you want to use.")
+                    await ctx.send(
+                        "You are eligible for a autoreact on ping. Do you want one? (yes/no)")
                     try:
-                        msg = await self.bot.wait_for("message", timeout=30,
-                                                      check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
-                        ar = {"user_id": member.id, "reaction": msg.content}
-                        await self.bot.db.plugins.Autoreact.insert_one(ar)
-                        await ctx.send(f"Added reaction {msg.content} for {member.mention}")
+                        msg = await self.bot.wait_for("message", timeout=30, check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
+                        if msg.content.lower() == "yes":
+                            await ctx.send("Please send ONLY the emoji you want to use. **Must be in this server**")
+                            try:
+                                msg = await self.bot.wait_for("message", timeout=30, check=lambda m: m.author == ctx.author and m.channel.id == ctx.channel.id)
+                                ar = {"user_id": member.id, "reaction": msg.content}
+                                await self.bot.db.plugins.Autoreact.insert_one(ar)
+                                await ctx.send(f"Added reaction {msg.content} for {member.mention}")
+                            except asyncio.TimeoutError:
+                                return await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+                        elif msg.content.lower() == "no":
+                            pass
+                        else:
+                            return await ctx.send(f"{member.mention} has cancelled the perk redemption.")
                     except asyncio.TimeoutError:
                         return await ctx.send(f"{member.mention} has cancelled the perk redemption.")
                 await self.coll.update_one({"user_id": member.id},
@@ -323,12 +333,18 @@ class Donators(commands.Cog):
                         await member.remove_roles(donator20)
                         await self.coll.update_one({"user_id": user},
                                                    {"$set": {"perk_name": "None", "expiry": "None"}})
+                        ar = await self.bot.db.plugins.Autoreact.find_one({"user_id": user})
+                        if ar:
+                            await self.bot.db.plugins.Autoreact.delete_one({"user_id": user})
                         await member.send("You cash donator perks have expired in `The Farm`. gg/dank")
                     elif perk_level == "$30":
                         donator30 = guild.get_role(794302939371929622)
                         await member.remove_roles(donator30)
                         await self.coll.update_one({"user_id": user},
                                                    {"$set": {"perk_name": "None", "expiry": "None"}})
+                        ar = await self.bot.db.plugins.Autoreact.find_one({"user_id": user})
+                        if ar:
+                            await self.bot.db.plugins.Autoreact.delete_one({"user_id": user})
                         await member.send("You cash donator perks have expired in `The Farm`. gg/dank")
         except Exception as e:
             print(e)
