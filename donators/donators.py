@@ -351,7 +351,7 @@ class Donators(commands.Cog):
         await message.add_reaction("\U000025c0")
         await message.add_reaction("\U000025b6")
   
-    @leaderboard.top5()
+    @leaderboard.command()
     async def top5(self, ctx):
         s = ""
         top5 = self.coll.aggregate([{"$set": {"Donation50d": {"$filter": {"input": "$Donation", "cond": {"$lt": [{"$dateDiff": {"startDate": "$$this.Date", "endDate": "$$NOW", "unit": "day"}}, 30]}}}}}, {"$set": {"sum50d": {"$sum": {"$filter": {"input": "$Donation30d.Value", "cond": {"$gt": ["$$this", 0]}}}}}}]).sort("sum50d", -1).limit(5)
