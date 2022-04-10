@@ -468,12 +468,18 @@ class Donators(commands.Cog):
                                                    {"$set": {"perk_name": "None", "expiry": "None"}})
                         await member.send("You cash donator perks have expired in `The Farm`. gg/dank")
                     elif perk_level == "$10":
+                        donator5 = guild.get_role(794300647137738762)
+                        await member.remove_roles(donator5)
                         donator10 = guild.get_role(794301192359378954)
                         await member.remove_roles(donator10)
                         await self.coll.update_one({"user_id": user},
                                                    {"$set": {"perk_name": "None", "expiry": "None"}})
                         await member.send("You cash donator perks have expired in `The Farm`. gg/dank")
                     elif perk_level == "$20":
+                        donator5 = guild.get_role(794300647137738762)
+                        await member.remove_roles(donator5)
+                        donator10 = guild.get_role(794301192359378954)
+                        await member.remove_roles(donator10)
                         donator20 = guild.get_role(794301389769015316)
                         await member.remove_roles(donator20)
                         await self.coll.update_one({"user_id": user},
@@ -483,6 +489,12 @@ class Donators(commands.Cog):
                             await self.bot.db.plugins.Autoreact.delete_one({"user_id": user})
                         await member.send("You cash donator perks have expired in `The Farm`. gg/dank")
                     elif perk_level == "$30":
+                        donator5 = guild.get_role(794300647137738762)
+                        await member.remove_roles(donator5)
+                        donator10 = guild.get_role(794301192359378954)
+                        await member.remove_roles(donator10)
+                        donator20 = guild.get_role(794301389769015316)
+                        await member.remove_roles(donator20)
                         donator30 = guild.get_role(794302939371929622)
                         await member.remove_roles(donator30)
                         await self.coll.update_one({"user_id": user},
