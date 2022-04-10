@@ -16,6 +16,7 @@ class Donators(commands.Cog):
 
     async def confirm(self, ctx, member: discord.Member, balance, perk_value, perk_level, time, totdonated):
         expiry = datetime.utcnow() + timedelta(days=time)
+        timestamp = round(datetime.timestamp(expiry))
         total = balance - perk_value
         await ctx.send(
             f"{member.mention}, Are you sure you want to redeem the `{perk_level}` perk for {time} days? (yes/no)")
@@ -31,7 +32,7 @@ class Donators(commands.Cog):
                 embed.add_field(name="Total Donated:", value=f"${totdonated}", inline=True)
                 embed.add_field(name="Balance:", value=f"${total}", inline=True)
                 embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-                embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
+                embed.add_field(name="Expiry", value=f"<t:{timestamp}:f>", inline=True)
                 await ctx.send(embed=embed)
             else:
                 await ctx.send(f"{member.mention} has cancelled the perk redemption.")
@@ -69,13 +70,14 @@ class Donators(commands.Cog):
                                            "Donation": {"Value": amount, "Date": datetime.utcnow(), "Proof": proof}}})
             perk_level = check["perk_name"]
             expiry = check["expiry"]
+            timestamp = round(datetime.timestamp(expiry))
             embed = discord.Embed(title="**Amount added**",
                                   description=f"{member.mention} has had ${amount} added to their balance.",
                                   color=0x10ea64)
             embed.add_field(name="Total Donated:", value=f"${totdonated + amount}", inline=True)
             embed.add_field(name="Balance:", value=f"${total}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-            embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
+            embed.add_field(name="Expiry", value=f"<t:{timestamp}:f>", inline=True)
             await ctx.send(embed=embed)
         else:
             await self.coll.insert_one({"user_id": member.id, "balance": amount, "total_donated": amount,
@@ -84,6 +86,7 @@ class Donators(commands.Cog):
             check = await self.coll.find_one({"user_id": member.id})
             perk_level = check["perk_name"]
             expiry = check["expiry"]
+            timestamp = round(datetime.timestamp(expiry))
             totdonated = check["total_donated"]
             embed = discord.Embed(title="**Amount added**",
                                   description=f"{member.mention} has had ${amount} added to their balance.",
@@ -91,7 +94,7 @@ class Donators(commands.Cog):
             embed.add_field(name="Total Donated:", value=f"${totdonated}", inline=True)
             embed.add_field(name="Balance:", value=f"${amount}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-            embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
+            embed.add_field(name="Expiry", value=f"<t:{timestamp}:f>", inline=True)
             await ctx.send(embed=embed)
 
     @donator.command()
@@ -114,13 +117,14 @@ class Donators(commands.Cog):
                                                         "Proof": url}}})
             perk_level = check["perk_name"]
             expiry = check["expiry"]
+            timestamp = round(datetime.timestamp(expiry))
             embed = discord.Embed(title="**Amount removed**",
                                   description=f"{member.mention} has had ${amount} removed from their balance.",
                                   color=0xfb0404)
             embed.add_field(name="Total Donated:", value=f"${totdonated - amount}", inline=True)
             embed.add_field(name="Balance:", value=f"${total}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-            embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
+            embed.add_field(name="Expiry", value=f"<t:{timestamp}:f>", inline=True)
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
@@ -137,13 +141,14 @@ class Donators(commands.Cog):
             balance = check["balance"]
             perk_level = check["perk_name"]
             expiry = check["expiry"]
+            timestamp = round(datetime.timestamp(expiry))
             embed = discord.Embed(title="**Balance**",
                                   description=f"If you are looking for details, use `??donator balance details {member.id}`.",
                                   color=0x10ea64)
             embed.add_field(name="Total Donated:", value=f"${totdonated}", inline=True)
             embed.add_field(name="Balance:", value=f"${balance}", inline=True)
             embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
-            embed.add_field(name="Expiry", value=f"{expiry}", inline=True)
+            embed.add_field(name="Expiry", value=f"<t:{timestamp}:f>", inline=True)
             await ctx.send(embed=embed)
         else:
             await ctx.send(f"{member.mention} is not a donator yet and has no balance.")
@@ -158,7 +163,9 @@ class Donators(commands.Cog):
         check = await self.coll.find_one({"user_id": member.id})
         if check:
             for i in check['Donation']:
-                s += f"{i['Date']} - [${i['Value']}]({i['Proof']})\n"
+                date = i['Date']
+                timestamp = round(datetime.timestamp(date))
+                s += f"<t:{timestamp}:f> - [${i['Value']}]({i['Proof']})\n"
             embed = discord.Embed(title=f"**{member.name} Detailed Donations**", description=s, color=0x10ea64)
             await ctx.send(embed=embed)
         else:
