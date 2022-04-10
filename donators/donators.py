@@ -398,11 +398,5 @@ class Donators(commands.Cog):
         except Exception as e:
             print(e)
             
-    @commands.command()
-    async def printdoc(self, ctx, member: discord.Member):
-        user = await self.coll.find_one({"user_id": member.id})
-        await ctx.send(user)
-        print(user)
-
 def setup(bot):
     bot.add_cog(Donators(bot))
