@@ -355,12 +355,9 @@ class Donators(commands.Cog):
     async def top5(self, ctx):
         s = ""
         top5 = self.coll.aggregate( [{"$set": {"Donation30d": {"$filter": {"input": "$Donation", "cond": {"$lt": [{"$dateDiff": {"startDate": "$$this.Date", "endDate": "$$NOW", "unit": "day"}}, 30]}}}}}, {"$set": {"sum30d": {"$sum": {"$filter": {"input": "$Donation30d.Value", "cond": {"$gt": ["$$this", 0]}}}}}}, {"$sort": {"sum30d": -1}}, {"$limit": 5}])
-        for i, user in enumerate(top5, start=1):
-            user_id = user["user_id"]
-            user_name = await self.bot.fetch_user(user_id)
-            s += f"{i}. {user_name.name} - ${user['sum30d']}\n"
-        embed = discord.Embed(title="**Top 5 Donators (Last 30 days)**", description=s, colour=0x10ea64)
-        await ctx.send(embed=embed)
+        for i in top5:
+            s += f"{i['_id']} - {i['sum30d']}\n"
+        await ctx.send(s)
         
     @tasks.loop(hours=12)
     async def check_expiry(self):
