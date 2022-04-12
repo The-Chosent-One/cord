@@ -44,13 +44,16 @@ class Donators(commands.Cog):
                                 await self.bot.db.plugins.Autoreact.insert_one(ar)
                                 await ctx.send(f"Added reaction {msg.content} for {member.mention}")
                             except asyncio.TimeoutError:
-                                return await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+                                await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+                                return False
                         elif msg.content.lower() == "no":
                             pass
                         else:
-                            return await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+                            await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+                            return False
                     except asyncio.TimeoutError:
-                        return await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+                        await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+                        return False
                 await self.coll.update_one({"user_id": member.id},
                                            {"$set": {"balance": total, "perk_name": perk_level, "expiry": expiry},
                                             "$push": {"Donation": {"Value": -abs(perk_value), "Date": datetime.utcnow(),
@@ -63,10 +66,13 @@ class Donators(commands.Cog):
                 embed.add_field(name="Perks Redeemed", value=f"{perk_level}", inline=True)
                 embed.add_field(name="Expiry", value=exp, inline=True)
                 await ctx.send(embed=embed)
+                return True
             else:
                 await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+                return False
         except asyncio.TimeoutError:
             await ctx.send(f"{member.mention} has cancelled the perk redemption.")
+            return False
 
     @commands.group(invoke_without_command=True)
     async def donator(self, ctx):
@@ -285,44 +291,60 @@ class Donators(commands.Cog):
                 await ctx.send("You have already redeemed a perk. Please wait for it to expire.")
             elif perk_level == "$5":
                 if balance >= 5:
-                    await self.confirm(ctx, ctx.author, balance, 5, perk_level, 15, totdonated, ctx.message.jump_url)
-                    donator5 = ctx.guild.get_role(794300647137738762)
-                    await ctx.author.add_roles(donator5)
+                    agreed = await self.confirm(ctx, ctx.author, balance, 5, perk_level, 15, totdonated,
+                                                ctx.message.jump_url)
+                    if agreed:
+                        donator5 = ctx.guild.get_role(794300647137738762)
+                        await ctx.author.add_roles(donator5)
+                    else:
+                        return
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             elif perk_level == "$10":
                 if balance >= 10:
-                    await self.confirm(ctx, ctx.author, balance, 10, perk_level, 30, totdonated, ctx.message.jump_url)
-                    donator10 = ctx.guild.get_role(794301192359378954)
-                    donator5 = ctx.guild.get_role(794300647137738762)
-                    await ctx.author.add_roles(donator5)
-                    await ctx.author.add_roles(donator10)
+                    agreed = await self.confirm(ctx, ctx.author, balance, 10, perk_level, 30, totdonated,
+                                                ctx.message.jump_url)
+                    if agreed:
+                        donator10 = ctx.guild.get_role(794301192359378954)
+                        donator5 = ctx.guild.get_role(794300647137738762)
+                        await ctx.author.add_roles(donator5)
+                        await ctx.author.add_roles(donator10)
+                    else:
+                        return
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             elif perk_level == "$20":
                 if balance >= 20:
-                    await self.confirm(ctx, ctx.author, balance, 20, perk_level, 60, totdonated, ctx.message.jump_url)
-                    donator20 = ctx.guild.get_role(794301389769015316)
-                    donator10 = ctx.guild.get_role(794301192359378954)
-                    donator5 = ctx.guild.get_role(794300647137738762)
-                    await ctx.author.add_roles(donator5)
-                    await ctx.author.add_roles(donator10)
-                    await ctx.author.add_roles(donator20)
+                    agreed = await self.confirm(ctx, ctx.author, balance, 20, perk_level, 60, totdonated,
+                                                ctx.message.jump_url)
+                    if agreed:
+                        donator20 = ctx.guild.get_role(794301389769015316)
+                        donator10 = ctx.guild.get_role(794301192359378954)
+                        donator5 = ctx.guild.get_role(794300647137738762)
+                        await ctx.author.add_roles(donator5)
+                        await ctx.author.add_roles(donator10)
+                        await ctx.author.add_roles(donator20)
+                    else:
+                        return
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             elif perk_level == "$30":
                 if balance >= 30:
-                    await self.confirm(ctx, ctx.author, balance, 30, perk_level, 90, totdonated, ctx.message.jump_url)
-                    donator20 = ctx.guild.get_role(794301389769015316)
-                    donator10 = ctx.guild.get_role(794301192359378954)
-                    donator5 = ctx.guild.get_role(794300647137738762)
-                    await ctx.author.add_roles(donator5)
-                    await ctx.author.add_roles(donator10)
-                    await ctx.author.add_roles(donator20)
-                    donator30 = ctx.guild.get_role(794302939371929622)
-                    serverboss = ctx.guild.get_role(820294120621867049)
-                    await ctx.author.add_roles(serverboss)
-                    await ctx.author.add_roles(donator30)
+                    agreed = await self.confirm(ctx, ctx.author, balance, 30, perk_level, 90, totdonated,
+                                                ctx.message.jump_url)
+                    if agreed:
+                        donator20 = ctx.guild.get_role(794301389769015316)
+                        donator10 = ctx.guild.get_role(794301192359378954)
+                        donator5 = ctx.guild.get_role(794300647137738762)
+                        await ctx.author.add_roles(donator5)
+                        await ctx.author.add_roles(donator10)
+                        await ctx.author.add_roles(donator20)
+                        donator30 = ctx.guild.get_role(794302939371929622)
+                        serverboss = ctx.guild.get_role(820294120621867049)
+                        await ctx.author.add_roles(serverboss)
+                        await ctx.author.add_roles(donator30)
+                    else:
+                        return
                 else:
                     await ctx.send("You do not have enough balance to redeem this perk.")
             else:
@@ -423,7 +445,7 @@ class Donators(commands.Cog):
         top10 = await self.coll.aggregate([{"$set": {"Donation30d": {"$filter": {"input": "$Donation", "cond": {
             "$lt": [{"$dateDiff": {"startDate": "$$this.Date", "endDate": "$$NOW", "unit": "day"}}, 30]}}}}}, {"$set": {
             "sum30d": {"$sum": {"$filter": {"input": "$Donation30d.Value", "cond": {"$gt": ["$$this", 0]}}}}}},
-                                          {"$sort": {"sum30d": -1}}, {"$limit": 10}]).to_list(None)
+                                           {"$sort": {"sum30d": -1}}, {"$limit": 10}]).to_list(None)
         for i in top10:
             value = i["sum30d"]
             user_id = i["user_id"]
@@ -431,7 +453,7 @@ class Donators(commands.Cog):
             s += f"{user.name} - ${value}\n"
         embed = discord.Embed(title="Top 10 Donators", description=s, colour=0x10ea64)
         await ctx.send(embed=embed)
-        
+
     @leaderboard.command()
     async def top1(self, ctx):
         s = ""
@@ -446,7 +468,7 @@ class Donators(commands.Cog):
             s += f"{user.name} - ${value}\n"
         embed = discord.Embed(title="Top 1 Donator", description=s, colour=0x10ea64)
         await ctx.send(embed=embed)
-        
+
     @tasks.loop(hours=12)
     async def check_expiry(self):
         """
