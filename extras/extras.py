@@ -220,16 +220,18 @@ class Extras(commands.Cog):
             await member.add_roles(role, reason=f'Special role added, requested by {str(ctx.author.id)}')
             await ctx.channel.send("The Special Role has been added.")
             
-    @commands.command
+    @commands.command()
     @checks.thread_only()
     async def helpme(self, ctx):
         role = ctx.guild.get_role(814004142796046408)
         members = role.members
         members = [member for member in members if not member.status == discord.Status.offline]
-        members = random.sample(members, 3)        
+        members = random.sample(members, 3)
         channel = ctx.channel
         overwrites = channel.overwrites_for(role)
-        overwrites.view_channel, overwrites.send_messages = True, True
+        overwrites.view_channel, overwrites.send_messages = True
+        if channel.overwrites_for(role) == overwrites:
+            return await ctx.send(f"{members[0].mention}, {members[1].mention}, {members[2].mention}")
         await channel.set_permissions(role, overwrite=overwrites)
         await ctx.send(f"{members[0].mention}, {members[1].mention}, {members[2].mention}")
 
