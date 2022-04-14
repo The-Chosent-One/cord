@@ -227,14 +227,14 @@ class Extras(commands.Cog):
         role = ctx.guild.get_role(814004142796046408)
         members = role.members
         members = [member for member in members if not member.status == discord.Status.offline]
-        members = random.sample(members, 3)
+        members = random.sample(members, 1)
         channel = ctx.channel
         overwrites = channel.overwrites_for(role)
         overwrites.view_channel, overwrites.send_messages = True, True
         if channel.overwrites_for(role) == overwrites:
-            return await ctx.send(f"{members[0].mention}, {members[1].mention}, {members[2].mention}")
+            return await ctx.send(f"{members[0].mention}")
         await channel.set_permissions(role, overwrite=overwrites)
-        await ctx.send(f"{members[0].mention}, {members[1].mention}, {members[2].mention}")
+        await ctx.send(f"{members[0].mention}")
 
 
 def setup(bot):
