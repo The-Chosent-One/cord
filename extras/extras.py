@@ -230,7 +230,7 @@ class Extras(commands.Cog):
         members = random.sample(members, 3)
         channel = ctx.channel
         overwrites = channel.overwrites_for(role)
-        overwrites.view_channel, overwrites.send_messages = True
+        overwrites.view_channel, overwrites.send_messages = True, True
         if channel.overwrites_for(role) == overwrites:
             return await ctx.send(f"{members[0].mention}, {members[1].mention}, {members[2].mention}")
         await channel.set_permissions(role, overwrite=overwrites)
