@@ -228,8 +228,8 @@ class Extras(commands.Cog):
         members = [member for member in members if not member.status == discord.Status.offline]
         members = random.sample(members, 3)        
         channel = ctx.channel
-        channel.overwrites_for(role)
-        overwrites.view_channel, overwrites.send_messages = True
+        overwrites = channel.overwrites_for(role)
+        overwrites.view_channel, overwrites.send_messages = True, True
         await channel.set_permissions(role, overwrite=overwrites)
         await ctx.send(f"{members[0].mention}, {members[1].mention}, {members[2].mention}")
 
