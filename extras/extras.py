@@ -3,6 +3,7 @@ import re
 from datetime import timedelta
 
 import discord
+import random
 from core import checks
 from core.models import PermissionLevel
 from discord.ext import commands
@@ -148,6 +149,21 @@ class Extras(commands.Cog):
         else:
             await member.add_roles(role, reason=f'Special role added, requested by {str(ctx.author.id)}')
             await ctx.channel.send("The Special Role has been added.")
+            
+    @commands.command()
+    @checks.thread_only()
+    async def helpme(self, ctx):
+        role = ctx.guild.get_role(814004142796046408)
+        members = role.members
+        members = [member for member in members if not member.status == discord.Status.offline]
+        members = random.sample(members, 1)
+        channel = ctx.channel
+        overwrites = channel.overwrites_for(role)
+        overwrites.view_channel, overwrites.send_messages = True, True
+        if channel.overwrites_for(role) == overwrites:
+            return await ctx.send(f"{members[0].mention}")
+        await channel.set_permissions(role, overwrite=overwrites)
+        await ctx.send(f"{members[0].mention}")
 
 
 async def setup(bot):
