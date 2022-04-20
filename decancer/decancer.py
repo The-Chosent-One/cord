@@ -389,4 +389,4 @@ class Decancer(commands.Cog):
 
 
 async def setup(bot):
-    await bot.add_cog(decancer(bot))
+    await bot.add_cog(Decancer(bot))
