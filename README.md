@@ -1,19 +1,8 @@
 
 **Todo:**
-Stickroles has to be completed?
+Fix selfroles and sos 
 
 **Not being used rn:**
-
-NSFWDetector
-
-ChannelLock
-
-DailyPoll
-
-DiscordYT
-
-PremiumSupport
-
-SaleItem
+Stickyroles
 
 
