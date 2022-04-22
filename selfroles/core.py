@@ -2,7 +2,7 @@ import discord
 from typing import Callable
 
 class GenericRoleButton(discord.ui.Button): pass # this is to get the line below to work :/
-Callback = Callable[[GenericRoleButton, discord.Interaction], bool]
+Callback = Callable[[discord.Interaction, GenericRoleButton], bool]
 Roles = dict[int, str]
 
 # this is pretty much the meat of what we want
@@ -26,7 +26,7 @@ class GenericRoleButton(discord.ui.Button):
         # here is where the custom callback is called
         # if the return value is False, execution will stop
         if self._callback is not None:
-            continue_execution = await self._callback(self, interaction)
+            continue_execution = await self._callback(interaction, self)
             
             if not continue_execution:
                 return
