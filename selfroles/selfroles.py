@@ -2,7 +2,7 @@ from typing import Sequence
 from discord.ext import commands
 import discord
 from .selfroles_data import REGULAR_COLOURS, PREMIUM_COLOURS, ACCESS, PING, REGION, AGE, GENDER
-from .selfroles_core import RoleHelper, GenericRoleButton
+from .core import RoleHelper, GenericRoleButton
 
 Roles = dict[int, str]
 
