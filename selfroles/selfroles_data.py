@@ -58,6 +58,7 @@ REGION: Roles = {
     680530881932296202: "<:uwu_nice:940947412875378728>",               # Europe
     680530932901609581: "<a:farm_xhEvilElmo:676545857406894080>",       # Oceania
     680530891923390505: "<a:farm_pepeFeelsWeirdMan:673745528819023923>" # Middle East
+    958711382709256232: "<:farm_4z_Hah:967742300832813096>"             # Africa
 }
 
 AGE: Roles = {
