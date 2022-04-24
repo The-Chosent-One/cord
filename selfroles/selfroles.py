@@ -74,7 +74,7 @@ class SelfRoles(commands.Cog):
 
         # denying taking of premium colours
         if not (author_roles & premium_role_req) and role_btn.role_id in premium_role_ids:
-            await send_method(content="This is a premium colour! To unlock them, check out our <#898978985608900618> and <#948755871167565824>.", ephemeral=True)
+            await send_method(content="This is a premium colour! To unlock them, check out our <#898978985608900618> and <#948755871167565824>. (The first 6 colours can be used by you)", ephemeral=True)
             return False
 
         restricted_role_ids = (regular_role_ids | premium_role_ids) - {role_btn.role_id}
