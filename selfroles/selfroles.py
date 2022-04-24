@@ -53,7 +53,7 @@ class SelfRoles(commands.Cog):
         return await member.edit(roles=new_roles)
 
     # callback for colour buttons
-    async def check_colour_roles(self, role_btn: GenericRoleButton, interaction: discord.Interaction) -> bool:
+    async def check_colour_roles(self, interaction: discord.Interaction, role_btn: GenericRoleButton) -> bool:
         regular_role_ids = set(REGULAR_COLOURS)
         premium_role_ids = set(PREMIUM_COLOURS)
         author_roles = set(interaction.user._roles)
@@ -97,7 +97,7 @@ class SelfRoles(commands.Cog):
     
 
     # check for bad roles when applying roles
-    async def check_ping_roles(self, role_btn: GenericRoleButton, interaction: discord.Interaction) -> bool:
+    async def check_ping_roles(self, interaction: discord.Interaction, role_btn: GenericRoleButton) -> bool:
         # Circus animal trying to get Events and Giveaways
         if interaction.user._roles.has(719260653541654608) and role_btn.role_id in (684552219344764934, 672889430171713538):
             await interaction.response.send_message(content="<@&719260653541654608> restricts you from getting this role. DM <@855270214656065556> to appeal.")
@@ -123,7 +123,7 @@ class SelfRoles(commands.Cog):
 
     
     # region check
-    async def check_region_roles(self, role_btn: GenericRoleButton, interaction: discord.Interaction) -> bool:
+    async def check_region_roles(self, interaction: discord.Interaction, role_btn: GenericRoleButton) -> bool:
         restricted_role_ids = set(REGION) - {role_btn.role_id}
         await RoleHelper.restriction_handler(restricted_role_ids, interaction, "You can only have one region role! {} has been removed.")
 
@@ -137,7 +137,7 @@ class SelfRoles(commands.Cog):
 
 
     # age check
-    async def check_age_roles(self, role_btn: GenericRoleButton, interaction: discord.Interaction) -> bool:
+    async def check_age_roles(self, interaction: discord.Interaction, role_btn: GenericRoleButton) -> bool:
         restricted_role_ids = set(AGE) - {role_btn.role_id}
         await RoleHelper.restriction_handler(restricted_role_ids, interaction, "You can only have one age group role! {} has been removed.")
         
@@ -150,7 +150,7 @@ class SelfRoles(commands.Cog):
         await ctx.send(embed=embed, view=self.age_view)
 
     
-    async def check_gender_roles(self, role_btn: GenericRoleButton, interaction: discord.Interaction) -> bool:
+    async def check_gender_roles(self, interaction: discord.Interaction, role_btn: GenericRoleButton) -> bool:
         restricted_role_ids = set(GENDER) - {role_btn.role_id}
         await RoleHelper.restriction_handler(restricted_role_ids, interaction, "You can only have one gender role! {} has been removed.")
         
