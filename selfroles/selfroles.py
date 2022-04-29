@@ -100,17 +100,17 @@ class SelfRoles(commands.Cog):
     async def check_ping_roles(self, interaction: discord.Interaction, role_btn: GenericRoleButton) -> bool:
         # Circus animal trying to get Events and Giveaways
         if interaction.user._roles.has(719260653541654608) and role_btn.role_id in (684552219344764934, 672889430171713538):
-            await interaction.response.send_message(content="<@&719260653541654608> restricts you from getting this role. DM <@855270214656065556> to appeal.")
+            await interaction.response.send_message(content="<@&719260653541654608> restricts you from getting this role. DM <@855270214656065556> to appeal.", ephemeral=True)
             return False
         
         # Poor animal trying to get Heist Hipphoes
         if interaction.user._roles.has(761251579381678081) and role_btn.role_id == 684987530118299678:
-            await interaction.response.send_message(content="<@&761251579381678081> restricts you from getting this role. DM <@855270214656065556> to appeal.")
+            await interaction.response.send_message(content="<@&761251579381678081> restricts you from getting this role. DM <@855270214656065556> to appeal.", ephemeral=True)
             return False
         
         # No hype trying to get Hype My Stream
         if interaction.user._roles.has(906203595999944794) and role_btn.role_id == 865796857887981579:
-            await interaction.response.send_message(content="<@&906203595999944794> restricts you from getting this role. DM <@855270214656065556> to appeal.")
+            await interaction.response.send_message(content="<@&906203595999944794> restricts you from getting this role. DM <@855270214656065556> to appeal.", ephemeral=True)
             return False
         
         return True
