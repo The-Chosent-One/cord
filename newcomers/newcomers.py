@@ -92,7 +92,7 @@ class NewComers(commands.Cog):
     async def updater(self):
         guild = self.bot.get_guild(645753561329696785)
         channel = self.bot.get_channel(696433564232974339)
-        count = f"Members: {self.guild.member_count}"
+        count = f"Members: {guild.member_count}"
         await channel.edit(name=count)
         
     @updater.error
