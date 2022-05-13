@@ -45,6 +45,7 @@ class NewComers(commands.Cog):
         now = discord.utils.utcnow()
         age = now - user.created_at
         days = age.days
+        channel = self.bot.get_channel(676931619294281729)
         
         if frozencheck:
             frozennick = frozencheck['Nickname']
@@ -54,7 +55,6 @@ class NewComers(commands.Cog):
         if days == 0:
             await self.tempban(user, str((90 - days) * 24 * 60 * 60))
             await user.ban(reason="Suspected ALT, Banned for 90 days.")
-            channel = self.bot.get_channel(676931619294281729)
             await channel.send(
                 f"Auto Banned {user} `{user.id}` for being a suspected ALT, Come back in {(90 - days)} days")
 
@@ -62,7 +62,6 @@ class NewComers(commands.Cog):
             await self.tempban(user, str((14 - days) * 24 * 60 * 60))
             await user.ban(
                 reason="Your account is too new! Feel free to join back when your account is atleast 15 days old. discord.gg/dank")
-            channel = self.bot.get_channel(676931619294281729)
             await channel.send(
                 f"Auto banned {user} `{user.id}` for being younger than 14d. Come back in {(14 - days)} days")
 
