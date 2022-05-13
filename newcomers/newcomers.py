@@ -90,13 +90,11 @@ class NewComers(commands.Cog):
             
     @tasks.loop(hours=1)
     async def updater(self):
-        try:
-            guild = self.bot.get_guild(645753561329696785)
-            channel = self.bot.get_channel(696433564232974339)
-            count = f"Members: {self.guild.member_count}"
-            await channel.edit(name=count)
-        except Exception as e:
-            print(e)
+        guild = self.bot.get_guild(645753561329696785)
+        channel = self.bot.get_channel(696433564232974339)
+        count = f"Members: {self.guild.member_count}"
+        await channel.edit(name=count)
+
 
 
 async def setup(bot):
