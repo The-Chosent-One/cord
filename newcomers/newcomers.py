@@ -41,9 +41,15 @@ class NewComers(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, user: discord.Member):
+        frozencheck = await self.bot.db.plugins.Decancer.find_one({"user_id": str(user.id)})
         now = discord.utils.utcnow()
         age = now - user.created_at
         days = age.days
+        
+        if frozencheck:
+            frozennick = frozencheck['Nickname']
+            await user.edit(nick=frozennick)
+            await channel.send(f"Auto Froze {user} `{user.id}` to `{frozennick}` because they previously had a frozen nickname")
 
         if days == 0:
             await self.tempban(user, str((90 - days) * 24 * 60 * 60))
