@@ -95,11 +95,5 @@ class NewComers(commands.Cog):
         count = f"Members: {guild.member_count}"
         await channel.edit(name=count)
         
-    @updater.error
-    async def updater_error(self, err):
-        print(err)
-
-
-
 async def setup(bot):
     await bot.add_cog(NewComers(bot))
