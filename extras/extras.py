@@ -166,7 +166,7 @@ class Extras(commands.Cog):
         await ctx.send(f"{members[0].mention}")
         
     @commands.command()
-    @commands.has_permission(manage_channels=True)
+    @commands.has_permissions(manage_channels=True)
     async def au (self, ctx, member: discord.Member):
         overwrites = ctx.channel.overwrites_for(member)
         overwrites.read_messages = True
