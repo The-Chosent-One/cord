@@ -171,6 +171,7 @@ class Extras(commands.Cog):
         overwrites = ctx.channel.overwrites_for(member)
         overwrites.read_messages = True
         await ctx.channel.set_permissions(member, overwrite=overwrites)
+        await ctx.channel.send(f"Added {member.mention}")
 
 async def setup(bot):
     await bot.add_cog(Extras(bot))
