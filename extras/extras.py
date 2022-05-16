@@ -164,7 +164,13 @@ class Extras(commands.Cog):
             return await ctx.send(f"{members[0].mention}")
         await channel.set_permissions(role, overwrite=overwrites)
         await ctx.send(f"{members[0].mention}")
-
+        
+    @commands.command()
+    @commands.has_permission(manage_channels=True)
+    async def au (self, ctx, member: discord.Member):
+        overwrites = ctx.channel.overwrites_for(member)
+        overwrites.read_messages = True
+        await ctx.channel.set_permissions(member, overwrite=overwrites)
 
 async def setup(bot):
     await bot.add_cog(Extras(bot))
