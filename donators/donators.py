@@ -450,7 +450,7 @@ class Donators(commands.Cog):
             value = i["sum30d"]
             user_id = i["user_id"]
             user = await self.bot.fetch_user(user_id)
-            s += f"{user.name} - ${value}\n"
+            s += f"<@{user.id}> - ${value}\n"
         embed = discord.Embed(title="Top 10 Donators", description=s, colour=0x10ea64)
         await ctx.send(embed=embed)
 
@@ -465,7 +465,7 @@ class Donators(commands.Cog):
             value = i["sum90d"]
             user_id = i["user_id"]
             user = await self.bot.fetch_user(user_id)
-            s += f"{user.name} - ${value}\n"
+            s += f"<@{user.id}> - ${value}\n"
         embed = discord.Embed(title="Top 1 Donator", description=s, colour=0x10ea64)
         await ctx.send(embed=embed)
 
