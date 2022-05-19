@@ -6,7 +6,6 @@ from discord.ext import commands
 
 time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'}
 
-
 class Reminders(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -40,7 +39,14 @@ class Reminders(commands.Cog):
             reminder = {"user_id": ctx.author.id, "message": message,
                         "time": datetime.utcnow() + timedelta(seconds=seconds)}
             await self.coll.insert_one(reminder)
-            await ctx.message.reply("Reminder set. You will be dm\'d once it\'s time.")
+            fetch = await self.coll.find().sort('time', 1).to_list(1)
+            for x in fetch
+                if x['time'] > (datetime.utcnow() + timedelta(seconds=seconds)):
+                    return await ctx.message.reply("Reminder set. You will be dm\'d once it\'s time.")
+                if remind_loop.is_running():
+                    self.reminder_loop.restart()
+                else:
+                    self.reminder_loop.start()
         except ValueError:
             await ctx.message.reply('Invalid time format. Try `??remind 1h30m Hello!`')
 
@@ -72,9 +78,6 @@ class Reminders(commands.Cog):
                     if x['time'] > now:
                         next_reminder = x['time']
                         return await discord.utils.sleep_until(next_reminder)
-            next_reminder = datetime.utcnow() + timedelta(10)
-            return await discord.utils.sleep_until(next_reminder)
-            
         for reminder in reminders:
             try:
                 user = await self.bot.get_user(reminder['user_id'])
