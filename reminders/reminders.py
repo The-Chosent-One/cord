@@ -10,9 +10,7 @@ class Reminders(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
-        print("before")
         self.reminder_loop.start()
-        print("After")
 
     @staticmethod
     def to_seconds(s):
@@ -90,14 +88,8 @@ class Reminders(commands.Cog):
                     if x['time'] > now:
                         next_reminder = x['time']
                         return await discord.utils.sleep_until(next_reminder)
-            except exception as e:
+            except Exception as e:
                 print(e)
                 
-
-    @reminder_loop.error
-    async def reminder_error(self, err):
-        print(err)
-
-
 async def setup(bot):
     await bot.add_cog(Reminders(bot))
