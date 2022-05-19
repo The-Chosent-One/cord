@@ -57,9 +57,9 @@ class Reminders(commands.Cog):
             return
         embed = discord.Embed(title=f"**{ctx.author.name} Reminders**", description="", color=0x10ea64)
         for x in reminders:
-            tim = reminders["time"]
+            tim = x["time"]
             timestamp = round(datetime.timestamp(tim))
-            embed.description += [f'<t:{timestamp}:f> - {reminders["message"]} \n']
+            embed.description += [f'<t:{timestamp}:f> - {x["message"]} \n']
         await ctx.message.reply(embed=embed)
 
     @commands.command(aliases=['crm'])
