@@ -10,7 +10,9 @@ class Reminders(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
+        print("before")
         self.reminder_loop.start()
+        print("After")
 
     @staticmethod
     def to_seconds(s):
