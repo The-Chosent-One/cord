@@ -34,7 +34,7 @@ class Reminders(commands.Cog):
             if seconds < 10:
                 await ctx.message.reply('I can\'t remind you under 10 seconds. Maybe improve your memory?')
                 return BaseException
-            check = await self.coll.find({"user_id": ctx.author.id}).count()
+            check = await self.coll.count_documents({'user_id': ctx.author.id})
             if check >= 10:
                 return await ctx.message.reply('You can only have 10 reminders at a time.')
             reminder = {"user_id": ctx.author.id, "message": message,
