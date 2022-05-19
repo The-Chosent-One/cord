@@ -73,7 +73,7 @@ class Reminders(commands.Cog):
                         next_reminder = x['time']
                         return await discord.utils.sleep_until(next_reminder)
             next_reminder = datetime.utcnow() + timedelta(10)
-            return await discord.utils.sleep_until()
+            return await discord.utils.sleep_until(next_reminder)
             
         for reminder in reminders:
             try:
