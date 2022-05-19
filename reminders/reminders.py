@@ -67,10 +67,14 @@ class Reminders(commands.Cog):
         reminders = await self.coll.find({"time": {"$lte": now}}).to_list(None)
         if not reminders:
             fetch = await self.coll.find().sort('time', 1).to_list(1)
-            for x in fetch:
-                if x['time'] > now:
-                    next_reminder = x['time']
-                    return await discord.utils.sleep_until(next_reminder)
+            if fetch:
+                for x in fetch:
+                    if x['time'] > now:
+                        next_reminder = x['time']
+                        return await discord.utils.sleep_until(next_reminder)
+            next_reminder = datetime.utcnow() + timedelta(10)
+            return await discord.utils.sleep_until()
+            
         for reminder in reminders:
             try:
                 user = await self.bot.get_user(reminder['user_id'])
