@@ -6,6 +6,7 @@ from discord.ext import commands
 
 time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'}
 
+
 class Reminders(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
@@ -40,7 +41,7 @@ class Reminders(commands.Cog):
                         "time": datetime.utcnow() + timedelta(seconds=seconds)}
             await self.coll.insert_one(reminder)
             fetch = await self.coll.find().sort('time', 1).to_list(1)
-            for x in fetch
+            for x in fetch:
                 if x['time'] > (datetime.utcnow() + timedelta(seconds=seconds)):
                     return await ctx.message.reply("Reminder set. You will be dm\'d once it\'s time.")
                 if remind_loop.is_running():
