@@ -80,7 +80,7 @@ class Reminders(commands.Cog):
                         return await discord.utils.sleep_until(next_reminder)
         for reminder in reminders:
             try:
-                user = await self.bot.get_user(reminder['user_id'])
+                user = self.bot.get_user(reminder['user_id'])
                 await user.send(f'Reminder: {reminder["message"]}')
                 await self.coll.delete_one({"_id": reminder["_id"]})
                 fetch = await self.coll.find().sort('time', 1).to_list(1)
