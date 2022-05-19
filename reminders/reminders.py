@@ -55,10 +55,10 @@ class Reminders(commands.Cog):
         if not reminders:
             await ctx.send('You have no reminders.')
             return
-        timestamp = round(datetime.timestamp(reminder["time"]))
-        reminders = [f'<t:{timestamp}:f> - {reminder["message"]}' for reminder in reminders]
-        final = ('\n'.join(reminders))
-        await ctx.message.reply(f'```{final}```')
+        timestamp = round(datetime.timestamp(reminders["time"]))
+        embed = discord.Embed(title=f"**{member.name} Reminders**", description="", color=0x10ea64)
+        embed.description += [f'<t:{timestamp}:f> - {reminders["message"]} \n' for reminder in reminders]
+        await ctx.message.reply(embed=embed)
 
     @commands.command(aliases=['crm'])
     async def clearreminders(self, ctx):
