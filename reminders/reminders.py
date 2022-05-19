@@ -55,7 +55,7 @@ class Reminders(commands.Cog):
         if not reminders:
             await ctx.send('You have no reminders.')
             return
-        embed = discord.Embed(title=f"**{member.name} Reminders**", description="", color=0x10ea64)
+        embed = discord.Embed(title=f"**{ctx.author.name} Reminders**", description="", color=0x10ea64)
         for x in reminders:
             tim = reminders["time"]
             timestamp = round(datetime.timestamp(tim))
