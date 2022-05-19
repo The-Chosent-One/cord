@@ -1,8 +1,7 @@
 import re
 
-from discord.ext import tasks
 from datetime import datetime, timedelta
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'}
 
@@ -44,7 +43,7 @@ class Reminders(commands.Cog):
             for x in fetch:
                 if x['time'] > (datetime.utcnow() + timedelta(seconds=seconds)):
                     return await ctx.message.reply("Reminder set. You will be dm\'d once it\'s time.")
-                if remind_loop.is_running():
+                if self.reminder_loop.is_running():
                     self.reminder_loop.restart()
                 else:
                     self.reminder_loop.start()
