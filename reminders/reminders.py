@@ -20,7 +20,7 @@ class Reminders(commands.Cog):
             for m in re.finditer(r'(?P<val>\d+)(?P<unit>[smhdw]?)', s, flags=re.I)
         }).total_seconds())
 
-    @commands.command(alias=['rm'])
+    @commands.command(aliases=['rm'])
     async def remind(self, ctx, time, *, message):
         """Reminds you of something in the future."""
         try:
