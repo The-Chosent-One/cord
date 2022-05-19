@@ -90,6 +90,11 @@ class Reminders(commands.Cog):
                         return await discord.utils.sleep_until(next_reminder)
             except exception as e:
                 print(e)
+                
+
+    @reminder_loop.error
+    async def reminder_error(self, err):
+        print(err)
 
 
 async def setup(bot):
