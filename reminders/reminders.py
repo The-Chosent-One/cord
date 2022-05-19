@@ -40,14 +40,11 @@ class Reminders(commands.Cog):
             reminder = {"user_id": ctx.author.id, "message": message,
                         "time": datetime.utcnow() + timedelta(seconds=seconds)}
             await self.coll.insert_one(reminder)
-            fetch = await self.coll.find().sort('time', 1).to_list(1)
-            for x in fetch:
-                if x['time'] > (datetime.utcnow() + timedelta(seconds=seconds)):
-                    return await ctx.message.reply("Reminder set. You will be dm\'d once it\'s time.")
-                if self.reminder_loop.is_running():
-                    self.reminder_loop.restart()
-                else:
-                    self.reminder_loop.start()
+            await ctx.message.reply("Reminder set. You will be dm\'d once it\'s time.")
+            if self.reminder_loop.is_running():
+                self.reminder_loop.restart()
+            else:
+                self.reminder_loop.start()
         except ValueError:
             await ctx.message.reply('Invalid time format. Try `??remind 1h30m Hello!`')
 
