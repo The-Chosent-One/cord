@@ -55,7 +55,8 @@ class Reminders(commands.Cog):
         if not reminders:
             await ctx.send('You have no reminders.')
             return
-        reminders = [f'{reminder["time"].strftime("%H:%M:%S")} - {reminder["message"]}' for reminder in reminders]
+        timestamp = round(datetime.timestamp(reminder["time"]))
+        reminders = [f'<t:{timestamp}:f> - {reminder["message"]}' for reminder in reminders]
         final = ('\n'.join(reminders))
         await ctx.message.reply(f'```{final}```')
 
