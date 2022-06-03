@@ -476,7 +476,7 @@ class Donators(commands.Cog):
         Checks if the expiry time > current time.
         """
         try:
-            fetchall = await self.coll.find().sort("expiry", 1).to_list(10)  # Top 10
+            fetchall = await self.coll.find({expiry: {$ne: "None"}}).sort("expiry", 1).to_list(10)  # Top 10
             current_time = datetime.utcnow()
             for x in fetchall:
                 if current_time >= x["expiry"]:
