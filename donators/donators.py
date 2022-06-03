@@ -478,6 +478,11 @@ class Donators(commands.Cog):
             fetchall = await self.coll.find().sort("expiry", 1).to_list(10)  # Top 10
             current_time = datetime.utcnow()
             for x in fetchall:
+                id = x["user_id"]
+                tim = x["expiry"]
+                print(id)
+                print(tim)
+"""
                 if current_time >= x["expiry"]:
                     perk_level = x["perk_name"]
                     user = x["user_id"]
@@ -528,6 +533,6 @@ class Donators(commands.Cog):
         except Exception as e:
             print(e)
 
-
+"""
 async def setup(bot):
     await bot.add_cog(Donators(bot))
