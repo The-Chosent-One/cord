@@ -360,7 +360,8 @@ class Donators(commands.Cog):
         """
         if ctx.invoked_subcommand is None:
             return await ctx.send(
-                "Are you looking for `??donator leaderboard total`, `??donator leaderboard balance`,`??donator leaderboard top10` or `??donator leaderboard top1`?")
+                "Are you looking for `??donator leaderboard total`, `??donator leaderboard balance`,`??donator "
+                "leaderboard top10` or `??donator leaderboard top1`?")
 
     @commands.Cog.listener("on_raw_reaction_add")
     @commands.Cog.listener("on_raw_reaction_remove")
@@ -478,10 +479,14 @@ class Donators(commands.Cog):
             fetchall = await self.coll.find().sort("expiry", 1).to_list(10)  # Top 10
             current_time = datetime.utcnow()
             for x in fetchall:
-                id = x["user_id"]
+                idd = x["user_id"]
                 tim = x["expiry"]
-                print(id)
+                print(idd)
                 print(tim)
+        except Exception as e:
+            print(e)
+
+
 """
                 if current_time >= x["expiry"]:
                     perk_level = x["perk_name"]
@@ -534,5 +539,7 @@ class Donators(commands.Cog):
             print(e)
 
 """
+
+
 async def setup(bot):
     await bot.add_cog(Donators(bot))
