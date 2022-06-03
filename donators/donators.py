@@ -479,15 +479,8 @@ class Donators(commands.Cog):
             fetchall = await self.coll.find().sort("expiry", 1).to_list(10)  # Top 10
             current_time = datetime.utcnow()
             for x in fetchall:
-                idd = x["user_id"]
-                tim = x["expiry"]
-                print(idd)
-                print(tim)
-        except Exception as e:
-            print(e)
-
-
-"""
+                if current_time == "None":
+                    return
                 if current_time >= x["expiry"]:
                     perk_level = x["perk_name"]
                     user = x["user_id"]
@@ -537,8 +530,6 @@ class Donators(commands.Cog):
                         await member.send("You cash donator perks have expired in `The Farm`. gg/dank")
         except Exception as e:
             print(e)
-
-"""
 
 
 async def setup(bot):
