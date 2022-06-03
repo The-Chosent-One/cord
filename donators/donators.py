@@ -479,10 +479,7 @@ class Donators(commands.Cog):
             fetchall = await self.coll.find().sort("expiry", 1).to_list(10)  # Top 10
             current_time = datetime.utcnow()
             for x in fetchall:
-                expiryy = x["expiry"]
-                if expiryy == "None":
-                    return
-                if current_time >= expiryy :
+                if current_time >= x["expiry"]:
                     perk_level = x["perk_name"]
                     user = x["user_id"]
                     guild = self.bot.get_guild(645753561329696785)
