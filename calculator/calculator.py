@@ -7,7 +7,7 @@ from discord.ext import commands
 class Calculator(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.calculatable = re.compile("^[\(\)0-9embt.\-\+\/*\/]+$")
+        self.calculatable = re.compile("^[\(\)0-9embtk.\-\+\/*\/]+$")
 
     
     def subst_shorthands(self, calculation: str) -> str:
