@@ -15,7 +15,7 @@ class Calculator(commands.Cog):
             match = match_obj.group(0)
             return f"({match[:-1]}{mapping[match[-1]]})"
 
-        mapping = {"t": "*1000000000000", "b": "*1000000000", "m": "*1000000"}
+        mapping = {"t": "*1000000000000", "b": "*1000000000", "m": "*1000000", "k": "*1000"}
 
         for pattern in mapping:
             calculation = re.sub(rf"\d+{pattern}", match_subst, calculation)
