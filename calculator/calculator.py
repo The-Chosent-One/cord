@@ -7,7 +7,7 @@ from discord.ext import commands
 class Calculator(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.calculatable = re.compile("^[\(\)0-9embtk.\-\+\/*\/]+$")
+        self.calculatable = re.compile("^[\(\)0-9embtk\.\-\+\/\*\/]+$")
 
     
     def subst_shorthands(self, calculation: str) -> str:
@@ -73,7 +73,7 @@ class Calculator(commands.Cog):
         except asyncio.TimeoutError:
             return
         
-        embed = discord.Embed(title="Calculated:", description=f"Result: `{res:,}`", colour=0x303135)
+        embed = discord.Embed(title="Calculated:", description=f"Result: `{res:,}`\n Raw: `{res}`", colour=0x303135)
         await message.channel.send(embed=embed)
 
 async def setup(bot):
