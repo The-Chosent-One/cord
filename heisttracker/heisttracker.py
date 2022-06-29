@@ -114,6 +114,8 @@ class HeistTracker(commands.Cog):
         await self.update_db(leader_id, scouter_id, amount)
 
     @commands.command(aliases=["hs", "heiststatistics", "heiststat"])
+    @commands.has_any_role(682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911,
+                           814004142796046408, 855877108055015465, 723035638357819432)
     async def heiststats(self, ctx: commands.Context, user: discord.Member = None):
         target = user or ctx.author
         user_id = target.id
