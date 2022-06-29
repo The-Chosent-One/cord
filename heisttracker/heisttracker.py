@@ -85,8 +85,8 @@ class HeistTracker(commands.Cog):
     @commands.Cog.listener("on_message")
     async def recv_heist_msg(self, message: discord.Message):
         # trophy room
-        # if message.channel.id != 669866611313999882:
-        #     return
+        if message.channel.id != 669866611313999882:
+            return
 
         # we do this just in case the bot auto-deletes the heist message
         # if there's sensitive words in the message
