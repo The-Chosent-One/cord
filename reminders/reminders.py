@@ -45,8 +45,8 @@ class Reminders(commands.Cog):
         try:
             text = time
             seconds = sum(
-                int(num) * {'h': 60 * 60, 'm': 60, 's': 1, ' ': 1}[weight if weight else 's'] for num, weight in
-                re.findall(r'(\d+)\s?([msh])?', text))
+                int(num) * {'d': 60*60*24, 'h': 60 * 60, 'm': 60, 's': 1, ' ': 1}[weight if weight else 's'] for num, weight in
+                re.findall(r'(\d+)\s?([mshd])?', text))
             if seconds < 10:
                 await ctx.message.reply('I can\'t remind you under 10 seconds. Maybe improve your memory?')
                 return BaseException
