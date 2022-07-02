@@ -82,7 +82,8 @@ class Reminders(commands.Cog):
         for reminder in reminders:
             try:
                 user = self.bot.get_user(reminder['user_id'])
-                embed = discord.Embed(title=f"**Reminder!**", description=f"You asked to be reminded of \"{reminder['message']}\" [here](reminder['msg_link']) ", color=0x10ea64)
+                link = reminder['msg_link']
+                embed = discord.Embed(title=f"**Reminder!**", description=f"You asked to be reminded of \"{reminder['message']}\" [here](link) ", color=0x10ea64)
                 await user.send(embed=embed)
                 await self.coll.delete_one({"_id": reminder["_id"]})
                 fetch = await self.coll.find().sort('time', 1).to_list(1)
