@@ -5,13 +5,29 @@ from datetime import datetime, timedelta
 from discord.ext import commands, tasks
 
 time_units = {'s': 'seconds', 'm': 'minutes', 'h': 'hours', 'd': 'days', 'w': 'weeks'}
+role_info = {719012723509297153: 2, 719012719399010364: 2, 719315104767672350: 3, 719315341716619294: 3,
+             719012715204444181: 4, 719315435601788978: 4, 719012710062358560: 5, 753210431983583302: 2,
+             649658625224343554: 2, 732497481358770186: 2, 800799561174089758: 4, 733838986992156752: 2,
+             794300647137738762: 2, 794301192359378954: 2, 794301389769015316: 2, 794302939371929622: 2}
 
+
+# Level 05 - Level 50 increments 2,2,3,3,4,4,5
+# Voter gets 2 extra
+# Booster, double booster and quad get 2 extra reminders (sat gets extra 4 because 2x)
+# Cash donators get 2 extra each level
 
 class Reminders(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
         self.reminder_loop.start()
+
+    async def maximum_reminders(self, member):
+        count = 3
+        for role in member.roles:
+            if role.id in role_info:
+                count += role_info[role.id]
+        return count
 
     @staticmethod
     def to_seconds(s):
@@ -28,15 +44,15 @@ class Reminders(commands.Cog):
             seconds = sum(
                 int(num) * {'h': 60 * 60, 'm': 60, 's': 1, ' ': 1}[weight if weight else 's'] for num, weight in
                 re.findall(r'(\d+)\s?([msh])?', text))
-            if seconds > (86400 * 366):
-                await ctx.message.reply('I can\'t remind you after more than a year.')
-                return BaseException
             if seconds < 10:
                 await ctx.message.reply('I can\'t remind you under 10 seconds. Maybe improve your memory?')
                 return BaseException
+            count = await self.maximum_reminders(ctx.author)
             check = await self.coll.count_documents({'user_id': ctx.author.id})
-            if check >= 10:
-                return await ctx.message.reply('You can only have 10 reminders at a time.')
+            if check >= count:
+                return await ctx.message.reply(f'You can only have {count} reminders at a time. Look at '
+                                               f'<#898978985608900618> or <#948755871167565824> to increase this '
+                                               f'number!')
             reminder = {"user_id": ctx.author.id, "message": message,
                         "time": datetime.utcnow() + timedelta(seconds=seconds), "msg_link": ctx.message.jump_url}
             await self.coll.insert_one(reminder)
@@ -83,7 +99,9 @@ class Reminders(commands.Cog):
             try:
                 user = self.bot.get_user(reminder['user_id'])
                 link = reminder['msg_link']
-                embed = discord.Embed(title=f"**Reminder!**", description=f"You asked to be reminded of \"{reminder['message']}\" [here]({link}) ", color=0x10ea64)
+                embed = discord.Embed(title=f"**Reminder!**",
+                                      description=f"You asked to be reminded of \"{reminder['message']}\" [here]({link})",
+                                      color=0x10ea64)
                 await user.send(embed=embed)
                 await self.coll.delete_one({"_id": reminder["_id"]})
                 fetch = await self.coll.find().sort('time', 1).to_list(1)
@@ -93,6 +111,7 @@ class Reminders(commands.Cog):
                         return await discord.utils.sleep_until(next_reminder)
             except Exception as e:
                 print(e)
-                
+
+
 async def setup(bot):
     await bot.add_cog(Reminders(bot))
