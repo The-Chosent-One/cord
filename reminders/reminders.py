@@ -36,7 +36,7 @@ class Reminders(commands.Cog):
     def to_seconds(s):
         return int(timedelta(**{
             time_units.get(m.group('unit').lower(), 'seconds'): int(m.group('val'))
-            for m in re.finditer(r'(?P<val>\d+)(?P<unit>[smhdw]?)', s, flags=re.I)
+            for m in re.finditer(r'(?P<val>\d+)(?P<unit>[smhdwy]?)', s, flags=re.I)
         }).total_seconds())
 
     @commands.command(aliases=['rm'])
@@ -48,7 +48,7 @@ class Reminders(commands.Cog):
                 int(num) *
                 {'y': 60 * 60 * 24 * 7 * 365, 'w': 60 * 60 * 24 * 7, 'd': 60 * 60 * 24, 'h': 60 * 60, 'm': 60, 's': 1,
                  ' ': 1}[weight if weight else 's'] for num, weight in
-                re.findall(r'(\d+)\s?([mshd])?', text))
+                re.findall(r'(\d+)\s?([mshdwy])?', text))
             if seconds < 10:
                 await ctx.message.reply('I can\'t remind you under 10 seconds. Maybe improve your memory?')
                 return BaseException
