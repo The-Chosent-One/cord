@@ -53,7 +53,7 @@ class Reminders(commands.Cog):
         """Shows all your reminders."""
         reminders = await self.coll.find({"user_id": ctx.author.id}).to_list(None)
         if not reminders:
-            await ctx.send('You have no reminders.')
+            await ctx.reply('You have no reminders.')
             return
         embed = discord.Embed(title=f"**{ctx.author.name} Reminders**", description="", color=0x10ea64)
         for x in reminders:
