@@ -90,7 +90,7 @@ class HeistTracker(commands.Cog):
 
         # we do this just in case the bot auto-deletes the heist message
         # if there's sensitive words in the message
-        await asyncio.sleep(2)
+        await asyncio.sleep(5)
         try:
             await message.channel.fetch_message(message.id)
         except discord.NotFound:
