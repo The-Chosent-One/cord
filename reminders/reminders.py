@@ -46,7 +46,7 @@ class Reminders(commands.Cog):
             text = time
             seconds = sum(
                 int(num) *
-                {'y': 60 * 60 * 24 * 7 * 365, 'w': 60 * 60 * 24 * 7, 'd': 60 * 60 * 24, 'h': 60 * 60, 'm': 60, 's': 1,
+                {'y': 60 * 60 * 24 * 365, 'w': 60 * 60 * 24 * 7, 'd': 60 * 60 * 24, 'h': 60 * 60, 'm': 60, 's': 1,
                  ' ': 1}[weight if weight else 's'] for num, weight in
                 re.findall(r'(\d+)\s?([mshdwy])?', text))
             if seconds < 10:
