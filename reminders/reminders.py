@@ -38,7 +38,7 @@ class Reminders(commands.Cog):
             if check >= 10:
                 return await ctx.message.reply('You can only have 10 reminders at a time.')
             reminder = {"user_id": ctx.author.id, "message": message,
-                        "time": datetime.utcnow() + timedelta(seconds=seconds)}
+                        "time": datetime.utcnow() + timedelta(seconds=seconds), "msg_link": ctx.message.jump_url}
             await self.coll.insert_one(reminder)
             await ctx.message.reply("Reminder set. You will be dm\'d once it\'s time.")
             if self.reminder_loop.is_running():
@@ -59,7 +59,7 @@ class Reminders(commands.Cog):
         for x in reminders:
             tim = x["time"]
             timestamp = round(datetime.timestamp(tim))
-            embed.description += f'<t:{timestamp}:f> - {x["message"]} \n'
+            embed.description += f'<t:{timestamp}:f> - {x["message"]} - [Requested here]({x["msg_link"]})  \n'
         await ctx.message.reply(embed=embed)
 
     @commands.command(aliases=['crm'])
@@ -82,6 +82,7 @@ class Reminders(commands.Cog):
         for reminder in reminders:
             try:
                 user = self.bot.get_user(reminder['user_id'])
+                embed = discord.Embed(title=f"**Reminder!**", description=f"You asked to be reminded of \"{reminder['message']}\" [here](reminder['msg_link']) ", color=0x10ea64)
                 await user.send(f'Reminder: {reminder["message"]}')
                 await self.coll.delete_one({"_id": reminder["_id"]})
                 fetch = await self.coll.find().sort('time', 1).to_list(1)
