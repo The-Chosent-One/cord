@@ -59,7 +59,7 @@ class Reminders(commands.Cog):
         for x in reminders:
             tim = x["time"]
             timestamp = round(datetime.timestamp(tim))
-            embed.description += [f'<t:{timestamp}:f> - {x["message"]} \n']
+            embed.description += f'<t:{timestamp}:f> - {x["message"]} \n'
         await ctx.message.reply(embed=embed)
 
     @commands.command(aliases=['crm'])
