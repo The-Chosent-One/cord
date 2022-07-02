@@ -79,6 +79,9 @@ class Reminders(commands.Cog):
             tim = x["time"]
             timestamp = round(datetime.timestamp(tim))
             embed.description += f'<t:{timestamp}:f> - [{x["message"]}]({x["msg_link"]}) \n'
+        max = await self.maximum_reminders(ctx.author)
+        used = await self.coll.count_documents({"user_id": ctx.author.id})
+        embed.set_footer(text=f"You have {used}/{max} reminders.")
         await ctx.message.reply(embed=embed)
 
     @commands.command(aliases=['crm'])
