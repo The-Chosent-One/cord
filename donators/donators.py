@@ -531,7 +531,7 @@ class Donators(commands.Cog):
 
     @commands.command()
     async def addfield(self, ctx, field, value):
-        await self.coll.update_many({}, {"$set": {field: value}})
+        await self.coll.update_many({}, {"$set": {field: f"{value}"}})
         await ctx.send("Field added")
 
 
