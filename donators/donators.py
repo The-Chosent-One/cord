@@ -595,6 +595,7 @@ class Donators(commands.Cog):
             guild = self.bot.get_guild(645753561329696785)
             channel = guild.get_channel(channel_id)
             await channel.delete(reason="Your channel has been deleted since you are no longer a donator!")
+            await self.coll.update_one({"user_id": user_id}, {"$set": {"channel_id": "None"}})
 
 
 async def setup(bot):
