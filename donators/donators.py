@@ -217,7 +217,7 @@ class Donators(commands.Cog):
 
         message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
 
-        if message.embeds == []:
+        if not message.embeds:
             return
 
         if "Detailed Donations" in message.embeds[0].title:
@@ -374,7 +374,7 @@ class Donators(commands.Cog):
 
         message = await self.bot.get_channel(payload.channel_id).fetch_message(payload.message_id)
 
-        if message.embeds == []:
+        if not message.embeds:
             return
 
         if message.embeds[0].title in ("**Top Donators**", "**Top Balance**"):
@@ -528,6 +528,11 @@ class Donators(commands.Cog):
                         await member.send("You cash donator perks have expired in `The Farm`. gg/dank")
         except Exception as e:
             print(e)
+
+    @commands.command()
+    async def addfield(self, ctx, field, value):
+        await self.coll.update_many({}, {"$set": {field: value}})
+        await ctx.send("Field added")
 
 
 async def setup(bot):
