@@ -580,7 +580,7 @@ class Donators(commands.Cog):
                 channel = guild.get_channel(channel_id)
                 user = await self.bot.fetch_user(user_id)
                 await channel.send(
-                    f"Your channel will be deleted in 24 hours since you are no longer a donator! \n {user.mention}")
+                    f"Your channel will be deleted in 24 hours since you’re no longer in the top 10 donators! \n {user.mention}")
                 self.bot.loop.create_task(self.delete_channel(channel_id, user_id))
 
         async def delete_channel(self, channel_id, user_id):
@@ -595,7 +595,7 @@ class Donators(commands.Cog):
 
             guild = self.bot.get_guild(645753561329696785)
             channel = guild.get_channel(channel_id)
-            await channel.delete(reason="Your channel has been deleted since you are no longer a donator!")
+            await channel.delete(reason="Your channel has been deleted since you’re no longer in the top 10 donators!")
             await self.coll.update_one({"user_id": user_id}, {"$set": {"channel_id": "None"}})
 
 
