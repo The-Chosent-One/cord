@@ -583,20 +583,20 @@ class Donators(commands.Cog):
                     f"Your channel will be deleted in 24 hours since you’re no longer in the top 10 donators! \n {user.mention}")
                 self.bot.loop.create_task(self.delete_channel(channel_id, user_id))
 
-        async def delete_channel(self, channel_id, user_id):
-            await asyncio.sleep(86400)
-            top10 = await self.coll.aggregate([{"$set": {"Donation30d": {"$filter": {"input": "$Donation", "cond": {
+    async def delete_channel(self, channel_id, user_id):
+        await asyncio.sleep(86400)
+        top10 = await self.coll.aggregate([{"$set": {"Donation30d": {"$filter": {"input": "$Donation", "cond": {
             "$lt": [{"$dateDiff": {"startDate": "$$this.Date", "endDate": "$$NOW", "unit": "day"}}, 30]}}}}}, {"$set": {
             "sum30d": {"$sum": {"$filter": {"input": "$Donation30d.Value", "cond": {"$gt": ["$$this", 0]}}}}}},
                                            {"$sort": {"sum30d": -1}}, {"$limit": 10}]).to_list(None)
-            for z in top10:
-                if user_id == z["user_id"]:
-                    return
+        for z in top10:
+            if user_id == z["user_id"]:
+                return
 
-            guild = self.bot.get_guild(645753561329696785)
-            channel = guild.get_channel(channel_id)
-            await channel.delete(reason="Your channel has been deleted since you’re no longer in the top 10 donators!")
-            await self.coll.update_one({"user_id": user_id}, {"$set": {"channel_id": "None"}})
+        guild = self.bot.get_guild(645753561329696785)
+        channel = guild.get_channel(channel_id)
+        await channel.delete(reason="Your channel has been deleted since you’re no longer in the top 10 donators!")
+        await self.coll.update_one({"user_id": user_id}, {"$set": {"channel_id": "None"}})
 
 
 async def setup(bot):
