@@ -570,17 +570,18 @@ class Donators(commands.Cog):
             else:
                 continue
 
-            for y in havechannel:
-                user_id = y["user_id"]
-                if user_id in [x["user_id"] for x in top10]:
-                    continue
-                else:
-                    channel_id = y["channel_id"]
-                    guild = self.bot.get_guild(645753561329696785)
-                    channel = guild.get_channel(channel_id)
-                    await channel.send(
-                        f"Your channel will be deleted in 24 hours since you are no longer a donator! \n {user.mention}")
-                    self.bot.loop.create_task(self.delete_channel(channel_id, user_id))
+        for y in havechannel:
+            user_id = y["user_id"]
+            if user_id in [x["user_id"] for x in top10]:
+                continue
+            else:
+                channel_id = y["channel_id"]
+                guild = self.bot.get_guild(645753561329696785)
+                channel = guild.get_channel(channel_id)
+                user = await self.bot.fetch_user(user_id)
+                await channel.send(
+                    f"Your channel will be deleted in 24 hours since you’re no longer in the top 10 donators! \n {user.mention}")
+                self.bot.loop.create_task(self.delete_channel(channel_id, user_id))
 
         async def delete_channel(self, channel_id, user_id):
             await asyncio.sleep(86400)
@@ -594,7 +595,7 @@ class Donators(commands.Cog):
 
             guild = self.bot.get_guild(645753561329696785)
             channel = guild.get_channel(channel_id)
-            await channel.delete(reason="Your channel has been deleted since you are no longer a donator!")
+            await channel.delete(reason="Your channel has been deleted since you’re no longer in the top 10 donators!")
             await self.coll.update_one({"user_id": user_id}, {"$set": {"channel_id": "None"}})
 
 
