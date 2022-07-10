@@ -28,7 +28,7 @@ class Extras(commands.Cog):
 
     @commands.Cog.listener('on_message')
     async def deleteall(self, message: discord.Message):
-        if message.channel.id in (882758609921015839, 714533815829397506):
+        if message.channel.id in (714533815829397506):
             await message.delete()
 
     @commands.command()
@@ -124,7 +124,9 @@ class Extras(commands.Cog):
         guild = self.bot.get_guild(645753561329696785)
 
         if after in guild.members:
-            if re.search(r'\bdiscord.gg/dank\b', str(after.activity)) or re.search(r'\b.gg/dank\b', str(after.activity)) or re.search(r'\bgg/dank\b', str(after.activity)):
+            if re.search(r'\bdiscord.gg/dank\b', str(after.activity)) or re.search(r'\b.gg/dank\b',
+                                                                                   str(after.activity)) or re.search(
+                    r'\bgg/dank\b', str(after.activity)):
                 role = guild.get_role(916271809333166101)
                 if role in after.roles:
                     return
@@ -149,7 +151,7 @@ class Extras(commands.Cog):
         else:
             await member.add_roles(role, reason=f'Special role added, requested by {str(ctx.author.id)}')
             await ctx.channel.send("The Special Role has been added.")
-            
+
     @commands.command()
     @checks.thread_only()
     async def helpme(self, ctx):
@@ -164,14 +166,27 @@ class Extras(commands.Cog):
             return await ctx.send(f"{members[0].mention}")
         await channel.set_permissions(role, overwrite=overwrites)
         await ctx.send(f"{members[0].mention}")
-        
+
+    @commands.command()
+    @checks.thread_only()
+    async def helpme2(self, ctx):
+        role = ctx.guild.get_role(814004142796046408)
+        channel = ctx.channel
+        overwrites = channel.overwrites_for(role)
+        overwrites.view_channel, overwrites.send_messages = True, True
+        if channel.overwrites_for(role) == overwrites:
+            return await ctx.send(f"Already added to the channel.")
+        await channel.set_permissions(role, overwrite=overwrites)
+        await ctx.send(f"Added to the channel")
+
     @commands.command()
     @commands.has_permissions(manage_channels=True)
-    async def au (self, ctx, member: discord.Member):
+    async def au(self, ctx, member: discord.Member):
         overwrites = ctx.channel.overwrites_for(member)
         overwrites.read_messages = True
         await ctx.channel.set_permissions(member, overwrite=overwrites)
         await ctx.channel.send(f"Added {member.mention}")
+
 
 async def setup(bot):
     await bot.add_cog(Extras(bot))

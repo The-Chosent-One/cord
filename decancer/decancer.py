@@ -308,11 +308,11 @@ class Decancer(commands.Cog):
             return
 
         if len(nice_nick) <= 1:
-            channel = self.bot.get_channel(676931619294281729)
+            channel = self.bot.get_channel(995433424963764254)
             await member.edit(nick=random_nick)
             return await channel.send(f'Decancered `{member.name}` to {random_nick}')
         elif len(nice_nick) >= 2:
-            channel = self.bot.get_channel(676931619294281729)
+            channel = self.bot.get_channel(995433424963764254)
             await member.edit(nick=nice_nick)
             return await channel.send(f'Decancered `{member.name}` to {nice_nick}')
 
