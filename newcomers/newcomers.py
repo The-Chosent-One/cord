@@ -46,7 +46,7 @@ class NewComers(commands.Cog):
         now = discord.utils.utcnow()
         age = now - user.created_at
         days = age.days
-        channel = self.bot.get_channel(676931619294281729)
+        channel = self.bot.get_channel(995433424963764254)
         
         if frozencheck:
             frozennick = frozencheck['Nickname']
