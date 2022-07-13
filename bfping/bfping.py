@@ -21,7 +21,6 @@ class BFPing(commands.Cog):
             await ctx.channel.purge(limit=1)
             await ctx.send(f'<@&672889430171713538> {messages}')
         else:
-
             await ctx.send('You can only use this command in <#995523637249585202>')
 
     @commands.command()
@@ -59,7 +58,7 @@ class BFPing(commands.Cog):
             return await ctx.send("Pretty sure you don't want to do that man")
         if ctx.channel.id == 995556725694402691:
             await ctx.channel.purge(limit=1)
-            await ctx.send(f'<@&995556725694402691> {messages}')
+            await ctx.send(f'<@&684552219344764934> {messages}')
         else:
             await ctx.send('You can only use this command in <#995556725694402691>')
 
