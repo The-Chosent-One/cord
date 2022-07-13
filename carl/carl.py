@@ -155,8 +155,8 @@ class Carl(commands.Cog):
                 await message.delete()
 
         if message.content.startswith('.mm'):
-            if message.channel.id != 756004818866405376:
-                return await message.reply("You can only use this command in <#756004818866405376>")
+            if message.channel.id != 995883937287131277:
+                    return await message.reply("You can only use this command in <#995883937287131277>")
             else:
                 # hacky way to split by '/' and exclude command invocation
                 args = message.content.replace('.mm', '').split('/')
