@@ -28,7 +28,7 @@ class Extras(commands.Cog):
 
     @commands.Cog.listener('on_message')
     async def deleteall(self, message: discord.Message):
-        if message.channel.id in (714533815829397506):
+        if message.channel.id == 714533815829397506:
             await message.delete()
 
     @commands.command()
