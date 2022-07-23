@@ -459,6 +459,8 @@ class Donators(commands.Cog):
                                            {"$sort": {"sum30d": -1}}, {"$limit": 10}]).to_list(None)
         for i in top10:
             value = i["sum30d"]
+            if value <= 0:
+                continue
             user_id = i["user_id"]
             user = await self.bot.fetch_user(user_id)
             s += f"<@{user.id}> - ${value}\n"
@@ -551,28 +553,32 @@ class Donators(commands.Cog):
         havechannel = await self.coll.find({"channel_id": {"$ne": "None"}}).to_list(None)
 
         for i in top10:
-            user_id = i["user_id"]
-            user = await self.bot.fetch_user(user_id)
-            channel_id = i["channel_id"]
-            if channel_id == "None":
-                guild = self.bot.get_guild(645753561329696785)
-                category = guild.get_channel(800961886824824832)
-                channel = await category.create_text_channel(f"{user.name}", reason="Top 10 Leaderboard")
-                await self.coll.update_one({"user_id": user_id}, {"$set": {"channel_id": channel.id}})
-                overwrites = channel.overwrites_for(user)
-                overwrites.embed_links, overwrites.attach_files, overwrites.external_emojis = True, True, True
-                overwrites.send_messages, overwrites.view_channel, overwrites.manage_channels = True, True, True
-                overwrites.manage_messages, overwrites.manage_permissions, overwrites.mention_everyone = True, False, False
-                await channel.set_permissions(user, overwrite=overwrites)
-                await channel.send(
-                    f"Welcome to your channel {user.mention}! Thanks for donating! \n You can use the `??au` command "
-                    f"to add people to this channel!")
+            if i["sum30d"] > 0:
+                user_id = i["user_id"]
+                user = await self.bot.fetch_user(user_id)
+                channel_id = i["channel_id"]
+                if channel_id == "None":
+                    guild = self.bot.get_guild(645753561329696785)
+                    category = guild.get_channel(800961886824824832)
+                    channel = await category.create_text_channel(f"{user.name}", reason="Top 10 Leaderboard")
+                    await self.coll.update_one({"user_id": user_id}, {"$set": {"channel_id": channel.id}})
+                    overwrites = channel.overwrites_for(user)
+                    overwrites.embed_links, overwrites.attach_files, overwrites.external_emojis = True, True, True
+                    overwrites.send_messages, overwrites.view_channel, overwrites.manage_channels = True, True, True
+                    overwrites.manage_messages, overwrites.manage_permissions, overwrites.mention_everyone = True, False, False
+                    await channel.set_permissions(user, overwrite=overwrites)
+                    await channel.send(
+                        f"Welcome to your channel {user.mention}! Thanks for donating! \n You can use the `??au` "
+                        f"command "
+                        f"to add people to this channel!")
+                else:
+                    continue
             else:
                 continue
 
         for y in havechannel:
             user_id = y["user_id"]
-            if user_id in [x["user_id"] for x in top10]:
+            if user_id in [x["user_id"] for x in top10] and [x["sum30d"] > 0 for x in top10]:
                 continue
             else:
                 channel_id = y["channel_id"]
@@ -580,7 +586,8 @@ class Donators(commands.Cog):
                 channel = guild.get_channel(channel_id)
                 user = await self.bot.fetch_user(user_id)
                 await channel.send(
-                    f"Your channel will be deleted in 24 hours since you’re no longer in the top 10 donators! Ignore if you alr got this warning! \n{user.mention}")
+                    f"Your channel will be deleted in 24 hours since you’re no longer in the top 10 donators! Ignore "
+                    f"if you alr got this warning! \n{user.mention}")
                 self.bot.loop.create_task(self.delete_channel(channel_id, user_id))
 
     async def delete_channel(self, channel_id, user_id):
@@ -590,7 +597,7 @@ class Donators(commands.Cog):
             "sum30d": {"$sum": {"$filter": {"input": "$Donation30d.Value", "cond": {"$gt": ["$$this", 0]}}}}}},
                                            {"$sort": {"sum30d": -1}}, {"$limit": 10}]).to_list(None)
         for z in top10:
-            if user_id == z["user_id"]:
+            if user_id == z["user_id"] and z["sum30d"] > 0:
                 return
 
         guild = self.bot.get_guild(645753561329696785)
