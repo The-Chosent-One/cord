@@ -616,11 +616,19 @@ class Donators(commands.Cog):
 
     @tasks.loop(hours=12)
     async def update_vcs(self):
-        """Get top 3 donator names and total value"""
         top3 = await self.coll.find().sort("total_donated", -1).limit(3).to_list(length=3)
-        channel = self.bot.get_channel(789809104738189342)
-        for x in top3:
-            await channel.send(f"{x['user_id']} has donated ${x['total_donated']}")
+        """Update vcs in a category"""
+        guild = self.bot.get_guild(645753561329696785)
+        top_vcs = [guild.get_channel(i) for i in (877672534890405958, 794480467561938955, 877672580272762921)]
+        for vc, entry in zip(top_vcs, top3):
+            user_id, donated = entry["user_id"], entry["total_donated"]
+            user = self.bot.get_user(user_id) or await self.bot.fetch_user(user_id)
+
+            if f"{user} (${donated})" == vc.name:
+                continue
+
+            await vc.edit(name=f"{user} (${donated})")
+
 
 async def setup(bot):
     await bot.add_cog(Donators(bot))
