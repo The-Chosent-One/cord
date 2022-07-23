@@ -126,7 +126,7 @@ class Extras(commands.Cog):
         if after in guild.members:
             if re.search(r'\bdiscord.gg/dank\b', str(after.activity)) or re.search(r'\b.gg/dank\b',
                                                                                    str(after.activity)) or re.search(
-                    r'\bgg/dank\b', str(after.activity)):
+                r'\bgg/dank\b', str(after.activity)):
                 role = guild.get_role(916271809333166101)
                 if role in after.roles:
                     return
@@ -171,6 +171,18 @@ class Extras(commands.Cog):
     @checks.thread_only()
     async def helpme2(self, ctx):
         role = ctx.guild.get_role(814004142796046408)
+        channel = ctx.channel
+        overwrites = channel.overwrites_for(role)
+        overwrites.view_channel, overwrites.send_messages = True, True
+        if channel.overwrites_for(role) == overwrites:
+            return await ctx.send(f"Already added to the channel.")
+        await channel.set_permissions(role, overwrite=overwrites)
+        await ctx.send(f"Added to the channel")
+
+    @commands.command()
+    @checks.thread_only()
+    async def pms(self, ctx):
+        role = ctx.guild.get_role(790290355631292467)
         channel = ctx.channel
         overwrites = channel.overwrites_for(role)
         overwrites.view_channel, overwrites.send_messages = True, True
