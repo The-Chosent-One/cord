@@ -15,6 +15,7 @@ class Donators(commands.Cog):
         self.coll = bot.plugin_db.get_partition(self)
         self.check_expiry.start()
         self.channel_check.start()
+        self.update_vcs.start()
 
     async def confirm(self, ctx, member: discord.Member, balance, perk_value, perk_level, validity, totdonated, url):
         expiry = datetime.utcnow() + timedelta(days=validity)
@@ -125,6 +126,10 @@ class Donators(commands.Cog):
                 self.channel_check.restart()
             else:
                 self.channel_check.start()
+            if self.update_vcs.is_running():
+                self.update_vcs.restart()
+            else:
+                self.update_vcs.start()
         else:
             await self.coll.insert_one({"user_id": member.id, "balance": amount, "total_donated": amount,
                                         "perk_name": "None", "expiry": "None",
@@ -151,6 +156,10 @@ class Donators(commands.Cog):
                 self.channel_check.restart()
             else:
                 self.channel_check.start()
+            if self.update_vcs.is_running():
+                self.update_vcs.restart()
+            else:
+                self.update_vcs.start()
 
     @donator.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
@@ -605,6 +614,13 @@ class Donators(commands.Cog):
         await channel.delete(reason="Your channel has been deleted since you’re no longer in the top 10 donators!")
         await self.coll.update_one({"user_id": user_id}, {"$set": {"channel_id": "None"}})
 
+    @tasks.loop(hours=12)
+    async def update_vcs(self):
+        """Get top 3 donator names and total value"""
+        top3 = await self.coll.find().sort("total_donated", -1).limit(3).to_list(length=3)
+        channel = self.bot.get_channel(789809104738189342)
+        for x in top3:
+            await channel.send(f"{x['user_id']} has donated ${x['total_donated']}")
 
 async def setup(bot):
     await bot.add_cog(Donators(bot))
