@@ -5,10 +5,10 @@ from typing import Optional
 import discord
 from discord.ext import commands
 
-RESULTS_REGEX = re.compile(r"```(?:diff)?\n(?:(?:[+#].*)+⏣ \d{0,3}(?:,\d{3})*.+\n|- .+ died RIP\n)*\n*```")
+RESULTS_REGEX = re.compile(r"```(?:diff)?\n(?:[+#].+⏣ \d{0,3}(?:,\d{3})*.+\n?|- .+ died RIP\n)*\n*```")
 LEADER_REGEX = re.compile(r"led.+<@!?(\d{17,19})>", flags=re.I)
 SCOUTER_REGEX = re.compile(r"scout.+<@!?(\d{17,19})>", flags=re.I)
-AMOUNT_REGEX = re.compile(r"Amazing job everybody,.+⏣ ([1-9]\d{0,2}(?:,\d{3})*).+")
+AMOUNT_REGEX = re.compile(r"Amazing job everybody,.+?([1-9]\d{0,2}(?:,\d{3})*).*")
 BACKUP_AMOUNT_REGEX = re.compile(r"\+.+⏣ ([1-9]\d{0,2}(?:,\d{3})*)")
 
 
