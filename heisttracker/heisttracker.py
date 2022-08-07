@@ -29,21 +29,16 @@ class HeistDropDown(discord.ui.Select):
         embed = (message := interaction.message).embeds[0]
         embed.clear_fields()
 
-        req_field = {
-            "Most led heists": "led_amount",
-            "Most scouted heists": "scouted_amount"
-        }[choice]
-
-        field_name = {
-            "Most led heists": "Top 5 most led heists!",
-            "Most scouted heists": "Top 5 most scouted heists!"
+        amount_field, count_field, field_name = {
+            "Most led heists": ("led_amount", "led_count", "Top 5 most led heists!"), 
+            "Most scouted heists": ("scouted_amount", "scouted_count", "Top 5 most scouted heists!"), 
         }[choice]
 
         field_value = ""
         position = 1
-        async for entry in self.coll.find(sort=[(req_field, -1)], limit=5):
-            leader, amount = entry["user_id"], entry[req_field]
-            field_value += f"**{position}.** <@{leader}> — `⏣ {amount:,}`\n"
+        async for entry in self.coll.find(sort=[(amount_field, -1)], limit=5):
+            leader, amount, count = entry["user_id"], entry[amount_field], entry[count_field]
+            field_value += f"**{position}.** <@{leader}> — `⏣ {amount:,}` — {count:,}\n"
             position += 1
         
         embed.add_field(name=field_name, value=field_value)
@@ -202,7 +197,7 @@ class HeistTracker(commands.Cog):
         total_heist_amount = sum(e["led_amount"] for e in all_heists)
         total_heist_count = sum(e["led_count"] for e in all_heists)
 
-        max_heist_info = await self.coll.find_one(sort=[("led_amount", -1)])
+        max_heist_info = await self.coll.find_one(sort=[("led_maximum", -1)])
         max_amount = max_heist_info["led_maximum"]
 
         embed.description = (
