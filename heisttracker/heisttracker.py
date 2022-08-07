@@ -203,7 +203,7 @@ class HeistTracker(commands.Cog):
         total_heist_count = sum(e["led_count"] for e in all_heists)
 
         max_heist_info = await self.coll.find_one(sort=[("led_amount", -1)])
-        max_amount = max_heist_info["led_amount"]
+        max_amount = max_heist_info["led_maximum"]
 
         embed.description = (
             "Go ahead, pick something!\n\n"
