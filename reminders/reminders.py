@@ -81,9 +81,9 @@ class Reminders(commands.Cog):
             tim = x["time"]
             timestamp = round(datetime.timestamp(tim))
             embed.description += f'<t:{timestamp}:f> - [{x["message"]}]({x["msg_link"]}) \n'
-        max = await self.maximum_reminders(ctx.author)
+        maxim = await self.maximum_reminders(ctx.author)
         used = await self.coll.count_documents({"user_id": ctx.author.id})
-        embed.set_footer(text=f"You have {used}/{max} reminders.")
+        embed.set_footer(text=f"You have {used}/{maxim} reminders.")
         await ctx.message.reply(embed=embed)
 
     @commands.command(aliases=['crm'])
@@ -110,7 +110,10 @@ class Reminders(commands.Cog):
                 embed = discord.Embed(title=f"**Reminder!**",
                                       description=f"You asked to be reminded of \"{reminder['message']}\" [here]({link})",
                                       color=0x10ea64)
-                await user.send(embed=embed)
+                try:
+                    await user.send(embed=embed)
+                except discord.Forbidden:
+                    await self.coll.delete_one({"_id": reminder["_id"]})
                 await self.coll.delete_one({"_id": reminder["_id"]})
                 fetch = await self.coll.find().sort('time', 1).to_list(1)
                 for x in fetch:
