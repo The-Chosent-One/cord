@@ -79,9 +79,8 @@ class Donators(commands.Cog):
 
     async def resetmem(self, user):
         guild = self.bot.get_guild(645753561329696785)
-        try:
-            member = guild.get_member(user)
-        except discord.NotFound:
+        member = guild.get_member(user)
+        if not member:
             await self.coll.update_one({"user_id": user}, {"$set": {"perk_name": "None", "expiry": "None"}})
             return True
         donator5 = guild.get_role(794300647137738762)
@@ -630,7 +629,9 @@ class Donators(commands.Cog):
         toprole = guild.get_role(794392116079493121)
         for z in top10:
             user_id = z["user_id"]
-            member = await self.bot.fetch_user(user_id)
+            member = guild.get_member(user_id)
+            if not member:
+                continue
             if toprole in member.roles:
                 continue
             else:
