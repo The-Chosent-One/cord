@@ -609,7 +609,7 @@ class Donators(commands.Cog):
         top3 = await self.coll.find().sort("total_donated", -1).limit(3).to_list(length=3)
         """Update vcs in a category"""
         guild = self.bot.get_guild(645753561329696785)
-        top_vcs = [guild.get_channel(i) for i in (877672534890405958, 794480467561938955, 877672580272762921)]
+        top_vcs = [guild.get_channel(i) for i in (794480467561938955, 877672534890405958, 877672580272762921)]
         for vc, entry in zip(top_vcs, top3):
             user_id, donated = entry["user_id"], entry["total_donated"]
             user = self.bot.get_user(user_id) or await self.bot.fetch_user(user_id)
