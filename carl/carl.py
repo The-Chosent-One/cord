@@ -122,64 +122,6 @@ class Carl(commands.Cog):
                     embed = discord.Embed(title=title, description=description, color=color)
                     return await message.channel.send(embed=embed)
 
-    @commands.Cog.listener('on_message')
-    async def donatemm(self, message: discord.Message):
-        if message.author.bot:
-            return
-
-        if message.content.startswith('.donate'):
-            if message.channel.id != 747853054329487500:
-                return await message.reply("You can only use this command in <#747853054329487500>")
-            else:
-                # hacky way to split by '/' and exclude command invocation
-                args = message.content.replace('.donate', '').split('/')
-
-                if len(args) < 4 or len(args) >= 5:
-                    await message.delete()
-                    return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
-                                                      "use:`.donate <message>/<amount>/<time>/<winners>`\n"
-                                                      "Eg:`.donate Hi this is fire/1m/10m/1`\n"
-                                                      "NOTE: SLASH AND EACH PART ARE REQUIRED")
-
-                donate_embed = discord.Embed(
-                    title=f"{message.author} wants to sponsor a giveaway!",
-                    description=f"**Sponsor**: {message.author.mention}\n"
-                                f"**Message**: {args[0]}\n"
-                                f"**Amount**: {args[1]}\n"
-                                f"**Time**: {args[2]}\n"
-                                f"**Winners**: {args[3]}\n",
-                    timestamp=datetime.now()
-                )
-                donate_embed.set_footer(text="Tag made by Firecracker#3077")
-                await message.channel.send(embed=donate_embed)
-                await message.delete()
-
-        if message.content.startswith('.mm'):
-            if message.channel.id != 995883937287131277:
-                    return await message.reply("You can only use this command in <#995883937287131277>")
-            else:
-                # hacky way to split by '/' and exclude command invocation
-                args = message.content.replace('.mm', '').split('/')
-
-                if len(args) < 4 or len(args) >= 5:
-                    await message.delete()
-                    return await message.channel.send(f"Incorrect arguments {message.author.mention}\n"
-                                                      "use:`.mm <your bet>/<their bet>/<what channel>/<who you are fighting>`\n"
-                                                      "Eg:`.mm 850k/pepec/#👊🏻┃fight-here-1/@fire`\n"
-                                                      "NOTE: SLASH AND EACH PART ARE REQUIRED")
-
-                mm_embed = discord.Embed(
-                    title=f"{message.author} needs a middleman!",
-                    description=f"**My Bet**: {args[0]}\n"
-                                f"**Their Bet**: {args[1]}\n"
-                                f"**Channel**: {args[2]}\n"
-                                f"**Who I'm fighting**: {args[3]}\n",
-                    timestamp=datetime.now()
-                )
-                mm_embed.set_footer(text="Tag made by Firecracker#3077")
-                await message.channel.send(embed=mm_embed)
-                await message.delete()
-
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def embed(self, channel: discord.TextChannel, color: discord.Color, title, description):
