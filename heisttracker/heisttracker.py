@@ -75,12 +75,19 @@ class HeistTracker(commands.Cog):
         return int(match.group(1))
 
     def get_amount(self, content: str) -> Optional[int]:
-        match = AMOUNT_REGEX.search(content)
+        matches = AMOUNT_REGEX.findall(content)
 
-        if match is not None:
-            return int(match.group(0).replace(",", ""))
+        if match != []:
+            # we need to do this as the regex pattern matches multiple times for the discord ids.
+            # minimum length it should be is 9, since it should be at least 1,000,000
+            valid_matches = [*filter(lambda n: len(n)>9, matches)]
+            
+            # amount is missing
+            if valid_matches == []:
+                return None
+            
+            return int(valid_matches[0].replace(",", ""))
         
-        # amount is missing
         return None
         
         
