@@ -6,11 +6,9 @@ from typing import Optional
 import discord
 from discord.ext import commands
 
-RESULTS_REGEX = re.compile(r"```(?:diff)?\n(?:[+#].+⏣ \d{0,3}(?:,\d{3})*.+\n?|- .+ died RIP\n)*\n*```")
 LEADER_REGEX = re.compile(r"led.+<@!?(\d{17,19})>", flags=re.I)
 SCOUTER_REGEX = re.compile(r"scout.+<@!?(\d{17,19})>", flags=re.I)
-AMOUNT_REGEX = re.compile(r"Amazing job everybody,.+?([1-9]\d{0,2}(?:,\d{3})*).*")
-BACKUP_AMOUNT_REGEX = re.compile(r"\+.+⏣ ([1-9]\d{0,2}(?:,\d{3})*)")
+AMOUNT_REGEX = re.compile(r"[1-9]\d{0,2}(?:,\d{3})*")
 
 # leaderboard stuff
 class HeistDropDown(discord.ui.Select):
@@ -65,9 +63,6 @@ class HeistTracker(commands.Cog):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
 
-    def check_valid_results(self, content: str) -> bool:
-        return bool(RESULTS_REGEX.search(content))
-
     def get_id(self, person: str, content: str) -> Optional[int]:
         _person_to_regex = {"leader": LEADER_REGEX, "scouter": SCOUTER_REGEX}
         regex = _person_to_regex[person]
@@ -79,16 +74,16 @@ class HeistTracker(commands.Cog):
 
         return int(match.group(1))
 
-    def get_amount(self, content: str) -> int:
+    def get_amount(self, content: str) -> Optional[int]:
         match = AMOUNT_REGEX.search(content)
 
         if match is not None:
-            return int(match.group(1).replace(",", ""))
-
-        # if "Amazing job everyone, ..." isn't placed into the
-        # message, we tally everyone's earnings through the codeblock.
-        return content.count("\n+") * int(BACKUP_AMOUNT_REGEX.search(content).group(1).replace(",", ""))
-
+            return int(match.group(0).replace(",", ""))
+        
+        # amount is missing
+        return None
+        
+        
     async def update_db(self, leader_id: int, scouter_id: int, amount: int) -> None:
         # updates database with values using motor
 
@@ -149,9 +144,6 @@ class HeistTracker(commands.Cog):
 
         content = message.content
 
-        if not self.check_valid_results(content):
-            return
-
         leader_id = self.get_id("leader", content)
         scouter_id = self.get_id("scouter", content)
 
@@ -160,6 +152,9 @@ class HeistTracker(commands.Cog):
             return
 
         amount = self.get_amount(content)
+        
+        if amount is None:
+            return
 
         await self.update_db(leader_id, scouter_id, amount)
 
