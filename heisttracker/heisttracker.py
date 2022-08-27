@@ -77,7 +77,7 @@ class HeistTracker(commands.Cog):
     def get_amount(self, content: str) -> Optional[int]:
         matches = AMOUNT_REGEX.findall(content)
 
-        if match != []:
+        if matches != []:
             # we need to do this as the regex pattern matches multiple times for the discord ids.
             # minimum length it should be is 9, since it should be at least 1,000,000
             valid_matches = [*filter(lambda n: len(n)>9, matches)]
