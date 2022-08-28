@@ -80,7 +80,7 @@ class HeistTracker(commands.Cog):
         if matches != []:
             # we need to do this as the regex pattern matches multiple times for the discord ids.
             # minimum length it should be is 9, since it should be at least 1,000,000
-            valid_matches = [*filter(lambda n: len(n)>9, matches)]
+            valid_matches = [*filter(lambda n: len(n)>=9, matches)]
             
             # amount is missing
             if valid_matches == []:
