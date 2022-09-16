@@ -113,6 +113,11 @@ class SelfRoles(commands.Cog):
             await interaction.response.send_message(content="<@&906203595999944794> restricts you from getting this role. DM <@855270214656065556> to appeal.", ephemeral=True)
             return False
         
+        # No mafia trying to get Mafia Time
+        if interaction.user._roles.has(990998654183669780) and role_btn.role_id == 713898461606707273:
+            await interaction.response.send_message(content="<@&990998654183669780> restricts you from getting this role. DM <@855270214656065556> to appeal.", ephemeral=True)
+            return False
+        
         return True
     
     @commands.command()
