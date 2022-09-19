@@ -192,7 +192,7 @@ class HeistTracker(commands.Cog):
         await ctx.send(embed=embed)
     
     @heiststats.command(aliases=["lb"])
-    async def ledaerboard(self, ctx: commands.Context):
+    async def leaderboard(self, ctx: commands.Context):
         embed = discord.Embed(title="Leaderboard for heist statistics", colour=0x303135)
 
         all_heists = await self.coll.find(projection={"_id": False, "led_amount": True, "led_count": True}).to_list(None)
