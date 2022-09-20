@@ -1,9 +1,8 @@
-import asyncio
 import discord
 from discord.ext import commands
 from motor import motor_asyncio
 
-class UnbelivaboatClient:
+class CurrencyHandler:
     def __init__(self, bot: commands.Bot, collection: motor_asyncio.AsyncIOMotorCollection) -> None:
         self.bot = bot
         self.collection: motor_asyncio.AsyncIOMotorCollection = collection
