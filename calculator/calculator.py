@@ -5,10 +5,11 @@ import discord
 from discord.ext import commands
 from functools import partial
 
+
 class Calculator(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.calculatable = re.compile("^[\(\)0-9embtk\.\-\+\/\*\/]+$")
+        self.calculatable = re.compile("^[()0-9embtk.\-+/*]+$")
 
     def subst_shorthands(self, calculation: str) -> str:
         def match_subst(match_obj: re.Match, *, sub: str) -> str:
@@ -19,7 +20,7 @@ class Calculator(commands.Cog):
 
         for pattern, sub in mapping.items():
             calculation = re.sub(rf"(\d+(?:\.\d+)?){pattern}", partial(match_subst, sub=sub), calculation)
-        
+
         return calculation
 
     @commands.Cog.listener("on_message")
