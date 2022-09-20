@@ -1,5 +1,5 @@
 import traceback
-from .core import UnbelivaboatClient
+from .core import CurrencyHandler
 from discord.ext import commands
 import discord
 import re
@@ -31,7 +31,7 @@ class Currency(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         collection: motor_asyncio.AsyncIOMotorCollection = bot.plugin_db.get_partition(self)
-        self.unb_client = UnbelivaboatClient(self.bot, collection)
+        self.unb_client = CurrencyHandler(self.bot, collection)
         self.emoji = "🪙"
     
     async def cog_check(self, ctx: commands.Context) -> bool:
