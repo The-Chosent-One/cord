@@ -4,11 +4,10 @@ from discord.ext import commands
 import discord
 import re
 from math import ceil
+from motor import motor_asyncio
 
 AMOUNT_MAP = {"k": "*1000", "m": "*1000000", "b": "*1000000000"}
 AMOUNT_REGEX = re.compile(rf"^-?\d+(?:(?:\.\d+)?[{''.join(AMOUNT_MAP)}]|(?:\.\d+)?e\d+)?$")
-
-# https://discordpy.readthedocs.io/en/latest/ext/commands/api.html#discord.ext.commands.FlagConverter
 
 class Amount(commands.Converter):
     async def convert(self, ctx: commands.Context, argument: str) -> int:
@@ -31,17 +30,22 @@ class Amount(commands.Converter):
 class Currency(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
-        self.unb_client = UnbelivaboatClient(self.bot)
+        collection: motor_asyncio.AsyncIOMotorCollection = bot.plugin_db.get_partition(self)
+        self.unb_client = UnbelivaboatClient(self.bot, collection)
         self.emoji = "🪙"
     
+    async def cog_check(self, ctx: commands.Context) -> bool:
+        if ctx.guild.id != 852534243962650665:
+            return False
+        return True
+    
     async def change_cash(self, target: discord.Member, cash: int) -> discord.Embed:
-        updated = await self.unb_client.update_cash(target, cash=cash)
-        cash = updated["cash"]
+        updated_cash = await self.unb_client.update_cash(target, cash=cash)
 
         embed = discord.Embed(title=f"Success!")
         embed.description = (
             f"{target}'s balance is now: \n"
-            f"` - ` Cash: {self.emoji} **{cash:,}**"
+            f"` - ` Cash: {self.emoji} **{updated_cash:,}**"
         )
         return embed
 
@@ -83,13 +87,12 @@ class Currency(commands.Cog):
 
     @commands.command()
     async def setcash(self, ctx: commands.Context, target: discord.Member, cash: Amount):
-        updated = await self.unb_client.set_cash(target, cash=cash)
-        cash = updated["cash"]
+        updated_cash = await self.unb_client.set_cash(target, cash=cash)
 
         embed = discord.Embed(title=f"Success!")
         embed.description = (
             f"{target}'s balance is now: \n"
-            f"` - ` Cash: {self.emoji} **{cash:,}**"
+            f"` - ` Cash: {self.emoji} **{updated_cash:,}**"
         )
 
         await ctx.send(embed=embed)
@@ -116,8 +119,7 @@ class Currency(commands.Cog):
         if amount >= 2147483648:
             return await ctx.reply("🧢 no way you have that much")
         
-        balance = await self.unb_client.get_cash(ctx.author)
-        cash = balance["cash"]
+        cash = await self.unb_client.get_cash(ctx.author)
 
         tax = ceil(0.15*amount)
         required = amount + tax
@@ -147,8 +149,7 @@ class Currency(commands.Cog):
     
     @commands.command(alias=["bal"])
     async def balance(self, ctx: commands.Context) -> None:
-        balance = await self.unb_client.get_cash(ctx.author)
-        cash = balance["cash"]
+        cash = await self.unb_client.get_cash(ctx.author)
 
         embed = discord.Embed(title=f"{ctx.author}'s balance", description=f"Cash: {self.emoji} **{cash:,}**")
         await ctx.reply(embed=embed)
