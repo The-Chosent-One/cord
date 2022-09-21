@@ -1,11 +1,12 @@
 import traceback
+import discord
+import re
 from .currency_core import CurrencyHandler
 from .currency_data import LEVEL_INCOMES, BOOSTER_INCOMES, CASH_INCOMES
 from discord.ext import commands
-import discord
-import re
 from math import ceil
 from motor import motor_asyncio
+from time import time
 
 AMOUNT_MAP = {"k": "*1000", "m": "*1000000", "b": "*1000000000"}
 AMOUNT_REGEX = re.compile(rf"^-?\d+(?:(?:\.\d+)?[{''.join(AMOUNT_MAP)}]|(?:\.\d+)?e\d+)?$")
@@ -157,7 +158,11 @@ class Currency(commands.Cog):
     
     @commands.command()
     async def income(self, ctx: commands.Context) -> None:
-        # still work in progress
+        next_income_time = await self.currency_handler.get_field(ctx.author, "next_income_time")
+        if next_income_time is not None and time() < next_income_time:
+            embed = discord.Embed(title="Income cooldown", description=f"You can claim your income in <t:{next_income_time}:R>")
+            return await ctx.reply(embed=embed)
+        
         give_level_income = give_booster_income = give_cash_income = 0
 
         for give_income, income_data in zip(
@@ -170,10 +175,18 @@ class Currency(commands.Cog):
         
         total_income = give_level_income + give_booster_income + give_cash_income
 
-        await self.currency_handler.update_cash(ctx.author, total_income)
-        
-        
+        if total_income == 0:
+            embed = discord.Embed(title="Income collection", description="You don't have any income to claim :(")
+            return await ctx.reply(embed=embed)
 
+        await self.currency_handler.update_cash(ctx.author, total_income)
+
+        next_time = round(time()) + 604800 # amount of seconds in a week
+        await self.currency_handler.update_income_time(ctx.author, next_time)
+
+        embed = discord.Embed(title="Income collection", description=f"You collected {self.emoji} **{total_income:,}**!")
+        await ctx.reply(embed=embed)
+        
 
 async def setup(bot):
     await bot.add_cog(Currency(bot))
