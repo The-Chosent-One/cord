@@ -158,7 +158,8 @@ class Currency(commands.Cog):
     
     @commands.command()
     async def income(self, ctx: commands.Context) -> None:
-        next_income_time = await self.currency_handler.get_field(ctx.author, "next_income_time")
+        next_income_time = await self.currency_handler.get_next_income_time(ctx.author)
+        
         if next_income_time is not None and time() < next_income_time:
             embed = discord.Embed(title="Income cooldown", description=f"You can claim your income in <t:{next_income_time}:R>")
             return await ctx.reply(embed=embed)
