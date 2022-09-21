@@ -39,7 +39,7 @@ class Currency(commands.Cog):
         self.emoji = "<:farm_zzcash:927739006899335188>"
 
     async def cog_check(self, ctx: commands.Context) -> bool:
-        if ctx.guild.id != 852534243962650665:
+        if ctx.channel.id != 789809104738189342:
             return False
         return True
 
