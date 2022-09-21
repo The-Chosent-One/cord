@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional
 import discord
 from discord.ext import commands
 from motor import motor_asyncio
@@ -26,14 +26,14 @@ class CurrencyHandler:
         return ret
     
     async def update_cash(self, target: discord.Member, cash: int) -> int:
-        return await self.modify_field("$inc", target, "cash", cash, upsert=True)
+        return await self._modify_field("$inc", target, "cash", cash, upsert=True)
     
     async def set_cash(self, target: discord.Member, cash: int) -> int:
-        return await self.modify_field("$set", target, "cash", cash, upsert=True)
+        return await self._modify_field("$set", target, "cash", cash, upsert=True)
     
-    async def get_next_income_time(self, target: discord.Member) -> int | None:
-        return await self.get_field(target, "next_income_time")
+    async def get_next_income_time(self, target: discord.Member) -> Optional[int]:
+        return await self._get_field(target, "next_income_time")
     
     async def update_income_time(self, target: discord.Member, next_income_time: int) -> None:
-        await self.modify_field("$set", target, "next_income_time", next_income_time, upsert=True)
+        await self._modify_field("$set", target, "next_income_time", next_income_time, upsert=True)
         
