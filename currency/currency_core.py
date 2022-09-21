@@ -8,12 +8,12 @@ class CurrencyHandler:
         self.bot = bot
         self.collection: motor_asyncio.AsyncIOMotorCollection = collection
     
-    async def get_field(self, target: discord.Member, field: str) -> Any:
+    async def _get_field(self, target: discord.Member, field: str) -> Any:
         res = await self.collection.find_one({"user_id": target.id, field: {"$exists": True}})
 
         return res.get(field)
     
-    async def modify_field(self, modification: str, target: discord.Member, field: str, value: Any, *, upsert: bool = False) -> Any:
+    async def _modify_field(self, modification: str, target: discord.Member, field: str, value: Any, *, upsert: bool = False) -> Any:
         res = await self.collection.find_one_and_update({"user_id": target.id}, {modification: {field: value}}, upsert=upsert, return_document=True)
 
         return res.get(field)
@@ -31,6 +31,9 @@ class CurrencyHandler:
     async def set_cash(self, target: discord.Member, cash: int) -> int:
         return await self.modify_field("$set", target, "cash", cash, upsert=True)
     
+    async def get_next_income_time(self, target: discord.Member) -> int | None:
+        return await self.get_field(target, "next_income_time")
+    
     async def update_income_time(self, target: discord.Member, next_income_time: int) -> None:
-        await self.modify_field("$set", target, "next_income_time", next_income_time)
+        await self.modify_field("$set", target, "next_income_time", next_income_time, upsert=True)
         
