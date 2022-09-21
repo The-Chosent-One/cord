@@ -1,10 +1,12 @@
 import traceback
-from .core import CurrencyHandler
-from discord.ext import commands
 import discord
 import re
+from .currency_core import CurrencyHandler
+from .currency_data import LEVEL_INCOMES, BOOSTER_INCOMES, CASH_INCOMES
+from discord.ext import commands
 from math import ceil
 from motor import motor_asyncio
+from time import time
 
 AMOUNT_MAP = {"k": "*1000", "m": "*1000000", "b": "*1000000000"}
 AMOUNT_REGEX = re.compile(rf"^-?\d+(?:(?:\.\d+)?[{''.join(AMOUNT_MAP)}]|(?:\.\d+)?e\d+)?$")
@@ -31,8 +33,8 @@ class Currency(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         collection: motor_asyncio.AsyncIOMotorCollection = bot.plugin_db.get_partition(self)
-        self.unb_client = CurrencyHandler(self.bot, collection)
-        self.emoji = "🪙"
+        self.currency_handler = CurrencyHandler(self.bot, collection)
+        self.emoji = "<:farm_zzcash:927739006899335188>"
     
     async def cog_check(self, ctx: commands.Context) -> bool:
         if ctx.guild.id != 852534243962650665:
@@ -40,7 +42,7 @@ class Currency(commands.Cog):
         return True
     
     async def change_cash(self, target: discord.Member, cash: int) -> discord.Embed:
-        updated_cash = await self.unb_client.update_cash(target, cash=cash)
+        updated_cash = await self.currency_handler.update_cash(target, cash=cash)
 
         embed = discord.Embed(title=f"Success!")
         embed.description = (
@@ -87,7 +89,7 @@ class Currency(commands.Cog):
 
     @commands.command()
     async def setcash(self, ctx: commands.Context, target: discord.Member, cash: Amount):
-        updated_cash = await self.unb_client.set_cash(target, cash=cash)
+        updated_cash = await self.currency_handler.set_cash(target, cash=cash)
 
         embed = discord.Embed(title=f"Success!")
         embed.description = (
@@ -119,7 +121,7 @@ class Currency(commands.Cog):
         if amount >= 2147483648:
             return await ctx.reply("🧢 no way you have that much")
         
-        cash = await self.unb_client.get_cash(ctx.author)
+        cash = await self.currency_handler.get_cash(ctx.author)
 
         tax = ceil(0.15*amount)
         required = amount + tax
@@ -129,8 +131,8 @@ class Currency(commands.Cog):
             embed.set_footer(text="Tax amount is 15%")
             return await ctx.reply(embed=embed)
 
-        await self.unb_client.update_cash(target, cash=amount)
-        await self.unb_client.update_cash(ctx.author, cash=-required)
+        await self.currency_handler.update_cash(target, cash=amount)
+        await self.currency_handler.update_cash(ctx.author, cash=-required)
 
         embed = discord.Embed(title="Shared coins!", description=f"Paid {self.emoji} **{amount:,}** + {self.emoji} **{tax:,}** (in taxes) to {target.mention}!", colour=0x49eb34)
         embed.set_footer(text="Tax amount is 15%")
@@ -149,10 +151,42 @@ class Currency(commands.Cog):
     
     @commands.command(alias=["bal"])
     async def balance(self, ctx: commands.Context) -> None:
-        cash = await self.unb_client.get_cash(ctx.author)
+        cash = await self.currency_handler.get_cash(ctx.author)
 
         embed = discord.Embed(title=f"{ctx.author}'s balance", description=f"Cash: {self.emoji} **{cash:,}**")
         await ctx.reply(embed=embed)
+    
+    @commands.command()
+    async def income(self, ctx: commands.Context) -> None:
+        next_income_time = await self.currency_handler.get_field(ctx.author, "next_income_time")
+        if next_income_time is not None and time() < next_income_time:
+            embed = discord.Embed(title="Income cooldown", description=f"You can claim your income in <t:{next_income_time}:R>")
+            return await ctx.reply(embed=embed)
+        
+        give_level_income = give_booster_income = give_cash_income = 0
+
+        for give_income, income_data in zip(
+            [give_level_income, give_booster_income, give_cash_income],
+            [LEVEL_INCOMES, BOOSTER_INCOMES, CASH_INCOMES]
+        ):
+            for role_id, income in income_data.items():
+                if ctx.author._roles.has(role_id):
+                    give_income = max(income, give_income)
+        
+        total_income = give_level_income + give_booster_income + give_cash_income
+
+        if total_income == 0:
+            embed = discord.Embed(title="Income collection", description="You don't have any income to claim :(")
+            return await ctx.reply(embed=embed)
+
+        await self.currency_handler.update_cash(ctx.author, total_income)
+
+        next_time = round(time()) + 604800 # amount of seconds in a week
+        await self.currency_handler.update_income_time(ctx.author, next_time)
+
+        embed = discord.Embed(title="Income collection", description=f"You collected {self.emoji} **{total_income:,}**!")
+        await ctx.reply(embed=embed)
+        
 
 async def setup(bot):
     await bot.add_cog(Currency(bot))
