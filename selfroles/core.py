@@ -1,9 +1,13 @@
 import discord
 from typing import Callable
 
-class GenericRoleButton(discord.ui.Button): pass # this is to get the line below to work :/
+
+class GenericRoleButton(discord.ui.Button): pass  # this is to get the line below to work :/
+
+
 Callback = Callable[[discord.Interaction, GenericRoleButton], bool]
 Roles = dict[int, str]
+
 
 # this is pretty much the meat of what we want
 # this is a factory class that returns a button given an emoji, role_id (and custom callback)
@@ -27,10 +31,10 @@ class GenericRoleButton(discord.ui.Button):
         # if the return value is False, execution will stop
         if self._callback is not None:
             continue_execution = await self._callback(interaction, self)
-            
+
             if not continue_execution:
                 return
-        
+
         # just in case the interaction response has been used
         send_method = interaction.followup.send if interaction.response.is_done() else interaction.response.send_message
 
@@ -41,16 +45,17 @@ class GenericRoleButton(discord.ui.Button):
         await interaction.user.add_roles(discord.Object(id=self.role_id))
         await send_method(content=f"Added <@&{self.role_id}>!", ephemeral=True)
 
+
 class RoleHelper:
     # this returns an embed which does the emoji -> role mapping
     # for users to see
     @classmethod
     def get_embed(cls, roles: Roles, *, title: str = None, description: str = None) -> discord.Embed:
         embed = discord.Embed(title=title, colour=0x303135)
-        
+
         for role_id, role_emoji in roles.items():
             description += f"\n{role_emoji} ➜ <@&{role_id}>"
-        
+
         embed.description = description
 
         return embed
@@ -64,10 +69,11 @@ class RoleHelper:
             view.add_item(GenericRoleButton(emoji=role_emoji, role_id=role_id, callback=btn_callback))
 
         return view
-    
+
     # this does the most simple restriction testing, removing roles from the same category
     @classmethod
-    async def restriction_handler(cls, restricted_role_ids: set[int], interaction: discord.Interaction, response: str) -> None:
+    async def restriction_handler(cls, restricted_role_ids: set[int], interaction: discord.Interaction,
+                                  response: str) -> None:
         # response has to be a string with {} to format into
         roles_to_remove = restricted_role_ids & set(interaction.user._roles)
 
