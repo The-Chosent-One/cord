@@ -2,7 +2,7 @@ import traceback
 import discord
 import re
 from .currency_core import CurrencyHandler
-import .currency_data
+from .currency_data import LEVEL_INCOMES, BOOSTER_INCOMES, CASH_INCOMES
 from discord.ext import commands
 from math import ceil
 from motor import motor_asyncio
@@ -58,7 +58,7 @@ class Currency(commands.Cog):
         if message.channel.id == 995427147038601306:
             if message.mentions:
                 target = message.mentions[0]
-                await self.currency_handler.update_cash(target, cash=VOTER_INCOMES["Voted"])
+                await self.currency_handler.update_cash(target, cash=1)
 
     @commands.command()
     async def addcash(self, ctx, target: discord.Member, cash: Amount):

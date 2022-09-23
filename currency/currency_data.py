@@ -23,6 +23,3 @@ CASH_INCOMES = {
     794302939371929622: 4,          # ⋯ ✪ ⋯ $30 Cash Donator ⋯ ✪ ⋯
 }
 
-VOTER_INCOMES = {
-    "Voted": 1                     # Voted
-}
