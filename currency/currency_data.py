@@ -24,5 +24,5 @@ CASH_INCOMES = {
 }
 
 VOTER_INCOMES = {
-    "Voted": 1,
+    "Voted": 1                     # Voted
 }
