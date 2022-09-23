@@ -2,7 +2,7 @@ import traceback
 import discord
 import re
 from .currency_core import CurrencyHandler
-from .currency_data import LEVEL_INCOMES, BOOSTER_INCOMES, CASH_INCOMES
+from .currency_data import LEVEL_INCOMES, BOOSTER_INCOMES, CASH_INCOMES, VOTER_INCOMES
 from discord.ext import commands
 from math import ceil
 from motor import motor_asyncio
