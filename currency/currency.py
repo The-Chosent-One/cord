@@ -62,7 +62,7 @@ class Currency(commands.Cog):
     async def on_vote(self, message: discord.Message) -> None:
         if message.channel.id == 995427147038601306:
             user_id = re.findall(r"[0-9]{15,19}", message.content)
-            member = ctx.guild.get_member(int(user_id))
+            member = message.guild.get_member(int(user_id))
             if member is None:
                 return
             await self.currency_handler.update_cash(member, 1000000)
