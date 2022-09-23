@@ -22,3 +22,7 @@ CASH_INCOMES = {
     794301389769015316: 3,          # ⋯ ★ ⋯ $20 Cash Donator ⋯ ★ ⋯
     794302939371929622: 4,          # ⋯ ✪ ⋯ $30 Cash Donator ⋯ ✪ ⋯
 }
+
+VOTER_INCOMES = {
+    "Voted": 1,
+}
