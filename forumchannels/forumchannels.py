@@ -8,7 +8,7 @@ class ForumChannels(commands.Cog):
     @commands.Cog.listener(name="on_raw_thread_update")
     async def forum_channel_archived(self, payload: discord.RawThreadUpdateEvent):
         data = payload.data
-        if payload.parent_id != 1019806662766379160:
+        if payload.parent_id != 1023274993045471272:
             return
         
         if payload.data["thread_metadata"]["archived"] is False:
