@@ -14,6 +14,8 @@ class ForumChannels(commands.Cog):
             and data["parent_id"] == "1019806662766379160"
         ):
             channel = await self.bot.fetch_channel(int(payload.data["id"]))
+            print(channel.archiver_id)
+            print(data["owner_id"])
             if channel.archiver_id == int(data["owner_id"]):
                 await channel.edit(archived=False)
                 await channel.send(
