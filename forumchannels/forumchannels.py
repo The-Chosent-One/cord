@@ -16,9 +16,8 @@ class ForumChannels(commands.Cog):
             channel = await self.bot.fetch_channel(int(payload.data["id"]))
             if channel.archiver_id == int(data["owner_id"]):
                 await channel.edit(archived=False)
-                member = self.bot.get_user(int(payload.data["owner_id"]))
                 await channel.send(
-                    f"{member.mention} \n You cannot archive your own thread. It has been unarchived and will be automatically archived after 1 hour of inactivity."
+                    "You cannot archive your own thread. It has been unarchived and will be automatically archived after 1 hour of inactivity."
                 )
             if channel.archiver_id != int(data["owner_id"]):
                 member = self.bot.get_user(int(payload.data["owner_id"]))
