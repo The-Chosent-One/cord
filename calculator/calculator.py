@@ -16,10 +16,17 @@ class Calculator(commands.Cog):
             number = match_obj.group(1)
             return f"({number}{sub})"
 
-        mapping = {"t": "*1000000000000", "b": "*1000000000", "m": "*1000000", "k": "*1000"}
+        mapping = {
+            "t": "*1000000000000",
+            "b": "*1000000000",
+            "m": "*1000000",
+            "k": "*1000",
+        }
 
         for pattern, sub in mapping.items():
-            calculation = re.sub(rf"(\d+(?:\.\d+)?){pattern}", partial(match_subst, sub=sub), calculation)
+            calculation = re.sub(
+                rf"(\d+(?:\.\d+)?){pattern}", partial(match_subst, sub=sub), calculation
+            )
 
         return calculation
 
@@ -67,14 +74,22 @@ class Calculator(commands.Cog):
         await message.add_reaction("\U00002795")
 
         def check(reaction: discord.Reaction, reactor: discord.Member) -> bool:
-            return reactor == message.author and reaction.message == message and str(reaction.emoji) == "\U00002795"
+            return (
+                reactor == message.author
+                and reaction.message == message
+                and str(reaction.emoji) == "\U00002795"
+            )
 
         try:
             await self.bot.wait_for("reaction_add", check=check, timeout=15)
         except asyncio.TimeoutError:
             return
 
-        embed = discord.Embed(title="Calculated:", description=f"Result: `{res:,}`\n Raw: `{res}`", colour=0x303135)
+        embed = discord.Embed(
+            title="Calculated:",
+            description=f"Result: `{res:,}`\n Raw: `{res}`",
+            colour=0x303135,
+        )
         await message.channel.send(embed=embed)
 
 

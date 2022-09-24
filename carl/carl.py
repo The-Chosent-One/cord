@@ -12,9 +12,16 @@ class Carl(commands.Cog):
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def addtrigger(self, ctx, trigger: str, title: str, description: str, color: discord.Color,
-                         allowed_roles: commands.Greedy[discord.Role] = None,
-                         channels: commands.Greedy[discord.TextChannel] = None):
+    async def addtrigger(
+        self,
+        ctx,
+        trigger: str,
+        title: str,
+        description: str,
+        color: discord.Color,
+        allowed_roles: commands.Greedy[discord.Role] = None,
+        channels: commands.Greedy[discord.TextChannel] = None,
+    ):
         if allowed_roles is None:
             allowed_roles = "None"
         else:
@@ -30,8 +37,15 @@ class Carl(commands.Cog):
             await ctx.send("Trigger already exists")
         else:
             await self.coll.insert_one(
-                {"trigger": trigger, "title": title, "description": description, "color": color.value,
-                 "allowed_roles": allowed_roles, "channel": channels})
+                {
+                    "trigger": trigger,
+                    "title": title,
+                    "description": description,
+                    "color": color.value,
+                    "allowed_roles": allowed_roles,
+                    "channel": channels,
+                }
+            )
             await ctx.send("Added trigger")
 
     @commands.command(alias=["deltrigger"])
@@ -55,7 +69,7 @@ class Carl(commands.Cog):
             async for x in fetchall:
                 trigger = x["trigger"]
                 t += f"{trigger} \n"
-            embed = discord.Embed(title="All triggers", description=t, color=0x00ff00)
+            embed = discord.Embed(title="All triggers", description=t, color=0x00FF00)
             await ctx.send(embed=embed)
         else:
             find = await self.coll.find_one({"trigger": trigger})
@@ -73,29 +87,37 @@ class Carl(commands.Cog):
                         c += f"{chamen.mention}, "
                 if allowed_roles == "None":
                     r = "None"
-                else:                 
+                else:
                     for roleid in allowed_roles:
                         rolename = ctx.guild.get_role(roleid)
                         r += f"{rolename.name}, "
-                if channel == 'None' and allowed_roles == 'None':
+                if channel == "None" and allowed_roles == "None":
                     await ctx.send("This trigger is allowed everywhere.", embed=embed)
-                if channel == 'None' and allowed_roles != 'None':
-                    await ctx.send(f"This trigger is allowed in all channels but only for these roles: \n {r}",
-                                   embed=embed)
-                if channel != 'None' and allowed_roles == 'None':
-                    await ctx.send(f"This trigger is allowed in the channels: \n {c} for everyone.", embed=embed)
-                if channel != 'None' and allowed_roles != 'None':
+                if channel == "None" and allowed_roles != "None":
+                    await ctx.send(
+                        f"This trigger is allowed in all channels but only for these roles: \n {r}",
+                        embed=embed,
+                    )
+                if channel != "None" and allowed_roles == "None":
+                    await ctx.send(
+                        f"This trigger is allowed in the channels: \n {c} for everyone.",
+                        embed=embed,
+                    )
+                if channel != "None" and allowed_roles != "None":
                     await ctx.send(
                         f"This is only allowed in the channels \n {c} \n for who have one of the roles: \n {r}",
-                        embed=embed)
+                        embed=embed,
+                    )
             else:
-                await ctx.send("Trigger does not exist, try `??trigger` to see available triggers")
+                await ctx.send(
+                    "Trigger does not exist, try `??trigger` to see available triggers"
+                )
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
         if message.author.bot:
             return
-        if message.content.startswith('??'):
+        if message.content.startswith("??"):
             return
         check = await self.coll.find_one({"trigger": message.content.lower()})
         if not check:
@@ -106,25 +128,36 @@ class Carl(commands.Cog):
             color = check["color"]
             title = check["title"]
             description = check["description"]
-            if channel == 'None' and allowed_roles == 'None':
+            if channel == "None" and allowed_roles == "None":
                 embed = discord.Embed(title=title, description=description, color=color)
                 return await message.channel.send(embed=embed)
-            if channel == 'None' and allowed_roles != 'None':
+            if channel == "None" and allowed_roles != "None":
                 if any(r.id in allowed_roles for r in message.author.roles):
-                    embed = discord.Embed(title=title, description=description, color=color)
+                    embed = discord.Embed(
+                        title=title, description=description, color=color
+                    )
                     return await message.channel.send(embed=embed)
-            if channel != 'None' and allowed_roles == 'None':
+            if channel != "None" and allowed_roles == "None":
                 if message.channel.id in channel:
-                    embed = discord.Embed(title=title, description=description, color=color)
+                    embed = discord.Embed(
+                        title=title, description=description, color=color
+                    )
                     return await message.channel.send(embed=embed)
-            if channel != 'None' and allowed_roles != 'None':
-                if any(r.id in allowed_roles for r in message.author.roles) and message.channel.id in channel:
-                    embed = discord.Embed(title=title, description=description, color=color)
+            if channel != "None" and allowed_roles != "None":
+                if (
+                    any(r.id in allowed_roles for r in message.author.roles)
+                    and message.channel.id in channel
+                ):
+                    embed = discord.Embed(
+                        title=title, description=description, color=color
+                    )
                     return await message.channel.send(embed=embed)
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def embed(self, channel: discord.TextChannel, color: discord.Color, title, description):
+    async def embed(
+        self, channel: discord.TextChannel, color: discord.Color, title, description
+    ):
         embed = discord.Embed(title=title, description=description, color=color)
         await channel.send(embed=embed)
 

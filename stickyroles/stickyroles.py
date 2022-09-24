@@ -8,10 +8,14 @@ class StickyRoles(commands.Cog):
         self.coll = bot.plugin_db.get_partition(self)
 
     async def add_sticky(self, unique, role: discord.Role):
-        await self.coll.find_one_and_update({"unique": unique}, {"$push": {"role_id": role.id}}, upsert=True)
+        await self.coll.find_one_and_update(
+            {"unique": unique}, {"$push": {"role_id": role.id}}, upsert=True
+        )
 
     async def remove_sticky(self, unique, role: discord.Role):
-        await self.coll.find_one_and_update({"unique": unique}, {"$pull": {"role_id": role.id}})
+        await self.coll.find_one_and_update(
+            {"unique": unique}, {"$pull": {"role_id": role.id}}
+        )
 
     @commands.command()
     async def addsticky(self, ctx, role: discord.Role):

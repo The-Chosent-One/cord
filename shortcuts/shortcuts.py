@@ -13,10 +13,13 @@ class Shortcuts(commands.Cog):
     async def dmads(self, ctx, user: discord.User, proof, proof2=None):
         if proof2 is None:
             await ctx.send(
-                f'```.ban {user.id} DM [Advertisements]({proof}) are against the rules of the server. Appeal this ban at https://discord.gg/appeal ```')
+                f"```.ban {user.id} DM [Advertisements]({proof}) are against the rules of the server. Appeal this ban at https://discord.gg/appeal ```"
+            )
         else:
             await ctx.send(
-                f'```.ban {user.id} DM Advertisements are against the rules of the server. Proof: [1]({proof}), [2]({proof2}). Appeal this ban at https://discord.gg/appeal```')
+                f"```.ban {user.id} DM Advertisements are against the rules of the server. Proof: [1]({proof}), [2]({proof2}). Appeal this ban at https://discord.gg/appeal```"
+            )
+
 
 async def setup(bot):
     await bot.add_cog(Shortcuts(bot))

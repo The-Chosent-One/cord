@@ -5,19 +5,34 @@ from motor import motor_asyncio
 
 
 class CurrencyHandler:
-    def __init__(self, bot: commands.Bot, collection: motor_asyncio.AsyncIOMotorCollection) -> None:
+    def __init__(
+        self, bot: commands.Bot, collection: motor_asyncio.AsyncIOMotorCollection
+    ) -> None:
         self.bot = bot
         self.collection: motor_asyncio.AsyncIOMotorCollection = collection
 
     async def _get_field(self, target: discord.Member, field: str) -> Any:
-        res = await self.collection.find_one({"user_id": target.id, field: {"$exists": True}})
+        res = await self.collection.find_one(
+            {"user_id": target.id, field: {"$exists": True}}
+        )
 
         return None if res is None else res.get(field)
 
-    async def _modify_field(self, modification: str, target: discord.Member, field: str, value: Any, *,
-                            upsert: bool = False) -> Any:
-        res = await self.collection.find_one_and_update({"user_id": target.id}, {modification: {field: value}},
-                                                        upsert=upsert, return_document=True)
+    async def _modify_field(
+        self,
+        modification: str,
+        target: discord.Member,
+        field: str,
+        value: Any,
+        *,
+        upsert: bool = False
+    ) -> Any:
+        res = await self.collection.find_one_and_update(
+            {"user_id": target.id},
+            {modification: {field: value}},
+            upsert=upsert,
+            return_document=True,
+        )
 
         return None if res is None else res.get(field)
 
@@ -37,5 +52,9 @@ class CurrencyHandler:
     async def get_next_income_time(self, target: discord.Member) -> int | None:
         return await self._get_field(target, "next_income_time")
 
-    async def update_income_time(self, target: discord.Member, next_income_time: int) -> None:
-        await self._modify_field("$set", target, "next_income_time", next_income_time, upsert=True)
+    async def update_income_time(
+        self, target: discord.Member, next_income_time: int
+    ) -> None:
+        await self._modify_field(
+            "$set", target, "next_income_time", next_income_time, upsert=True
+        )

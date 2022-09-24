@@ -26,7 +26,8 @@ class Decancer(commands.Cog):
         "Godfather",
         "Mafia",
         "Detective",
-        "Politician"]
+        "Politician",
+    ]
     adjectives = [
         "Fast",
         "Defiant",
@@ -258,7 +259,8 @@ class Decancer(commands.Cog):
         "Zealous",
         "Dank",
         "Sexy",
-        "Darth"]
+        "Darth",
+    ]
 
     @staticmethod
     def is_cancerous(text: str) -> bool:
@@ -310,17 +312,17 @@ class Decancer(commands.Cog):
         if len(nice_nick) <= 1:
             channel = self.bot.get_channel(995433424963764254)
             await member.edit(nick=random_nick)
-            return await channel.send(f'Decancered `{member.name}` to {random_nick}')
+            return await channel.send(f"Decancered `{member.name}` to {random_nick}")
         elif len(nice_nick) >= 2:
             channel = self.bot.get_channel(995433424963764254)
             await member.edit(nick=nice_nick)
-            return await channel.send(f'Decancered `{member.name}` to {nice_nick}')
+            return await channel.send(f"Decancered `{member.name}` to {nice_nick}")
 
     @commands.check_any(
         commands.has_permissions(manage_nicknames=True),
-        commands.has_role('Farm Hand - Chat Moderator')
+        commands.has_role("Farm Hand - Chat Moderator"),
     )
-    @commands.command(name='decancer', aliases=['dc'])
+    @commands.command(name="decancer", aliases=["dc"])
     async def decancer(self, ctx, member: discord.Member = None):
 
         random_nick = f"{random.choice(self.adjectives)} {random.choice(self.nouns)}"
@@ -328,23 +330,34 @@ class Decancer(commands.Cog):
         bad_nick = member.display_name
 
         if member is None:
-            return await ctx.send('Please provide a valid member lol\nExample: `??decancer @user`')
+            return await ctx.send(
+                "Please provide a valid member lol\nExample: `??decancer @user`"
+            )
         if member.top_role.position >= ctx.author.top_role.position:
-            return await ctx.send('<a:youtried:881184651232817232> lol')
+            return await ctx.send("<a:youtried:881184651232817232> lol")
         if nice_nick.lower() == bad_nick.lower():
-            return await ctx.send('What are you trying to decancer huh? Its pingable smh')
+            return await ctx.send(
+                "What are you trying to decancer huh? Its pingable smh"
+            )
 
         if len(nice_nick) <= 1:
             await member.edit(nick=random_nick)
             return await ctx.send(
-                embed=discord.Embed(title='Randomized their nickname since I couldnt decancer!',
-                                    colour=discord.Colour.red(),
-                                    description=f'**Old nick:** {bad_nick}\n**New nick:** {random_nick}'))
+                embed=discord.Embed(
+                    title="Randomized their nickname since I couldnt decancer!",
+                    colour=discord.Colour.red(),
+                    description=f"**Old nick:** {bad_nick}\n**New nick:** {random_nick}",
+                )
+            )
         elif len(nice_nick) >= 2:
             await member.edit(nick=nice_nick)
             return await ctx.send(
-                embed=discord.Embed(title='Decancered their nickname!', colour=discord.Colour.green(),
-                                    description=f'**Old nick:** {bad_nick}\n**New nick:** {nice_nick}'))
+                embed=discord.Embed(
+                    title="Decancered their nickname!",
+                    colour=discord.Colour.green(),
+                    description=f"**Old nick:** {bad_nick}\n**New nick:** {nice_nick}",
+                )
+            )
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
@@ -352,40 +365,36 @@ class Decancer(commands.Cog):
             frozencheck = await self.coll.find_one({"user_id": str(after.id)})
             if not frozencheck:
                 return
-            frozennick = frozencheck['Nickname']
+            frozennick = frozencheck["Nickname"]
             await after.edit(nick=frozennick)
 
-    @commands.check_any(
-        commands.has_permissions(manage_nicknames=True)
-    )
+    @commands.check_any(commands.has_permissions(manage_nicknames=True))
     @commands.command()
     async def freezenick(self, ctx, user: discord.Member, *, nickname: str):
         if user.top_role.position >= ctx.author.top_role.position:
-            return await ctx.send('<a:youtried:881184651232817232> lol')
+            return await ctx.send("<a:youtried:881184651232817232> lol")
 
         frozencheck = await self.coll.find_one({"user_id": str(user.id)})
         if frozencheck:
             return await ctx.send("The user's nickname is alr frozen")
 
         frozenadd = {"user_id": str(user.id), "Nickname": nickname}
-        await ctx.send(f'Trying to freeze {user.nick} to {nickname}')
+        await ctx.send(f"Trying to freeze {user.nick} to {nickname}")
         try:
             await self.coll.insert_one(frozenadd)
             await user.edit(nick=nickname)
-            await ctx.send('Done!')
+            await ctx.send("Done!")
         except Exception:
             await ctx.send("Something went wrong, please ping Cordila")
 
-    @commands.check_any(
-        commands.has_permissions(manage_nicknames=True)
-    )
+    @commands.check_any(commands.has_permissions(manage_nicknames=True))
     @commands.command()
     async def unfreezenick(self, ctx, user: discord.Member):
         frozencheck = await self.coll.find_one({"user_id": str(user.id)})
         if frozencheck is None:
             return await ctx.send("The user's nickname is not frozen")
         await self.coll.delete_one(frozencheck)
-        await ctx.send(f'I unfreezed <@{user.id}>')
+        await ctx.send(f"I unfreezed <@{user.id}>")
 
 
 async def setup(bot):

@@ -15,11 +15,16 @@ class HeistDropDown(discord.ui.Select):
     def __init__(self, *, coll: motor.motor_asyncio.AsyncIOMotorCollection):
         options = [
             discord.SelectOption(label="Most led heists", emoji="💰"),
-            discord.SelectOption(label="Most scouted heists", emoji="👀")
+            discord.SelectOption(label="Most scouted heists", emoji="👀"),
         ]
         self.coll = coll
 
-        super().__init__(placeholder="Choose a heist statistic to view", min_values=1, max_values=1, options=options)
+        super().__init__(
+            placeholder="Choose a heist statistic to view",
+            min_values=1,
+            max_values=1,
+            options=options,
+        )
 
     async def callback(self, interaction: discord.Interaction):
         choice = self.values[0]
@@ -28,34 +33,51 @@ class HeistDropDown(discord.ui.Select):
         embed.clear_fields()
 
         amount_field, count_field, field_name = {
-            "Most led heists": ("led_amount", "led_count", "Top 5 most led heists!"), 
-            "Most scouted heists": ("scouted_amount", "scouted_count", "Top 5 most scouted heists!"), 
+            "Most led heists": ("led_amount", "led_count", "Top 5 most led heists!"),
+            "Most scouted heists": (
+                "scouted_amount",
+                "scouted_count",
+                "Top 5 most scouted heists!",
+            ),
         }[choice]
 
         field_value = ""
         position = 1
         async for entry in self.coll.find(sort=[(amount_field, -1)], limit=5):
-            leader, amount, count = entry["user_id"], entry[amount_field], entry[count_field]
+            leader, amount, count = (
+                entry["user_id"],
+                entry[amount_field],
+                entry[count_field],
+            )
             field_value += f"**{position}.** <@{leader}> — `⏣ {amount:,}` — {count:,}\n"
             position += 1
-        
+
         embed.add_field(name=field_name, value=field_value)
 
         await message.edit(embed=embed)
         await interaction.response.defer()
 
+
 class HeistView(discord.ui.View):
-    def __init__(self, *, invoker: discord.Member, coll: motor.motor_asyncio.AsyncIOMotorCollection):
+    def __init__(
+        self,
+        *,
+        invoker: discord.Member,
+        coll: motor.motor_asyncio.AsyncIOMotorCollection,
+    ):
         super().__init__(timeout=30)
         self.invoker = invoker
 
-        self.add_item(HeistDropDown(coll=coll))     
+        self.add_item(HeistDropDown(coll=coll))
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if interaction.user != self.invoker:
-            await interaction.response.send_message("Hey, that's not yours to touch!", ephemeral=True)
+            await interaction.response.send_message(
+                "Hey, that's not yours to touch!", ephemeral=True
+            )
             return False
         return True
+
 
 # the actual cog
 class HeistTracker(commands.Cog):
@@ -80,59 +102,68 @@ class HeistTracker(commands.Cog):
         if matches != []:
             # we need to do this as the regex pattern matches multiple times for the discord ids.
             # minimum length it should be is 9, since it should be at least 1,000,000
-            valid_matches = [*filter(lambda n: len(n)>=9, matches)]
-            
+            valid_matches = [*filter(lambda n: len(n) >= 9, matches)]
+
             # amount is missing
             if valid_matches == []:
                 return None
-            
+
             return int(valid_matches[0].replace(",", ""))
-        
+
         return None
-        
-        
+
     async def update_db(self, leader_id: int, scouter_id: int, amount: int) -> None:
         # updates database with values using motor
 
         leader_info = await self.coll.find_one({"user_id": leader_id})
         if leader_info is None:
-            await self.coll.insert_one({
-                "user_id": leader_id,
-                "led_maximum": amount, 
-                "led_amount": amount,
-                "led_count": 1,
-                "scouted_maximum": 0, 
-                "scouted_amount": 0, 
-                "scouted_count": 0
-            })
+            await self.coll.insert_one(
+                {
+                    "user_id": leader_id,
+                    "led_maximum": amount,
+                    "led_amount": amount,
+                    "led_count": 1,
+                    "scouted_maximum": 0,
+                    "scouted_amount": 0,
+                    "scouted_count": 0,
+                }
+            )
         else:
             await self.coll.update_one(
                 {"user_id": leader_id},
-                {"$set": {
-                    "led_maximum": max(leader_info["led_maximum"], amount),
-                    "led_amount": leader_info["led_amount"] + amount, 
-                    "led_count": leader_info["led_count"] + 1
-            }})
+                {
+                    "$set": {
+                        "led_maximum": max(leader_info["led_maximum"], amount),
+                        "led_amount": leader_info["led_amount"] + amount,
+                        "led_count": leader_info["led_count"] + 1,
+                    }
+                },
+            )
 
         scouter_info = await self.coll.find_one({"user_id": scouter_id})
         if scouter_info is None:
-            await self.coll.insert_one({
-                "user_id": scouter_id,
-                "led_maximum": 0, 
-                "led_amount": 0,
-                "led_count": 0,
-                "scouted_maximum": amount, 
-                "scouted_amount": amount, 
-                "scouted_count": 1
-            })
+            await self.coll.insert_one(
+                {
+                    "user_id": scouter_id,
+                    "led_maximum": 0,
+                    "led_amount": 0,
+                    "led_count": 0,
+                    "scouted_maximum": amount,
+                    "scouted_amount": amount,
+                    "scouted_count": 1,
+                }
+            )
         else:
             await self.coll.update_one(
                 {"user_id": leader_id},
-                {"$set": {
-                    "scouted_maximum": max(leader_info["scouted_maximum"], amount),
-                    "scouted_amount": leader_info["scouted_amount"] + amount, 
-                    "scouted_count": leader_info["scouted_count"] + 1
-            }})
+                {
+                    "$set": {
+                        "scouted_maximum": max(leader_info["scouted_maximum"], amount),
+                        "scouted_amount": leader_info["scouted_amount"] + amount,
+                        "scouted_count": leader_info["scouted_count"] + 1,
+                    }
+                },
+            )
 
     @commands.Cog.listener("on_message")
     async def recv_heist_msg(self, message: discord.Message):
@@ -159,15 +190,24 @@ class HeistTracker(commands.Cog):
             return
 
         amount = self.get_amount(content)
-        
+
         if amount is None:
             return
 
         await self.update_db(leader_id, scouter_id, amount)
 
-    @commands.group(aliases=["hs", "heiststatistics", "heiststat"], invoke_without_command=True)
-    @commands.has_any_role(682698693472026749, 658770981816500234, 663162896158556212, 658770586540965911,
-                           814004142796046408, 855877108055015465, 723035638357819432)
+    @commands.group(
+        aliases=["hs", "heiststatistics", "heiststat"], invoke_without_command=True
+    )
+    @commands.has_any_role(
+        682698693472026749,
+        658770981816500234,
+        663162896158556212,
+        658770586540965911,
+        814004142796046408,
+        855877108055015465,
+        723035638357819432,
+    )
     async def heiststats(self, ctx: commands.Context, user: discord.Member = None):
         target = user or ctx.author
         user_id = target.id
@@ -175,9 +215,13 @@ class HeistTracker(commands.Cog):
         res = await self.coll.find_one({"user_id": user_id})
 
         if res is None:
-            return await ctx.send(f"{target} does not have any unfriendly heist statistics")
+            return await ctx.send(
+                f"{target} does not have any unfriendly heist statistics"
+            )
 
-        embed = discord.Embed(title=f"{target}'s unfriendly heist statistics!", colour=0x303135)
+        embed = discord.Embed(
+            title=f"{target}'s unfriendly heist statistics!", colour=0x303135
+        )
 
         embed.description = (
             f"Number of heists led: **{res['led_count']:,}**\n"
@@ -190,12 +234,14 @@ class HeistTracker(commands.Cog):
         )
 
         await ctx.send(embed=embed)
-    
+
     @heiststats.command(aliases=["lb"])
     async def leaderboard(self, ctx: commands.Context):
         embed = discord.Embed(title="Leaderboard for heist statistics", colour=0x303135)
 
-        all_heists = await self.coll.find(projection={"_id": False, "led_amount": True, "led_count": True}).to_list(None)
+        all_heists = await self.coll.find(
+            projection={"_id": False, "led_amount": True, "led_count": True}
+        ).to_list(None)
         total_heist_amount = sum(e["led_amount"] for e in all_heists)
         total_heist_count = sum(e["led_count"] for e in all_heists)
 
@@ -212,7 +258,7 @@ class HeistTracker(commands.Cog):
         heist_view = HeistView(invoker=ctx.author, coll=self.coll)
 
         message = await ctx.send(embed=embed, view=heist_view)
-        
+
         await heist_view.wait()
 
         # disables the dropdown after 30 seconds

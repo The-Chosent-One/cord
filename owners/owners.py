@@ -11,14 +11,16 @@ class Owners(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def dm(self, ctx, user: discord.Member, *, message):
-        await user.send(f'Message from the staff team at `The Farm`: {message}')
+        await user.send(f"Message from the staff team at `The Farm`: {message}")
         await ctx.channel.send("Sent the message")
 
-    @commands.command(aliases=['ed'])
+    @commands.command(aliases=["ed"])
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def enabledisable(self, ctx):
-        embed = discord.Embed(title="Enables/Disables",
-                              description="`??disableautoban | ??enableautoban` \n \n `??disabledecancer | ??enabledecancer` \n \n `??disableextras | ??enableextras` \n \n `??disablelock | ??enablelock` \n \n `??disableping | ??enableping` \n \n `??disableshortcut | ??enableshortcut` \n \n `??disablesnipe | ??enablesnipe` \n \n `??disablesuggest | ??enablesuggest` \n \n `??disabletyperacer | ??enabletyperacer` \n \n `??disablear | ??enablear` \n \n `??disablecarl | ??enablecarl` \n \n `??disablesos | ??enablesos` \n \n `??disableselfroles | ??enableselfroles`")
+        embed = discord.Embed(
+            title="Enables/Disables",
+            description="`??disableautoban | ??enableautoban` \n \n `??disabledecancer | ??enabledecancer` \n \n `??disableextras | ??enableextras` \n \n `??disablelock | ??enablelock` \n \n `??disableping | ??enableping` \n \n `??disableshortcut | ??enableshortcut` \n \n `??disablesnipe | ??enablesnipe` \n \n `??disablesuggest | ??enablesuggest` \n \n `??disabletyperacer | ??enabletyperacer` \n \n `??disablear | ??enablear` \n \n `??disablecarl | ??enablecarl` \n \n `??disablesos | ??enablesos` \n \n `??disableselfroles | ??enableselfroles`",
+        )
         await ctx.send(embed=embed)
 
     @commands.command()
