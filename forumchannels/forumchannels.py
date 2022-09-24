@@ -9,6 +9,8 @@ class ForumChannels(commands.Cog):
     @commands.Cog.listener(name="on_raw_thread_update")
     async def forum_channel_archived(self, payload):
         print('event triggered')
+        data = payload.data
+        print(data)
         if (
             payload.data["parent_id"] == 1019806662766379160
             and payload.data["archived"] == True
