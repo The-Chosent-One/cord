@@ -37,4 +37,4 @@ class ForumChannels(commands.Cog):
 
 
 async def setup(bot):
-    bot.add_cog(ForumChannels(bot))
+    await bot.add_cog(ForumChannels(bot))
