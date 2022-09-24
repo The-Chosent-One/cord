@@ -14,6 +14,7 @@ class ForumChannels(commands.Cog):
             and payload.data["archived"] == True
             and payload.data["archiver_id"] == payload.data["owner_id"]
         ):
+            print('true')
             channel = self.bot.get_channel(payload.data["id"])
             member = self.bot.get_user(payload.data["owner_id"])
             await channel.edit(archived=False)
