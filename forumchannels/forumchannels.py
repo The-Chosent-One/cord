@@ -24,7 +24,8 @@ class ForumChannels(commands.Cog):
                 member = self.bot.get_user(int(payload.data["owner_id"]))
                 if member is None:
                     return
-                await channel.edit(locked=True, reason="Archived")
+                await channel.edit(archived=False)
+                await channel.edit(locked=True, archived=True, reason="Archived")
                 await channel.send(
                     f"Thread has been archived and locked due to inactivity. Please create a new thread if you wish to continue using the bot"
                 )
