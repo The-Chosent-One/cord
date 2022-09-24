@@ -9,7 +9,10 @@ class ForumChannels(commands.Cog):
     @commands.Cog.listener(name="on_raw_thread_update")
     async def forum_channel_archived(self, payload):
         data = payload.data
-        if data["archived"] == True and data["parent_id"] == "1019806662766379160":
+        if (
+            data["thread_metadata"]["archived"] == True
+            and data["parent_id"] == "1019806662766379160"
+        ):
             channel = self.bot.get_channel(int(payload.data["id"]))
             if channel.archiver_id == int(data["owner_id"]):
                 await channel.edit(archived=False)
