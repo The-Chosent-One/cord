@@ -14,7 +14,7 @@ class ForumChannels(commands.Cog):
             and data["parent_id"] == "1019806662766379160"
         ):
             channel = await self.bot.fetch_channel(int(payload.data["id"]))
-            print(channel)
+            print(channel.id)
             print(channel.archiver_id)
             print(channel.archiver)
             print(data["owner_id"])
