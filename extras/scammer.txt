@@ -11,3 +11,5 @@ gift
 rps 
 wager
 bet
+howgay
+gayrate
