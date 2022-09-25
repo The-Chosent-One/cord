@@ -1,6 +1,7 @@
 import asyncio
 import re
 from datetime import timedelta
+from pathlib import Path
 
 import discord
 import random
@@ -10,6 +11,11 @@ from discord.ext import commands
 
 time_units = {"s": "seconds", "m": "minutes", "h": "hours", "d": "days", "w": "weeks"}
 
+this_file_directory = Path(__file__).parent.resolve()
+other_file = this_file_directory / "scammer.txt"
+
+with open(other_file, "r+") as file:
+    scammer = [scammer.strip().lower() for scammer in file.readlines()]
 
 class Extras(commands.Cog):
     def __init__(self, bot):
@@ -38,6 +44,38 @@ class Extras(commands.Cog):
     async def deleteall(self, message: discord.Message):
         if message.channel.id == 714533815829397506:
             await message.delete()
+            
+    @commands.Cog.listener('on_message')
+    async def scammeralert(self, message: discord.Message):
+        if not message.guild:
+            return
+        role = message.guild.get_role(824549659988197386)
+        if message.author.bot:
+            return
+        if role in message.author.roles:
+            if any(word in message.content.lower() for word in scammer):
+                if message.mentions:
+                    embed = discord.Embed(title=f":warning: {message.author} is a scammer  :warning: ",
+                                          description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution and/or use a middle man from <#756004818866405376> ",
+                                          color=0xff0000)
+                    embed.set_footer(text="- The Farm")
+                    await message.channel.send(embed=embed)
+        else:
+            members = [m.name for m in message.mentions if role in m.roles]
+            if members:
+                if any(word in message.content.lower() for word in scammer):
+                    if len(members) > 1:
+                        embed = discord.Embed(title=f":warning:  {', '.join(members)} are scammers  :warning: ",
+                                              description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution and/or use a middle man from <#756004818866405376> ",
+                                              color=0xff0000)
+                        embed.set_footer(text="- The Farm")
+                        await message.channel.send(embed=embed)
+                    elif len(members) == 1:
+                        embed = discord.Embed(title=f":warning:  {' '.join(members)} is a scammer  :warning: ",
+                                              description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution and/or use a middle man from <#756004818866405376> ",
+                                              color=0xff0000)
+                        embed.set_footer(text="- The Farm")
+                        await message.channel.send(embed=embed)
 
     @commands.command()
     @commands.has_any_role(
