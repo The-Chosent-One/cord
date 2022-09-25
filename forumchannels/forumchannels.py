@@ -11,7 +11,7 @@ class ForumChannels(commands.Cog):
     @commands.Cog.listener(name="on_raw_thread_update")
     async def forum_channel_archived(self, payload: discord.RawThreadUpdateEvent):
         data = payload.data
-        if payload.parent_id != 1023436140759482419:
+        if payload.parent_id != 1023274993045471272:
             return
 
         if payload.data["thread_metadata"]["archived"] is False:
@@ -44,7 +44,6 @@ class ForumChannels(commands.Cog):
 
         for thread in reversed(forum.threads):
             timestamp = ((thread.last_message_id >> 22) + 1420070400000) / 1000
-            print(timestamp)
             if time.time() - timestamp >= 3600:
                 await thread.send(
                     "Thread has been archived and locked due to inactivity. Please create a new thread if you wish to continue using the bot"
