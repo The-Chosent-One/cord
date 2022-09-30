@@ -56,7 +56,7 @@ class Extras(commands.Cog):
             if any(word in message.content.lower() for word in scammer):
                 if message.mentions:
                     embed = discord.Embed(title=f":warning: {message.author} is a scammer  :warning: ",
-                                          description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution and/or use a middle man from <#756004818866405376> ",
+                                          description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues.",
                                           color=0xff0000)
                     embed.set_footer(text="- The Farm")
                     await message.channel.send(embed=embed)
