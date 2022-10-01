@@ -7,6 +7,8 @@ from discord.ext import commands
 from math import ceil
 from motor import motor_asyncio
 from time import time
+from core import checks
+from core.models import PermissionLevel
 
 AMOUNT_MAP = {"k": "*1000", "m": "*1000000", "b": "*1000000000"}
 AMOUNT_REGEX = re.compile(
@@ -65,6 +67,7 @@ class Currency(commands.Cog):
                 await self.currency_handler.update_cash(target, cash=1)
 
     @commands.command()
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def addcash(self, ctx, target: discord.Member, cash: Amount):
         if cash < 0:
             return await ctx.reply("Use `??removecash` instead")
@@ -85,6 +88,7 @@ class Currency(commands.Cog):
         traceback.print_exception(type(error), error, error.__traceback__)
 
     @commands.command()
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def removecash(self, ctx, target: discord.Member, cash: Amount):
         if cash < 0:
             return await ctx.reply("Use `??addcash` instead")
@@ -107,6 +111,7 @@ class Currency(commands.Cog):
         traceback.print_exception(type(error), error, error.__traceback__)
 
     @commands.command()
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def setcash(
         self, ctx: commands.Context, target: discord.Member, cash: Amount
     ):
@@ -134,6 +139,7 @@ class Currency(commands.Cog):
         traceback.print_exception(type(error), error, error.__traceback__)
 
     @commands.command(aliases=["give"])
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def share(
         self, ctx: commands.Context, target: discord.Member, amount: Amount
     ) -> None:
@@ -185,6 +191,7 @@ class Currency(commands.Cog):
         traceback.print_exception(type(error), error, error.__traceback__)
 
     @commands.command(alias=["bal"])
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def balance(self, ctx: commands.Context) -> None:
         cash = await self.currency_handler.get_cash(ctx.author)
 
@@ -195,6 +202,7 @@ class Currency(commands.Cog):
         await ctx.reply(embed=embed)
 
     @commands.command()
+    @checks.has_permissions(PermissionLevel.MODERATOR)
     async def income(self, ctx: commands.Context) -> None:
         next_income_time = await self.currency_handler.get_next_income_time(ctx.author)
 
