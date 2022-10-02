@@ -157,7 +157,12 @@ class Reminders(commands.Cog):
                         return await discord.utils.sleep_until(next_reminder)
         for reminder in reminders:
             try:
-                user = self.bot.get_user(reminder["user_id"])
+                user = self.bot.get_user(
+                    reminder["user_id"]
+                ) or await self.bot.fetch_user(reminder["user_id"])
+                if user is None:
+                    await self.coll.delete_one({"_id": reminder["_id"]})
+                    continue
                 link = reminder["msg_link"]
                 embed = discord.Embed(
                     title=f"**Reminder!**",
