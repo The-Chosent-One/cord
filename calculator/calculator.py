@@ -7,6 +7,10 @@ from functools import partial
 
 
 class Calculator(commands.Cog):
+    """
+    Calculate simple math expressions
+    """
+
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         self.calculatable = re.compile("^[()0-9embtk.\-+/*]+$")

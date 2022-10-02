@@ -7,6 +7,9 @@ from datetime import datetime
 
 class Carl(commands.Cog):
     def __init__(self, bot):
+        """
+        Some commands
+        """
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
 
@@ -22,6 +25,9 @@ class Carl(commands.Cog):
         allowed_roles: commands.Greedy[discord.Role] = None,
         channels: commands.Greedy[discord.TextChannel] = None,
     ):
+        """
+        Add a trigger to send a message
+        """
         if allowed_roles is None:
             allowed_roles = "None"
         else:
@@ -51,6 +57,9 @@ class Carl(commands.Cog):
     @commands.command(alias=["deltrigger"])
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def deletetrigger(self, ctx, trigger: str):
+        """
+        Delete a trigger that sends a message
+        """
         check = await self.coll.find_one({"trigger": trigger})
         if check:
             await self.coll.delete_one(check)
@@ -61,6 +70,9 @@ class Carl(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def trigger(self, ctx, trigger: str = None):
+        """
+        View a trigger and its set permissions
+        """
         c = ""
         r = ""
         t = ""
@@ -158,6 +170,9 @@ class Carl(commands.Cog):
     async def embed(
         self, channel: discord.TextChannel, color: discord.Color, title, description
     ):
+        """
+        Send an embed in a channel
+        """
         embed = discord.Embed(title=title, description=description, color=color)
         await channel.send(embed=embed)
 

@@ -7,12 +7,19 @@ time_units = {"s": "seconds", "m": "minutes", "h": "hours", "d": "days", "w": "w
 
 
 class BFPing(commands.Cog):
+    """
+    Ping roles with a message or give them the sponsor role
+    """
+
     def __init__(self, bot):
         self.bot = bot
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def gaw(self, ctx, *, messages="^_^"):
+        """
+        Ping the giveawayss role with a message
+        """
         if (
             ctx.message.raw_role_mentions
             or "@everyone" in ctx.message.content
@@ -30,6 +37,9 @@ class BFPing(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def partner(self, ctx, *, messages="^_^"):
+        """
+        Ping the partner role with a message
+        """
         if (
             ctx.message.raw_role_mentions
             or "@everyone" in ctx.message.content
@@ -47,6 +57,9 @@ class BFPing(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def heist(self, ctx, *, messages="^_^"):
+        """
+        Ping the heist hipphoes role with a message
+        """
         if (
             ctx.message.raw_role_mentions
             or "@everyone" in ctx.message.content
@@ -64,6 +77,9 @@ class BFPing(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def ev(self, ctx, *, messages="^_^"):
+        """
+        Ping the event time role with a message
+        """
         if (
             ctx.message.raw_role_mentions
             or "@everyone" in ctx.message.content
@@ -81,6 +97,9 @@ class BFPing(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_messages=True)
     async def friendly(self, ctx, *, messages="^_^"):
+        """
+        Ping the friendly heist role with a message
+        """
         if (
             ctx.message.raw_role_mentions
             or "@everyone" in ctx.message.content
@@ -97,24 +116,10 @@ class BFPing(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
-    async def lot(self, ctx, *, message="^_^"):
-        if (
-            ctx.message.raw_role_mentions
-            or "@everyone" in ctx.message.content
-            or "@here" in ctx.message.content
-        ):
-            gwm = ctx.guild.get_role(855877108055015465)
-            await ctx.author.remove_roles(gwm)
-            return await ctx.send("Pretty sure you don't want to do that man")
-        if ctx.channel.id == 732604674108030987:
-            await ctx.channel.purge(limit=1)
-            await ctx.send(f" <@&732949595633614938> {message}")
-        else:
-            await ctx.send("You can only use this command in <#732604674108030987>")
-
-    @commands.command()
-    @commands.has_permissions(manage_messages=True)
     async def maf(self, ctx, *, messages="^_^"):
+        """
+        Ping the mafia time role with a message
+        """
         if (
             ctx.message.raw_role_mentions
             or "@everyone" in ctx.message.content
@@ -149,6 +154,9 @@ class BFPing(commands.Cog):
         682698693472026749, 663162896158556212, 658770981816500234, 855877108055015465
     )
     async def esponsor(self, ctx, member: discord.Member, seconds=None):
+        """
+        Give a member the sponsor role for a certain amount of time
+        """
         role = ctx.guild.get_role(787572079573598220)
         if seconds is None:
             if role in member.roles:

@@ -17,8 +17,12 @@ other_file = this_file_directory / "scammer.txt"
 with open(other_file, "r+") as file:
     scammer = [scammer.strip().lower() for scammer in file.readlines()]
 
+
 class Extras(commands.Cog):
     def __init__(self, bot):
+        """
+        Extra commands
+        """
         self.bot = bot
 
     @staticmethod
@@ -44,8 +48,8 @@ class Extras(commands.Cog):
     async def deleteall(self, message: discord.Message):
         if message.channel.id == 714533815829397506:
             await message.delete()
-            
-    @commands.Cog.listener('on_message')
+
+    @commands.Cog.listener("on_message")
     async def scammeralert(self, message: discord.Message):
         if not message.guild:
             return
@@ -55,9 +59,11 @@ class Extras(commands.Cog):
         if role in message.author.roles:
             if any(word in message.content.lower() for word in scammer):
                 if message.mentions:
-                    embed = discord.Embed(title=f":warning: {message.author} is a scammer  :warning: ",
-                                          description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues.",
-                                          color=0xff0000)
+                    embed = discord.Embed(
+                        title=f":warning: {message.author} is a scammer  :warning: ",
+                        description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues.",
+                        color=0xFF0000,
+                    )
                     embed.set_footer(text="- The Farm")
                     await message.channel.send(embed=embed)
         else:
@@ -65,15 +71,19 @@ class Extras(commands.Cog):
             if members:
                 if any(word in message.content.lower() for word in scammer):
                     if len(members) > 1:
-                        embed = discord.Embed(title=f":warning:  {', '.join(members)} are scammers  :warning: ",
-                                              description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution",
-                                              color=0xff0000)
+                        embed = discord.Embed(
+                            title=f":warning:  {', '.join(members)} are scammers  :warning: ",
+                            description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution",
+                            color=0xFF0000,
+                        )
                         embed.set_footer(text="- The Farm")
                         await message.channel.send(embed=embed)
                     elif len(members) == 1:
-                        embed = discord.Embed(title=f":warning:  {' '.join(members)} is a scammer  :warning: ",
-                                              description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution",
-                                              color=0xff0000)
+                        embed = discord.Embed(
+                            title=f":warning:  {' '.join(members)} is a scammer  :warning: ",
+                            description="Hey, thought you should know the user you are engaging in a deal with is a **scammer** and has unpaid dues. Proceed with caution",
+                            color=0xFF0000,
+                        )
                         embed.set_footer(text="- The Farm")
                         await message.channel.send(embed=embed)
 
@@ -89,6 +99,9 @@ class Extras(commands.Cog):
         658770586540965911,
     )
     async def inrole(self, ctx, role1: discord.Role, role2: discord.Role):
+        """
+        Get the unque members in 2 roles
+        """
         first = role1.members
         second = role2.members
         firstlen = len(role1.members)
@@ -105,6 +118,9 @@ class Extras(commands.Cog):
     @commands.command()
     @checks.thread_only()
     async def unmute(self, ctx):
+        """
+        Unmute a user in a thread
+        """
         member = ctx.guild.get_member(ctx.thread.id)
 
         role = discord.utils.get(member.guild.roles, name="Muted")
@@ -128,6 +144,9 @@ class Extras(commands.Cog):
         658770586540965911,
     )
     async def whois(self, ctx, member: discord.Member = None):
+        """
+        Get information about a user
+        """
         if member is None:
             member = ctx.message.author
 
@@ -159,6 +178,9 @@ class Extras(commands.Cog):
 
     @commands.command()
     async def timer(self, ctx, seconds):
+        """
+        Set a timer for a certain amount of time
+        """
         try:
             text = seconds
             seconds = sum(
@@ -190,6 +212,9 @@ class Extras(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def raw(self, ctx, msg: discord.Message):
+        """
+        Get the raw description of an embed
+        """
         if not msg.embeds:
             return await ctx.send(
                 embed=discord.Embed(
@@ -233,6 +258,9 @@ class Extras(commands.Cog):
     @commands.command()
     @checks.thread_only()
     async def special(self, ctx):
+        """
+        Give the user the special role
+        """
         member = ctx.guild.get_member(ctx.thread.id)
 
         role = discord.utils.get(
@@ -252,6 +280,9 @@ class Extras(commands.Cog):
     @commands.command()
     @checks.thread_only()
     async def helpme(self, ctx):
+        """
+        Add chat mods to the thread and ping them
+        """
         role = ctx.guild.get_role(814004142796046408)
         members = role.members
         members = [
@@ -269,6 +300,9 @@ class Extras(commands.Cog):
     @commands.command()
     @checks.thread_only()
     async def helpme2(self, ctx):
+        """
+        Add chat mods to the thread but dont ping them
+        """
         role = ctx.guild.get_role(814004142796046408)
         channel = ctx.channel
         overwrites = channel.overwrites_for(role)
@@ -281,6 +315,9 @@ class Extras(commands.Cog):
     @commands.command()
     @checks.thread_only()
     async def pms(self, ctx):
+        """
+        Add partner managers to the thread
+        """
         role = ctx.guild.get_role(790290355631292467)
         channel = ctx.channel
         overwrites = channel.overwrites_for(role)
@@ -293,6 +330,9 @@ class Extras(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_channels=True)
     async def au(self, ctx, member: discord.Member):
+        """
+        Add a user to the channel
+        """
         overwrites = ctx.channel.overwrites_for(member)
         overwrites.read_messages = True
         await ctx.channel.set_permissions(member, overwrite=overwrites)

@@ -81,6 +81,10 @@ class HeistView(discord.ui.View):
 
 # the actual cog
 class HeistTracker(commands.Cog):
+    """
+    Heist statistics for heist leaders and scouts.
+    """
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
@@ -209,6 +213,9 @@ class HeistTracker(commands.Cog):
         723035638357819432,
     )
     async def heiststats(self, ctx: commands.Context, user: discord.Member = None):
+        """
+        Heist statistics for heist leaders and scouts.
+        """
         target = user or ctx.author
         user_id = target.id
 
@@ -237,6 +244,9 @@ class HeistTracker(commands.Cog):
 
     @heiststats.command(aliases=["lb"])
     async def leaderboard(self, ctx: commands.Context):
+        """
+        Leaderboard for heist leaders and scouts.
+        """
         embed = discord.Embed(title="Leaderboard for heist statistics", colour=0x303135)
 
         all_heists = await self.coll.find(

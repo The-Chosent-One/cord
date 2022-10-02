@@ -3,16 +3,20 @@ import discord
 import time
 
 FORUM_CHANNELS_COOLDOWN_MAP = {
-    1023274993045471272: 3600,      # 🐸┃dank-memer
-    1025640363811143710: 3600,      # 🤖┃all-bots
-    1025637841608388608: 10800,     # 🔱┃premium-all-bots
-    1025636802134028318: 21600,     # 🥉┃tier-3-all-bots¹
-    1025636756709720144: 43200,     # 🥈┃tier-2-all-bots
-    1025636171780468736: 86400,     # 🏆┃tier-1-all-bots
+    1023274993045471272: 3600,  # 🐸┃dank-memer
+    1025640363811143710: 3600,  # 🤖┃all-bots
+    1025637841608388608: 10800,  # 🔱┃premium-all-bots
+    1025636802134028318: 21600,  # 🥉┃tier-3-all-bots¹
+    1025636756709720144: 43200,  # 🥈┃tier-2-all-bots
+    1025636171780468736: 86400,  # 🏆┃tier-1-all-bots
 }
 
 
 class ForumChannels(commands.Cog):
+    """
+    Archive and lock forum threads after a certain amount of time
+    """
+
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
         self.archive_and_lock_threads.start()

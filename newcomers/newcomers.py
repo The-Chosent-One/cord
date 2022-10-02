@@ -22,6 +22,9 @@ def to_seconds(s):
 
 class NewComers(commands.Cog):
     def __init__(self, bot):
+        """
+        Tempban suspected alts
+        """
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
         self.checker.start()
@@ -42,6 +45,9 @@ class NewComers(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def dontunban(self, ctx, user: discord.User):
+        """
+        Dont unban a user who is a suspected ALT
+        """
         dontunban = await self.coll.find_one({"user_id": user.id})
         await self.coll.delete_one(dontunban)
         await ctx.send("I wont unban them, thanks.")

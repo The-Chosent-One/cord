@@ -23,6 +23,9 @@ def to_seconds(s):
 
 class LockAndSlow(commands.Cog):
     def __init__(self, bot):
+        """
+        Lock/Unlock and slowmode channels
+        """
         self.bot = bot
 
     @commands.command()
@@ -35,6 +38,9 @@ class LockAndSlow(commands.Cog):
         855877108055015465,
     )
     async def lock(self, ctx, channel: discord.TextChannel = None):
+        """
+        Lock a channel
+        """
         if not channel:
             channel = ctx.channel
 
@@ -87,6 +93,9 @@ class LockAndSlow(commands.Cog):
         855877108055015465,
     )
     async def unlock(self, ctx, channel: discord.TextChannel = None):
+        """
+        Unlock a channel
+        """
         if not channel:
             channel = ctx.channel
 
@@ -125,6 +134,9 @@ class LockAndSlow(commands.Cog):
     @commands.command(aliases=["slowmode", "slow"])
     @commands.has_permissions(manage_messages=True)
     async def sm(self, ctx, delay):
+        """
+        Set slowmode for a channel
+        """
         slomo_embed = discord.Embed(
             title=f" A slowmode of {delay} has been activated by a moderator.",
             color=0x363940,
@@ -139,6 +151,9 @@ class LockAndSlow(commands.Cog):
 
     @commands.command()
     async def slownow(self, ctx):
+        """
+        Check the slowmode for a channel
+        """
         await ctx.send(
             f" The current slow mode in the channel is {ctx.channel.slowmode_delay} seconds"
         )

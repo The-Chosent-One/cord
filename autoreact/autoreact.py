@@ -7,6 +7,10 @@ from core.models import PermissionLevel
 
 
 class Autoreact(commands.Cog):
+    """
+    Autoreact to a message on mention
+    """
+
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
@@ -16,6 +20,9 @@ class Autoreact(commands.Cog):
     async def addar(
         self, ctx, member: discord.Member, emoji: typing.Union[discord.Emoji, str]
     ):
+        """
+        Add a emoji reaction when a user is mentioned in a message.
+        """
         check = await self.coll.find_one({"user_id": member.id})
         if check:
             return await ctx.send("The autoreact already exists for this user")
@@ -27,6 +34,9 @@ class Autoreact(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def removear(self, ctx, user: discord.User):
+        """
+        Remove a emoji reaction when a user is mentioned in a message.
+        """
         ar = await self.coll.find_one({"user_id": user.id})
         if not ar:
             return await ctx.send(
@@ -52,6 +62,9 @@ class Autoreact(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def getars(self, ctx):
+        """
+        List all autoreacts.
+        """
         s = ""
         fetchall = self.coll.find({})
         async for x in fetchall:

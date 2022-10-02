@@ -6,17 +6,26 @@ from core.models import PermissionLevel
 
 class Owners(commands.Cog):
     def __init__(self, bot):
+        """
+        Owner commands
+        """
         self.bot = bot
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def dm(self, ctx, user: discord.Member, *, message):
+        """
+        DM a user
+        """
         await user.send(f"Message from the staff team at `The Farm`: {message}")
         await ctx.channel.send("Sent the message")
 
     @commands.command(aliases=["ed"])
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def enabledisable(self, ctx):
+        """
+        Shortcuts to enable or disable a command
+        """
         embed = discord.Embed(
             title="Enables/Disables",
             description="`??disableautoban | ??enableautoban` \n \n `??disabledecancer | ??enabledecancer` \n \n `??disableextras | ??enableextras` \n \n `??disablelock | ??enablelock` \n \n `??disableping | ??enableping` \n \n `??disableshortcut | ??enableshortcut` \n \n `??disablesnipe | ??enablesnipe` \n \n `??disablesuggest | ??enablesuggest` \n \n `??disabletyperacer | ??enabletyperacer` \n \n `??disablear | ??enablear` \n \n `??disablecarl | ??enablecarl` \n \n `??disablesos | ??enablesos` \n \n `??disableselfroles | ??enableselfroles`",
@@ -27,7 +36,7 @@ class Owners(commands.Cog):
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def offline(self, ctx):
         """
-        get all offline bots in a server
+        Get all offline bots in the server
         """
         guild = ctx.guild
         offline_bots = []

@@ -16,6 +16,9 @@ def check_view_perms(channel, member):
 
 class Snipe(commands.Cog):
     def __init__(self, bot):
+        """
+        Snipe deleted messages
+        """
         self.bot = bot
         self.sniped = {}
         self.esniped = {}
@@ -51,6 +54,9 @@ class Snipe(commands.Cog):
     )
     @commands.command()
     async def snipe(self, ctx, *, channel: discord.TextChannel = None):
+        """
+        Snipe a deleted message
+        """
         ch = channel or ctx.channel
         member = ctx.author
         fetch = await self.coll.find_one({"unique": "nosnipe"})
@@ -99,6 +105,9 @@ class Snipe(commands.Cog):
     )
     @commands.command()
     async def esnipe(self, ctx, *, channel: discord.TextChannel = None):
+        """
+        Snipe an edited message
+        """
         ch = channel or ctx.channel
         member = ctx.author
         fetch = await self.coll.find_one({"unique": "nosnipe"})
@@ -115,12 +124,18 @@ class Snipe(commands.Cog):
     @commands.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def snipes(self, ctx):
+        """
+        Snipe settings
+        """
         if ctx.invoked_subcommand is None:
             await ctx.send("You are probably looking for `??snipes config`")
 
     @snipes.group(invoke_without_command=True)
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def config(self, ctx):
+        """
+        Snipe config
+        """
         if ctx.invoked_subcommand is None:
             await ctx.send(
                 "Config options: \n `nosnipe` - Make the channel unsnipeable \n `yessnipe` - Make the channel snipeable again"
@@ -129,6 +144,9 @@ class Snipe(commands.Cog):
     @config.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def nosnipe(self, ctx, channel: discord.TextChannel = None):
+        """
+        Make a channel unsnipeable
+        """
         c = ""
         if channel is None:
             fetch = await self.coll.find_one({"unique": "nosnipe"})
@@ -148,6 +166,9 @@ class Snipe(commands.Cog):
     @config.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def yessnipe(self, ctx, channel: discord.TextChannel = None):
+        """
+        Make a channel snipeable again
+        """
         if channel is None:
             return await ctx.send(
                 "Please specify a channel where you want snipe to work!"

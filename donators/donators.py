@@ -10,6 +10,10 @@ from core.models import PermissionLevel
 
 
 class Donators(commands.Cog):
+    """
+    Manage cash donator perks
+    """
+
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
@@ -587,7 +591,7 @@ class Donators(commands.Cog):
     @checks.has_permissions(PermissionLevel.MODERATOR)
     async def leaderboard(self, ctx):
         """
-        Shows the top 10 donators
+        Shows the donator leaderboard
         """
         if ctx.invoked_subcommand is None:
             return await ctx.send(
@@ -661,6 +665,9 @@ class Donators(commands.Cog):
 
     @leaderboard.command()
     async def total(self, ctx: commands.Context):
+        """
+        Shows the total donated leaderboard
+        """
         top = (
             await self.coll.find()
             .sort("total_donated", -1)
@@ -684,6 +691,9 @@ class Donators(commands.Cog):
 
     @leaderboard.command()
     async def balance(self, ctx: commands.Context):
+        """
+        Shows the balance leaderboard
+        """
         top = await self.coll.find().sort("balance", -1).limit(10).to_list(length=10)
 
         embed = discord.Embed(title="**Top Balance**", description="", colour=0x10EA64)
@@ -702,6 +712,9 @@ class Donators(commands.Cog):
 
     @leaderboard.command()
     async def top10(self, ctx):
+        """
+        Shows the top 10 donators in the last month
+        """
         s = ""
         top10 = await self.coll.aggregate(
             [
@@ -754,6 +767,9 @@ class Donators(commands.Cog):
 
     @leaderboard.command()
     async def top1(self, ctx):
+        """
+        Shows the top all time donator
+        """
         s = ""
         top1 = await self.coll.aggregate(
             [

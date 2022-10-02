@@ -8,6 +8,10 @@ from unidecode import unidecode
 
 
 class Decancer(commands.Cog):
+    """
+    Decancer members usernames
+    """
+
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
@@ -324,7 +328,9 @@ class Decancer(commands.Cog):
     )
     @commands.command(name="decancer", aliases=["dc"])
     async def decancer(self, ctx, member: discord.Member = None):
-
+        """
+        Decancer a user's nickname.
+        """
         random_nick = f"{random.choice(self.adjectives)} {random.choice(self.nouns)}"
         nice_nick = await self.nick_maker(member.display_name)
         bad_nick = member.display_name
@@ -371,6 +377,9 @@ class Decancer(commands.Cog):
     @commands.check_any(commands.has_permissions(manage_nicknames=True))
     @commands.command()
     async def freezenick(self, ctx, user: discord.Member, *, nickname: str):
+        """
+        Freeze a user's nickname so he cant change it
+        """
         if user.top_role.position >= ctx.author.top_role.position:
             return await ctx.send("<a:youtried:881184651232817232> lol")
 
@@ -390,6 +399,9 @@ class Decancer(commands.Cog):
     @commands.check_any(commands.has_permissions(manage_nicknames=True))
     @commands.command()
     async def unfreezenick(self, ctx, user: discord.Member):
+        """
+        Unfreeze a user's nickname
+        """
         frozencheck = await self.coll.find_one({"user_id": str(user.id)})
         if frozencheck is None:
             return await ctx.send("The user's nickname is not frozen")
