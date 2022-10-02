@@ -157,12 +157,7 @@ class Reminders(commands.Cog):
                         return await discord.utils.sleep_until(next_reminder)
         for reminder in reminders:
             try:
-                user = self.bot.get_user(
-                    reminder["user_id"]
-                ) or await self.bot.fetch_user(reminder["user_id"])
-                if user is None:
-                    await self.coll.delete_one({"_id": reminder["_id"]})
-                    continue
+                user = self.bot.get_member(reminder["user_id"])
                 link = reminder["msg_link"]
                 embed = discord.Embed(
                     title=f"**Reminder!**",
@@ -171,7 +166,7 @@ class Reminders(commands.Cog):
                 )
                 try:
                     await user.send(embed=embed)
-                except discord.Forbidden:
+                except:
                     await self.coll.delete_one({"_id": reminder["_id"]})
                 await self.coll.delete_one({"_id": reminder["_id"]})
                 fetch = await self.coll.find().sort("time", 1).to_list(1)
