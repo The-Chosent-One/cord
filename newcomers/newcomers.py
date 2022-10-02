@@ -21,10 +21,11 @@ def to_seconds(s):
 
 
 class NewComers(commands.Cog):
+    """
+    Tempban suspected alts
+    """
+
     def __init__(self, bot):
-        """
-        Tempban suspected alts
-        """
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
         self.checker.start()

@@ -5,10 +5,11 @@ from core.models import PermissionLevel
 
 
 class Owners(commands.Cog):
+    """
+    Owner commands
+    """
+
     def __init__(self, bot):
-        """
-        Owner commands
-        """
         self.bot = bot
 
     @commands.command()

@@ -15,10 +15,11 @@ def check_view_perms(channel, member):
 
 
 class Snipe(commands.Cog):
+    """
+    Snipe deleted messages
+    """
+
     def __init__(self, bot):
-        """
-        Snipe deleted messages
-        """
         self.bot = bot
         self.sniped = {}
         self.esniped = {}

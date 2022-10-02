@@ -3,10 +3,11 @@ import discord
 
 
 class StickyRoles(commands.Cog):
+    """
+    Sticky roles
+    """
+
     def __init__(self, bot):
-        """
-        Sticky roles
-        """
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
 

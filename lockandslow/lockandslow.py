@@ -22,10 +22,11 @@ def to_seconds(s):
 
 
 class LockAndSlow(commands.Cog):
+    """
+    Lock/Unlock and slowmode channels
+    """
+
     def __init__(self, bot):
-        """
-        Lock/Unlock and slowmode channels
-        """
         self.bot = bot
 
     @commands.command()

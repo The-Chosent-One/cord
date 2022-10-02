@@ -40,6 +40,10 @@ role_info = {
 
 
 class Reminders(commands.Cog):
+    """
+    Reminder commands
+    """
+
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)

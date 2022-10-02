@@ -5,10 +5,11 @@ from core.models import PermissionLevel
 
 
 class Shortcuts(commands.Cog):
+    """
+    Shortcuts for copy pastes
+    """
+
     def __init__(self, bot):
-        """
-        Shortcuts for copy pastes
-        """
         self.bot = bot
 
     @commands.command()

@@ -19,10 +19,11 @@ with open(other_file, "r+") as file:
 
 
 class Extras(commands.Cog):
+    """
+    Extra commands
+    """
+
     def __init__(self, bot):
-        """
-        Extra commands
-        """
         self.bot = bot
 
     @staticmethod

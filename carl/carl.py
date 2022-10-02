@@ -6,10 +6,11 @@ from datetime import datetime
 
 
 class Carl(commands.Cog):
+    """
+    Some commands
+    """
+
     def __init__(self, bot):
-        """
-        Some commands
-        """
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
 

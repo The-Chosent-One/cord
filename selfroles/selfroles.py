@@ -16,6 +16,10 @@ Roles = dict[int, str]
 
 
 class SelfRoles(commands.Cog):
+    """
+    Self assignable roles
+    """
+
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
