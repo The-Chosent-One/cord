@@ -3,15 +3,23 @@ import discord
 
 
 class StickyRoles(commands.Cog):
+    """
+    Sticky roles
+    """
+
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
 
     async def add_sticky(self, unique, role: discord.Role):
-        await self.coll.find_one_and_update({"unique": unique}, {"$push": {"role_id": role.id}}, upsert=True)
+        await self.coll.find_one_and_update(
+            {"unique": unique}, {"$push": {"role_id": role.id}}, upsert=True
+        )
 
     async def remove_sticky(self, unique, role: discord.Role):
-        await self.coll.find_one_and_update({"unique": unique}, {"$pull": {"role_id": role.id}})
+        await self.coll.find_one_and_update(
+            {"unique": unique}, {"$pull": {"role_id": role.id}}
+        )
 
     @commands.command()
     async def addsticky(self, ctx, role: discord.Role):
@@ -20,7 +28,7 @@ class StickyRoles(commands.Cog):
         if check:
             return await ctx.send("This role is already a sticky role")
         await self.add_sticky("1", role)
-        await ctx.send(f"Added `{role.name`}` to the sticky roles")
+        await ctx.send(f"Added `{role.name}` to the sticky roles")
 
     @commands.command()
     async def removesticky(self, ctx, role: discord.Role):
@@ -42,12 +50,13 @@ class StickyRoles(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member):
-            check = await self.coll.find_one({"member_id": member.id})
-            if check:
-                for role in check["role_id"]:
-                    sticky = member.guild.get_role(role)
-                    await member.add_roles(sticky)
-                await self.coll.delete_one({"member_id": member.id})
+        check = await self.coll.find_one({"member_id": member.id})
+        if check:
+            for role in check["role_id"]:
+                sticky = member.guild.get_role(role)
+                await member.add_roles(sticky)
+            await self.coll.delete_one({"member_id": member.id})
 
-def setup(bot):
-    bot.add_cog(StickyRoles(bot))
+
+async def setup(bot):
+    await bot.add_cog(StickyRoles(bot))

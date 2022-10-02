@@ -7,13 +7,22 @@ from core.models import PermissionLevel
 
 
 class Autoreact(commands.Cog):
+    """
+    Autoreact to a message on mention
+    """
+
     def __init__(self, bot):
         self.bot = bot
         self.coll = bot.plugin_db.get_partition(self)
 
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
-    async def addar(self, ctx, member: discord.Member, emoji: typing.Union[discord.Emoji,str]):
+    async def addar(
+        self, ctx, member: discord.Member, emoji: typing.Union[discord.Emoji, str]
+    ):
+        """
+        Add a emoji reaction when a user is mentioned in a message.
+        """
         check = await self.coll.find_one({"user_id": member.id})
         if check:
             return await ctx.send("The autoreact already exists for this user")
@@ -25,9 +34,14 @@ class Autoreact(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def removear(self, ctx, user: discord.User):
+        """
+        Remove a emoji reaction when a user is mentioned in a message.
+        """
         ar = await self.coll.find_one({"user_id": user.id})
         if not ar:
-            return await ctx.send("This user doesnt have an autoreact anyways whatcha up to?")
+            return await ctx.send(
+                "This user doesnt have an autoreact anyways whatcha up to?"
+            )
         reaction1 = ar["reaction"]
         await self.coll.delete_one(ar)
         await ctx.send(f"Deleted reaction {reaction1} for {user.name}")
@@ -37,7 +51,9 @@ class Autoreact(commands.Cog):
         if message.author.bot:
             return
         for x in message.mentions:
-            uid = await self.coll.find_one({"user_id": x.id})  # getting the user ID if in db then getting reaction
+            uid = await self.coll.find_one(
+                {"user_id": x.id}
+            )  # getting the user ID if in db then getting reaction
             if not uid:
                 return
             reaction1 = uid["reaction"]
@@ -46,18 +62,22 @@ class Autoreact(commands.Cog):
     @commands.command()
     @checks.has_permissions(PermissionLevel.ADMIN)
     async def getars(self, ctx):
+        """
+        List all autoreacts.
+        """
         s = ""
         fetchall = self.coll.find({})
         async for x in fetchall:
-            convert = x['user_id']
+            convert = x["user_id"]
             converted = self.bot.get_user(convert)
             s += f"{converted} (`{convert}`) : {x['reaction']} \n"
-            
+
         stuff = s.splitlines()
-        for i in range(0, len(stuff), 22):            
-            chunk = stuff[i:i + 22]
+        for i in range(0, len(stuff), 25):
+            chunk = stuff[i : i + 25]
             final = "\n".join(chunk)
             await ctx.send(final)
-            
-def setup(bot):
-    bot.add_cog(Autoreact(bot))
+
+
+async def setup(bot):
+    await bot.add_cog(Autoreact(bot))
