@@ -339,6 +339,19 @@ class Extras(commands.Cog):
         await ctx.channel.set_permissions(member, overwrite=overwrites)
         await ctx.channel.send(f"Added {member.mention}")
 
+    @commands.command()
+    async def choose(self, ctx: commands.Context, *choices):
+        """
+        Choose something from options provided
+        """
+        if len(choices) == 0:
+            return await ctx.reply("I can't choose nothing...")
+
+        if len(choices) == 1:
+            return await ctx.reply("I can't choose only one thing smh")
+        
+        embed = discord.Embed(title=f"{ctx.author}'s choice: ", description=f"I choose **{random.choice(choices)}**", colour=0x303135)
+        await ctx.reply(embed=embed)
 
 async def setup(bot):
     await bot.add_cog(Extras(bot))
