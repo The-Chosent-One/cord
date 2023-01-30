@@ -166,7 +166,7 @@ class Reminders(commands.Cog):
                 )
                 try:
                     await user.send(embed=embed)
-                except discord.Forbidden:
+                except (discord.errors.Forbidden, discord.errors.NotFound):
                     await self.coll.delete_one({"_id": reminder["_id"]})
                 await self.coll.delete_one({"_id": reminder["_id"]})
                 fetch = await self.coll.find().sort("time", 1).to_list(1)
