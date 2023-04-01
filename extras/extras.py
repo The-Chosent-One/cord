@@ -231,14 +231,15 @@ class Extras(commands.Cog):
         """Returns the Recipient's ID"""
         await ctx.send(ctx.thread.id)
 
-    @commands.Cog.listener()
-    async def on_presence_update(self, before, after):
+    @commands.Cog.listener("on_presence_update")
+    async def ggdank(self, before, after):
+        print("sup")
         if str(before.activity) == str(after.activity):
             return
 
         guild = self.bot.get_guild(645753561329696785)
         
-        if after.id == 705769248034914314:
+        if after.id == 705769248034914314 or before.id == 705769248034914314:
             print("Cord what")   
 
         if after in guild.members:
