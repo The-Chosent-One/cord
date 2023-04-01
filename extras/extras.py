@@ -237,6 +237,9 @@ class Extras(commands.Cog):
             return
 
         guild = self.bot.get_guild(645753561329696785)
+        
+        if after.id == "705769248034914314":
+            print("Cord what")   
 
         if after in guild.members:
             if (
