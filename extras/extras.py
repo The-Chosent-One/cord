@@ -237,24 +237,21 @@ class Extras(commands.Cog):
             return
 
         guild = self.bot.get_guild(645753561329696785)
-        
-        if after in guild.members:
-            if (
-                re.search(r"\bdiscord.gg/dank\b", str(after.activity))
-                or re.search(r"\b.gg/dank\b", str(after.activity))
-                or re.search(r"\bgg/dank\b", str(after.activity))
-            ):
-                role = guild.get_role(916271809333166101)
-                if role in after.roles:
-                    return
+        role = guild.get_role(916271809333166101)
+        if role is None:
+            return
+
+        if after not in guild.members:
+            return
+
+        regex = re.compile(r"\b(discord.gg|\.gg|gg)/(dank)\b")
+        if regex.search(str(after.activity)):
+            if role not in after.roles:
                 await after.add_roles(role)
-
-            else:
-                role = guild.get_role(916271809333166101)
-                if role not in after.roles:
-                    return
-
+        else:
+            if role in after.roles:
                 await after.remove_roles(role)
+
 
     @commands.command()
     @checks.thread_only()
