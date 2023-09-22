@@ -88,11 +88,12 @@ class BFPing(commands.Cog):
             gwm = ctx.guild.get_role(855877108055015465)
             await ctx.author.remove_roles(gwm)
             return await ctx.send("Pretty sure you don't want to do that man")
-        if ctx.channel.id == 995556725694402691:
+        # events and lottery
+        if ctx.channel.id in (995556725694402691, 1150860483277095012):
             await ctx.channel.purge(limit=1)
             await ctx.send(f"<@&684552219344764934> {messages}")
         else:
-            await ctx.send("You can only use this command in <#995556725694402691>")
+            await ctx.send("You can only use this command in <#995556725694402691> or <#1150860483277095012>")
 
     @commands.command()
     @commands.has_permissions(manage_messages=True)
