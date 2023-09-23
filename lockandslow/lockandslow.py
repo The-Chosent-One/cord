@@ -32,7 +32,7 @@ class LockAndSlow(commands.Cog):
         owner = ctx.guild.get_role(658770586540965911)
         admin = ctx.guild.get_role(663162896158556212)
         allowed_channels = [795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500,
-                            747184622386806824]
+                            747184622386806824, 1150860516349190144]
         if ctx.author.top_role.id in (855877108055015465, 814004142796046408):
             if channel.id in allowed_channels:
                 if channel.overwrites_for(ctx.guild.default_role).send_messages is None or channel.overwrites_for(
@@ -64,7 +64,7 @@ class LockAndSlow(commands.Cog):
         owner = ctx.guild.get_role(658770586540965911)
         admin = ctx.guild.get_role(663162896158556212)
         allowed_channels = [795879613393666048, 795709746501648384, 756552586248585368, 747853054329487500,
-                            747184622386806824]
+                            747184622386806824, 1150860516349190144]
         if ctx.author.top_role.id in (855877108055015465, 814004142796046408):
             if channel.id in allowed_channels:
                 if not channel.overwrites_for(ctx.guild.default_role).send_messages:
